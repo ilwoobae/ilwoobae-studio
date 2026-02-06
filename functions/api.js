@@ -1,15 +1,18 @@
-// functions/api.js 최상단에 추가
-async function checkAuth(request, env) {
+// 1. 보안 체크 함수 (onRequest 밖에 정의)
+async function checkAuth(request) {
   const cookie = request.headers.get("Cookie") || "";
-  // 쿠키에 auth=logged_in 이라는 값이 있는지 확인
+  // 쿠키에 auth=logged_in 이라는 값이 포함되어 있는지 확인
   return cookie.includes("auth=logged_in");
 }
 
+// 2. 통합 onRequest 함수 (파일에 딱 하나만 존재해야 함)
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
+  const type = url.searchParams.get("type");
 
-  // --- [로그인 처리] ---
+  // --- [A. 로그인 처리] ---
+  // POST /api/login 요청인 경우
   if (request.method === "POST" && url.pathname.endsWith("/login")) {
     const { password } = await request.json();
     if (password === env.ADMIN_PASSWORD) {
@@ -23,7 +26,7 @@ export async function onRequest(context) {
     return new Response(JSON.stringify({ success: false }), { status: 401 });
   }
 
-  // --- [로그아웃 처리] ---
+  // --- [B. 로그아웃 처리] ---
   if (url.pathname.endsWith("/logout")) {
     return new Response(JSON.stringify({ success: true }), {
       headers: {
@@ -33,18 +36,19 @@ export async function onRequest(context) {
     });
   }
 
-  // --- [권한 체크] ---
-  // 로그인(/login) 요청이 아닌 모든 API 요청은 로그인이 되어있어야 함
-  const isLoggedIn = await checkAuth(request, env);
+  // --- [C. 권한 체크] ---
+  // 로그인(/login) 요청이 아닌 모든 API 요청은 로그인이 되어있어야 진행됨
+  const isLoggedIn = await checkAuth(request);
   if (!isLoggedIn) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { 
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
   }
-}
 
-export async function onRequest(context) {
-  const { request, env } = context;
-  const url = new URL(request.url);
-  const type = url.searchParams.get("type"); 
+  // =========================================================
+  // 여기서부터는 로그인이 확인된 관리자만 접근 가능한 로직입니다.
+  // =========================================================
 
   // --- 1. GET: 목록 불러오기 ---
   if (request.method === "GET") {
@@ -60,7 +64,7 @@ export async function onRequest(context) {
     return Response.json(results);
   }
 
-  // --- 2. POST: 데이터 등록 ---
+  // --- 2. POST: 데이터 등록 (action 값에 따라 분기) ---
   if (request.method === "POST") {
     const formData = await request.formData();
     const action = formData.get("action");
@@ -80,7 +84,6 @@ export async function onRequest(context) {
         await env.BUCKET.put(fileName, file.stream(), { httpMetadata: { contentType: file.type } });
         fileUrl = `https://pub-7bb9e707134648fd9c236f08b217d0df.r2.dev/${fileName}`;
       }
-      // 여기서 info1, 2, 3를 FormData에서 잘 받아오는지 확인
       await env.DB.prepare("INSERT INTO posts (category_id, title, file_url, description, info1, info2, info3) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind(formData.get("category_id"), formData.get("title"), fileUrl, formData.get("description"), formData.get("info1"), formData.get("info2"), formData.get("info3")).run();
     }
@@ -101,7 +104,6 @@ export async function onRequest(context) {
         .bind(formData.get("name"), formData.get("description"), formData.get("group_id"), id).run();
     }
     else if (action === "edit_post") {
-      // 수정 시에도 info1, 2, 3를 업데이트
       await env.DB.prepare("UPDATE posts SET title = ?, description = ?, category_id = ?, info1 = ?, info2 = ?, info3 = ? WHERE id = ?")
         .bind(formData.get("title"), formData.get("description"), formData.get("category_id"), formData.get("info1"), formData.get("info2"), formData.get("info3"), id).run();
     }
