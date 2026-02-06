@@ -1,5 +1,5 @@
 // functions/api.js
-
+const MASTER_PW = "66503";
 async function checkAuth(request) {
   const cookie = request.headers.get("Cookie") || "";
   return cookie.includes("auth=logged_in");
@@ -12,26 +12,18 @@ export async function onRequest(context) {
 
   // --- [A. 로그인 처리] ---
   if (request.method === "POST" && url.pathname.endsWith("/login")) {
-    const { password } = await request.json();
-    
-    // 🔍 디버깅: 설정된 비밀번호가 있는지, 입력된 값과 대조 결과는 어떤지 확인
-    const storedPassword = env.ADMIN_PASSWORD;
-    const isMatch = (password === storedPassword);
-
-    if (isMatch) {
-      return new Response(JSON.stringify({ success: true }), {
-        headers: {
-          "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400; Secure",
-          "Content-Type": "application/json"
-        },
-      });
-    }
-
-    // 🔴 실패 시 상세 이유를 응답에 담아 보냅니다. (나중에 반드시 원복!)
-    return new Response(JSON.stringify({ 
-      success: false, 
-      reason: !storedPassword ? "환경변수가 설정되지 않음" : "비밀번호 불일치"
-    }), { status: 401 });
+      const { password } = await request.json();
+      
+      // env를 못 믿겠으니 직접 설정한 MASTER_PW와 비교합니다.
+      if (password === MASTER_PW || password === env.ADMIN_PASSWORD) {
+          return new Response(JSON.stringify({ success: true }), {
+              headers: {
+                  "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400; Secure",
+                  "Content-Type": "application/json"
+              },
+          });
+      }
+      return new Response(JSON.stringify({ success: false }), { status: 401 });
   }
 
   // --- [B. 로그아웃 처리] ---
