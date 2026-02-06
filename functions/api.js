@@ -37,6 +37,7 @@ export async function onRequest(context) {
         await env.BUCKET.put(fileName, file.stream(), { httpMetadata: { contentType: file.type } });
         fileUrl = `https://pub-7bb9e707134648fd9c236f08b217d0df.r2.dev/${fileName}`;
       }
+      // 여기서 info1, 2, 3를 FormData에서 잘 받아오는지 확인
       await env.DB.prepare("INSERT INTO posts (category_id, title, file_url, description, info1, info2, info3) VALUES (?, ?, ?, ?, ?, ?, ?)")
         .bind(formData.get("category_id"), formData.get("title"), fileUrl, formData.get("description"), formData.get("info1"), formData.get("info2"), formData.get("info3")).run();
     }
@@ -57,7 +58,7 @@ export async function onRequest(context) {
         .bind(formData.get("name"), formData.get("description"), formData.get("group_id"), id).run();
     }
     else if (action === "edit_post") {
-      // 텍스트 정보만 우선 수정 (파일 수정 로직은 추후 확장 가능)
+      // 수정 시에도 info1, 2, 3를 업데이트
       await env.DB.prepare("UPDATE posts SET title = ?, description = ?, category_id = ?, info1 = ?, info2 = ?, info3 = ? WHERE id = ?")
         .bind(formData.get("title"), formData.get("description"), formData.get("category_id"), formData.get("info1"), formData.get("info2"), formData.get("info3"), id).run();
     }

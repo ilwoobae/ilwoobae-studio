@@ -1,136 +1,167 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+// 만약 CSS 파일 이름이 다르면 프로젝트에 맞게 수정하세요.
+import './Admin.css'; 
 
 function Admin() {
-  const [view, setView] = useState('posts'); 
-  const [data, setData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState(null); // 수정 중인 아이템 저장
-  
+  const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [posts, setPosts] = useState([]);
+  
+  // 인라인 수정을 위한 상태 (현재 수정 중인 ID 저장)
+  const [editingGroupId, setEditingGroupId] = useState(null);
+  const [editingCatId, setEditingCatId] = useState(null);
 
+  // 데이터 로드
   const fetchData = async () => {
-    const res = await fetch(`/api?type=${view}`);
-    setData(await res.json());
-    const gRes = await fetch('/api?type=groups');
+    const [gRes, cRes, pRes] = await Promise.all([
+      fetch('/api?type=groups'),
+      fetch('/api?type=categories'),
+      fetch('/api?type=posts')
+    ]);
     setGroups(await gRes.json());
-    const cRes = await fetch('/api?type=categories');
     setCategories(await cRes.json());
+    setPosts(await pRes.json());
   };
 
-  useEffect(() => { fetchData(); }, [view]);
+  useEffect(() => { fetchData(); }, []);
 
-  const openModal = (item = null) => {
-    setEditingItem(item);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setEditingItem(null);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const method = editingItem ? 'PUT' : 'POST';
-    
-    // 액션 결정 logic
-    let actionPrefix = editingItem ? 'edit_' : 'add_';
-    let actionType = view === 'groups' ? 'group' : view === 'categories' ? 'category' : 'post';
-    formData.append('action', actionPrefix + actionType);
-    if(editingItem) formData.append('id', editingItem.id);
-
-    await fetch('/api', { method, body: formData });
-    closeModal();
+  // 삭제 공통 함수
+  const deleteItem = async (target, id) => {
+    if (!confirm(`delete this ${target.slice(0, -1)}?`)) return;
+    await fetch(`/api?id=${id}&target=${target}`, { method: 'DELETE' });
     fetchData();
   };
 
-  const onDelete = async (id) => {
-    if(!confirm("정말 삭제하시겠습니까?")) return;
-    await fetch(`/api?id=${id}&target=${view}`, { method: 'DELETE' });
+  // 그룹/카테고리 수정 저장 함수
+  const saveEdit = async (target, id, payload) => {
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('action', `edit_${target.slice(0, -1)}`);
+    Object.entries(payload).forEach(([key, val]) => formData.append(key, val));
+
+    await fetch('/api', { method: 'PUT', body: formData });
+    setEditingGroupId(null);
+    setEditingCatId(null);
     fetchData();
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <h1>ilwoobae studio 관리자</h1>
-      
-      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
-        {['groups', 'categories', 'posts'].map(type => (
-          <button key={type} onClick={() => setView(type)} style={{ padding: '8px 16px', cursor: 'pointer', background: view === type ? '#333' : '#eee', color: view === type ? '#fff' : '#000' }}>
-            {type.toUpperCase()} 관리
-          </button>
-        ))}
-      </div>
+    <div className="admin-body"> {/* 기존 body 스타일 적용용 */}
+      <header>
+        <h1>ilwoobae studio dashboard</h1>
+        <button id="logout-btn" onClick={() => alert('Logout logic here')}>logout</button>
+      </header>
 
-      <button onClick={() => openModal()} style={{ padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-        + 새 {view.slice(0, -1)} 등록
-      </button>
-
-      <table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ background: '#f4f4f4' }}>
-            <th style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'left' }}>내용</th>
-            <th style={{ border: '1px solid #ddd', padding: '10px', width: '150px' }}>관리</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(item => (
-            <tr key={item.id}>
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>{item.name || item.title}</td>
-              <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>
-                <button onClick={() => openModal(item)} style={{ marginRight: '5px' }}>수정</button>
-                <button onClick={() => onDelete(item.id)} style={{ color: 'red' }}>삭제</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {isModalOpen && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ background: '#fff', padding: '30px', borderRadius: '10px', width: '400px', maxHeight: '90vh', overflowY: 'auto' }}>
-            <h2>{editingItem ? '수정하기' : '새로 등록'}</h2>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {view === 'groups' && (
-                <input name="name" placeholder="그룹 이름" defaultValue={editingItem?.name} required />
-              )}
-
-              {view === 'categories' && (
-                <>
-                  <select name="group_id" defaultValue={editingItem?.group_id} required>
-                    <option value="">그룹 선택</option>
-                    {groups.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
-                  </select>
-                  <input name="name" placeholder="카테고리 이름" defaultValue={editingItem?.name} required />
-                  <textarea name="description" placeholder="설명" defaultValue={editingItem?.description} />
-                </>
-              )}
-
-              {view === 'posts' && (
-                <>
-                  <select name="category_id" defaultValue={editingItem?.category_id} required>
-                    <option value="">카테고리 선택</option>
-                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                  </select>
-                  <input name="title" placeholder="제목" defaultValue={editingItem?.title} required />
-                  {!editingItem && <input type="file" name="file" />}
-                  <textarea name="description" placeholder="설명" defaultValue={editingItem?.description} />
-                  <input name="info1" placeholder="Info 1" defaultValue={editingItem?.info1} />
-                  <input name="info2" placeholder="Info 2" defaultValue={editingItem?.info2} />
-                  <input name="info3" placeholder="Info 3" defaultValue={editingItem?.info3} />
-                </>
-              )}
-
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                <button type="submit" style={{ flex: 1, padding: '10px', background: '#28a745', color: '#fff', border: 'none' }}>저장</button>
-                <button type="button" onClick={closeModal} style={{ flex: 1, padding: '10px', background: '#ccc', border: 'none' }}>취on취소</button>
-              </div>
-            </form>
+      <main className="admin-container">
+        {/* 1. GROUPS SECTION (20vw) */}
+        <section className="admin-section" id="group-manager" style={{ width: '20vw' }}>
+          <div className="section-header">
+            <h2>📁 groups</h2>
+            <button className="btn-add" onClick={() => navigate('/editor?type=group')}>add group</button>
           </div>
-        </div>
-      )}
+          <div className="list-scroll-area">
+            <ul id="group-list" className="list-container">
+              {groups.map(group => (
+                <li key={group.id} className="group-item">
+                  {editingGroupId === group.id ? (
+                    <div className="group-edit-form">
+                      <input 
+                        type="text" 
+                        defaultValue={group.name} 
+                        onKeyPress={(e) => e.key === 'Enter' && saveEdit('groups', group.id, { name: e.target.value })}
+                        autoFocus
+                      />
+                      <div className="edit-actions">
+                        <button onClick={(e) => saveEdit('groups', group.id, { name: e.target.previousSibling.value })} className="btn-add">save</button>
+                        <button onClick={() => setEditingGroupId(null)} className="btn-del">cancel</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="group-display">
+                      <span onClick={() => setEditingGroupId(group.id)} style={{ cursor: 'pointer' }}>{group.name}</span>
+                      <button className="btn-delete" onClick={() => deleteItem('groups', group.id)}>🗑️</button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 2. CATEGORIES SECTION (35vw) */}
+        <section className="admin-section" id="category-manager" style={{ width: '35vw' }}>
+          <div className="section-header">
+            <h2>🏷️ categories</h2>
+            <button className="btn-add" onClick={() => navigate('/editor?type=category')}>add category</button>
+          </div>
+          <div className="list-scroll-area">
+            <ul id="category-list" className="list-container">
+              {categories.map(cat => (
+                <li key={cat.id} className={`cat-item ${editingCatId === cat.id ? 'editing' : ''}`}>
+                  {editingCatId === cat.id ? (
+                    <div className="cat-edit-form">
+                      <input type="text" id={`edit-name-${cat.id}`} defaultValue={cat.name} />
+                      <textarea id={`edit-desc-${cat.id}`} defaultValue={cat.description}></textarea>
+                      <div className="edit-actions">
+                        <button onClick={() => saveEdit('categories', cat.id, {
+                          name: document.getElementById(`edit-name-${cat.id}`).value,
+                          description: document.getElementById(`edit-desc-${cat.id}`).value,
+                          group_id: cat.group_id
+                        })} className="btn-add">save</button>
+                        <button onClick={() => setEditingCatId(null)} className="btn-del">cancel</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="cat-info">
+                      <strong onClick={() => setEditingCatId(cat.id)}>{cat.name}</strong>
+                      {cat.description && <p onClick={() => setEditingCatId(cat.id)}>{cat.description}</p>}
+                    </div>
+                  )}
+                  <button className="btn-delete" onClick={() => deleteItem('categories', cat.id)}>🗑️</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 3. ARCHIVE SECTION (45vw) */}
+        <section className="admin-section archive-section" id="post-archive" style={{ width: '45vw' }}>
+          <div className="section-header">
+            <h2>🖋️ archive</h2>
+            <button className="btn-new-post" onClick={() => navigate('/editor?type=post')}>add post</button>
+          </div>
+          <div className="list-scroll-area">
+            <table className="archive-table">
+              <thead>
+                <tr>
+                  <th className="col-cat">cat.</th>
+                  <th className="col-title">title</th>
+                  <th className="col-date">date</th>
+                  <th className="col-manage"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {posts.map(post => (
+                  <tr key={post.id}>
+                    <td className="col-cat">{post.category_name || '-'}</td>
+                    <td className="col-title title-cell" onClick={() => navigate(`/editor?type=post&id=${post.id}`)}>
+                      {post.title}
+                    </td>
+                    <td className="col-date">
+                      {post.date ? new Date(post.date).toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit' }) : '-'}
+                    </td>
+                    <td className="col-manage">
+                      <button className="btn-delete" onClick={() => deleteItem('posts', post.id)}>🗑️</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
