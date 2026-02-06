@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Main from './pages/Main';
 import Admin from './pages/Admin';
-import Editor from './pages/Editor'; // 1. Editor 페이지 임포트
+import Editor from './pages/Editor';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       </nav>
 
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Main />} />
         <Route path="/admin" element={<Admin />} />
         {/* 2. Editor 경로 추가 (등록/수정 공용) */}

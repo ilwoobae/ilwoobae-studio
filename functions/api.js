@@ -1,3 +1,46 @@
+// functions/api.js 최상단에 추가
+async function checkAuth(request, env) {
+  const cookie = request.headers.get("Cookie") || "";
+  // 쿠키에 auth=logged_in 이라는 값이 있는지 확인
+  return cookie.includes("auth=logged_in");
+}
+
+export async function onRequest(context) {
+  const { request, env } = context;
+  const url = new URL(request.url);
+
+  // --- [로그인 처리] ---
+  if (request.method === "POST" && url.pathname.endsWith("/login")) {
+    const { password } = await request.json();
+    if (password === env.ADMIN_PASSWORD) {
+      return new Response(JSON.stringify({ success: true }), {
+        headers: {
+          "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400",
+          "Content-Type": "application/json"
+        },
+      });
+    }
+    return new Response(JSON.stringify({ success: false }), { status: 401 });
+  }
+
+  // --- [로그아웃 처리] ---
+  if (url.pathname.endsWith("/logout")) {
+    return new Response(JSON.stringify({ success: true }), {
+      headers: {
+        "Set-Cookie": "auth=; Path=/; Max-Age=0",
+        "Content-Type": "application/json"
+      },
+    });
+  }
+
+  // --- [권한 체크] ---
+  // 로그인(/login) 요청이 아닌 모든 API 요청은 로그인이 되어있어야 함
+  const isLoggedIn = await checkAuth(request, env);
+  if (!isLoggedIn) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+  }
+}
+
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
