@@ -57,6 +57,7 @@ textarea { height: 220px; padding: 18px !important; }
     background-color: #f2f2f2; 
     padding: 15px;
     min-height: 100px;
+    gap: 20px;
 }
 
 /* 5. 메인 버튼 (Squircle이 as="button"인 경우) */
