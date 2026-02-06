@@ -63,8 +63,8 @@ textarea { height: 220px; padding: 18px !important; }
 
 /* 5. 메인 버튼 (Squircle이 as="button"인 경우) */
 .btn-primary, .btn-secondary { 
-    height: 46px;
-    min-width: 100px;
+    height: 37px;
+    min-width: 60px;
     border: none;
     cursor: pointer;
     font-size: 13px;
@@ -81,12 +81,13 @@ textarea { height: 220px; padding: 18px !important; }
 
 /* 6. 보조 버튼 (upload files) */
 .custom-file-btn { 
-    height: 24px; /* 기존 18px은 너무 낮아 클릭이 힘드므로 살짝 보정 */
+    height: 37px; /* 기존 18px은 너무 낮아 클릭이 힘드므로 살짝 보정 */
+    min-width: 60px;
     padding: 0 10px;
     border: none;
     cursor: pointer;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 500;
     background: #eee;
     color: #101010;
     display: inline-flex;
