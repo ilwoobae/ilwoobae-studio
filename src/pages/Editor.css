@@ -2,30 +2,30 @@
 /* ilwoobae studio - Editor Style (Squircle Fixed)   */
 /* ================================================= */
 
+* { font-size: 12px; letter-spacing: -0.02em; }
+
 .editor-container { 
-    display: flex; 
-    width: 50vw; 
-    margin: 40px auto; 
-    padding: 30px; 
-    flex-direction: column; 
-    gap: 15px; 
+    width: 400px; /* 에디터 폭 최적화 */
+    margin: 60px auto; 
+    gap: 15px;
     text-transform: lowercase;
+    font-size: 12px;
+    letter-spacing: -0.02em;
 }
 
 #editor-form { display: flex; flex-direction: column; gap: 20px; }
 
 /* 1. Squircle 래퍼 공통 (모든 입력창의 배경 박스) */
 .sq-input-wrapper {
-    background-color: #fafafa;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    width: 100%;
+    background-color: #f2f2f2; 
+    height: 31px; 
+    transition: background-color 0.2s ease;
 }
 
 /* 포커스 효과를 wrapper에 전달 (가상 선택자 사용) */
 .sq-input-wrapper:focus-within {
-    background-color: #f0f0f0;
+    background-color: #ffffff;
+    outline: 0.5px solid #e0e0e0; /* 밝아질 때 경계선 추가 */
 }
 
 /* 2. 실제 입력 필드들 (배경을 투명하게) */
@@ -54,11 +54,9 @@ textarea { height: 220px; padding: 18px !important; }
 
 /* 4. 파일 업로드 섹션 */
 .file-upload-section { 
-    padding: 30px; 
-    background-color: #fafafa; 
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    background-color: #f2f2f2; 
+    padding: 15px;
+    min-height: 100px;
 }
 
 /* 5. 메인 버튼 (Squircle이 as="button"인 경우) */
@@ -76,55 +74,51 @@ textarea { height: 220px; padding: 18px !important; }
     text-transform: lowercase;
 }
 
-.btn-primary { background: #101010; color: #fff; }
-.btn-secondary { background: #eee; color: #101010; }
+.btn-primary { background: #101010; color: #fff; height: 31px; min-width: 80px; border: none; cursor: pointer; }
+.btn-secondary { background: #e5e5e5; color: #101010; height: 31px; min-width: 80px; border: none; cursor: pointer; }
+
+.btn-primary:active { background: #333333; }
+.btn-secondary:active { background: #ffffff; }
 
 /* 6. 보조 버튼 (upload files) */
 .custom-file-btn { 
-    height: 27px; /* 기존 18px은 너무 낮아 클릭이 힘드므로 살짝 보정 */
-    min-width: 63px;
-    padding: 0 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    background: #eee;
+    height: 31px;
+    padding: 0 12px;
+    background: #e5e5e5;
     color: #101010;
-    display: inline-flex;
-    align-items: flex-end;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    cursor: pointer;
+    border: none;
 }
 
+.custom-file-btn:active { background: #ffffff; }
+
 .btn-primary:hover, .btn-secondary:hover, .custom-file-btn:hover { 
-    transform: scale(1.02);
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
 /* 7. 프리뷰 이미지 카드 */
-.preview-item { 
-    aspect-ratio: 1 / 1; 
-    overflow: hidden;
-    background: #eee;
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
 }
-
-.preview-item img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-}
+.preview-item { aspect-ratio: 1/1; background: #ddd; overflow: hidden; }
+.preview-item img { width: 100%; height: 100%; object-fit: cover; }
 
 /* 8. 상세 정보 그리드 */
 .info-fields { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
-    gap: 12px; 
-    border-top: 0.6px solid #eee; 
-    padding-top: 25px;
+    gap: 8px; 
+    padding-top: 20px;
+    border-top: 0.5px solid #eee;
 }
 
 .editor-buttons { 
     display: flex; 
     justify-content: flex-end; 
-    gap: 10px; 
-    margin-top: 20px; 
+    gap: 8px; 
 }
