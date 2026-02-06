@@ -1,58 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-// 만약 CSS 파일 이름이 다르면 프로젝트에 맞게 수정하세요.
 import './Admin.css'; 
 
 function Admin() {
   const navigate = useNavigate();
-  useEffect(() => {
-    const initAdmin = async () => {
-      // 1. 권한 체크: 아무 데이터나 하나 불러와봅니다.
-      const res = await fetch('/api?type=groups');
-      
-      // 2. 만약 서버에서 401(권한없음)을 던지면 로그인 페이지로 우회
-      if (res.status === 401) {
-        navigate('/login');
-        return;
-      }
-      
-      // 3. 로그인이 확인되면 그때 데이터를 상태에 담습니다.
-      const data = await res.json();
-      // setGroups(data); ... 기존 로직 실행
-    };
-
-    initAdmin();
-  }, [navigate]);
   const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   
-  // 인라인 수정을 위한 상태 (현재 수정 중인 ID 저장)
   const [editingGroupId, setEditingGroupId] = useState(null);
   const [editingCatId, setEditingCatId] = useState(null);
 
-  // 데이터 로드
-  const fetchData = async () => {
-    const [gRes, cRes, pRes] = await Promise.all([
-      fetch('/api?type=groups'),
-      fetch('/api?type=categories'),
-      fetch('/api?type=posts')
-    ]);
-    setGroups(await gRes.json());
-    setCategories(await cRes.json());
-    setPosts(await pRes.json());
+  // --- 1. 데이터 불러오기 함수 (re-usable) ---
+  const fetchData = useCallback(async () => {
+    try {
+      const [gRes, cRes, pRes] = await Promise.all([
+        fetch('/api?type=groups'),
+        fetch('/api?type=categories'),
+        fetch('/api?type=posts')
+      ]);
+
+      // 만약 하나라도 401이면 로그인 페이지로 튕김
+      if (gRes.status === 401) {
+        navigate('/login');
+        return;
+      }
+
+      setGroups(await gRes.json());
+      setCategories(await cRes.json());
+      setPosts(await pRes.json());
+    } catch (err) {
+      console.error("Data load failed:", err);
+    }
+  }, [navigate]);
+
+  // --- 2. 초기 로드 시 실행 ---
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  // --- 3. 로그아웃 함수 ---
+  const handleLogout = async () => {
+    if (!confirm("로그아웃 하시겠습니까?")) return;
+    try {
+      const res = await fetch('/api?action=logout');
+      if (res.ok) {
+        alert("로그아웃 되었습니다.");
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
-  useEffect(() => { fetchData(); }, []);
-
-  // 삭제 공통 함수
+  // --- 4. 삭제 및 수정 함수 ---
   const deleteItem = async (target, id) => {
-    if (!confirm(`delete this ${target.slice(0, -1)}?`)) return;
+    if (!confirm(`Delete this ${target.slice(0, -1)}?`)) return;
     await fetch(`/api?id=${id}&target=${target}`, { method: 'DELETE' });
     fetchData();
   };
 
-  // 그룹/카테고리 수정 저장 함수
   const saveEdit = async (target, id, payload) => {
     const formData = new FormData();
     formData.append('id', id);
@@ -66,21 +73,22 @@ function Admin() {
   };
 
   return (
-    <div className="admin-body"> {/* 기존 body 스타일 적용용 */}
+    <div className="admin-body">
       <header>
         <h1>ilwoobae studio dashboard</h1>
-        <button id="logout-btn" onClick={() => alert('Logout logic here')}>logout</button>
+        {/* ✅ 로그아웃 함수 연결 */}
+        <button id="logout-btn" onClick={handleLogout}>logout</button>
       </header>
 
       <main className="admin-container">
-        {/* 1. GROUPS SECTION (20vw) */}
+        {/* GROUPS */}
         <section className="admin-section" id="group-manager" style={{ width: '20vw' }}>
           <div className="section-header">
             <h2>📁 groups</h2>
-            <button className="btn-add" onClick={() => navigate('/editor?type=group')}>add group</button>
+            <button className="btn-add" onClick={() => navigate('/editor?type=group')}>add</button>
           </div>
           <div className="list-scroll-area">
-            <ul id="group-list" className="list-container">
+            <ul className="list-container">
               {groups.map(group => (
                 <li key={group.id} className="group-item">
                   {editingGroupId === group.id ? (
@@ -91,14 +99,11 @@ function Admin() {
                         onKeyPress={(e) => e.key === 'Enter' && saveEdit('groups', group.id, { name: e.target.value })}
                         autoFocus
                       />
-                      <div className="edit-actions">
-                        <button onClick={(e) => saveEdit('groups', group.id, { name: e.target.previousSibling.value })} className="btn-add">save</button>
-                        <button onClick={() => setEditingGroupId(null)} className="btn-del">cancel</button>
-                      </div>
+                      <button onClick={(e) => saveEdit('groups', group.id, { name: e.target.previousSibling.value })}>save</button>
                     </div>
                   ) : (
                     <div className="group-display">
-                      <span onClick={() => setEditingGroupId(group.id)} style={{ cursor: 'pointer' }}>{group.name}</span>
+                      <span onClick={() => setEditingGroupId(group.id)}>{group.name}</span>
                       <button className="btn-delete" onClick={() => deleteItem('groups', group.id)}>🗑️</button>
                     </div>
                   )}
@@ -108,33 +113,30 @@ function Admin() {
           </div>
         </section>
 
-        {/* 2. CATEGORIES SECTION (35vw) */}
-        <section className="admin-section" id="category-manager" style={{ width: '35vw' }}>
+        {/* CATEGORIES */}
+        <section className="admin-section" id="category-manager" style={{ width: '30vw' }}>
           <div className="section-header">
             <h2>🏷️ categories</h2>
-            <button className="btn-add" onClick={() => navigate('/editor?type=category')}>add category</button>
+            <button className="btn-add" onClick={() => navigate('/editor?type=category')}>add</button>
           </div>
           <div className="list-scroll-area">
-            <ul id="category-list" className="list-container">
+            <ul className="list-container">
               {categories.map(cat => (
-                <li key={cat.id} className={`cat-item ${editingCatId === cat.id ? 'editing' : ''}`}>
+                <li key={cat.id} className="cat-item">
                   {editingCatId === cat.id ? (
                     <div className="cat-edit-form">
-                      <input type="text" id={`edit-name-${cat.id}`} defaultValue={cat.name} />
+                      <input id={`edit-name-${cat.id}`} defaultValue={cat.name} />
                       <textarea id={`edit-desc-${cat.id}`} defaultValue={cat.description}></textarea>
-                      <div className="edit-actions">
-                        <button onClick={() => saveEdit('categories', cat.id, {
-                          name: document.getElementById(`edit-name-${cat.id}`).value,
-                          description: document.getElementById(`edit-desc-${cat.id}`).value,
-                          group_id: cat.group_id
-                        })} className="btn-add">save</button>
-                        <button onClick={() => setEditingCatId(null)} className="btn-del">cancel</button>
-                      </div>
+                      <button onClick={() => saveEdit('categories', cat.id, {
+                        name: document.getElementById(`edit-name-${cat.id}`).value,
+                        description: document.getElementById(`edit-desc-${cat.id}`).value,
+                        group_id: cat.group_id
+                      })}>save</button>
                     </div>
                   ) : (
-                    <div className="cat-info">
-                      <strong onClick={() => setEditingCatId(cat.id)}>{cat.name}</strong>
-                      {cat.description && <p onClick={() => setEditingCatId(cat.id)}>{cat.description}</p>}
+                    <div className="cat-info" onClick={() => setEditingCatId(cat.id)}>
+                      <strong>{cat.name}</strong>
+                      <p>{cat.description}</p>
                     </div>
                   )}
                   <button className="btn-delete" onClick={() => deleteItem('categories', cat.id)}>🗑️</button>
@@ -144,11 +146,11 @@ function Admin() {
           </div>
         </section>
 
-        {/* 3. ARCHIVE SECTION (45vw) */}
+        {/* ARCHIVE (POSTS) */}
         <section className="admin-section archive-section" id="post-archive" style={{ width: '45vw' }}>
           <div className="section-header">
             <h2>🖋️ archive</h2>
-            <button className="btn-new-post" onClick={() => navigate('/editor?type=post')}>add post</button>
+            <button className="btn-new-post" onClick={() => navigate('/editor?type=post')}>new post</button>
           </div>
           <div className="list-scroll-area">
             <table className="archive-table">
@@ -156,7 +158,6 @@ function Admin() {
                 <tr>
                   <th className="col-cat">cat.</th>
                   <th className="col-title">title</th>
-                  <th className="col-date">date</th>
                   <th className="col-manage"></th>
                 </tr>
               </thead>
@@ -164,11 +165,8 @@ function Admin() {
                 {posts.map(post => (
                   <tr key={post.id}>
                     <td className="col-cat">{post.category_name || '-'}</td>
-                    <td className="col-title title-cell" onClick={() => navigate(`/editor?type=post&id=${post.id}`)}>
+                    <td className="col-title" onClick={() => navigate(`/editor?type=post&id=${post.id}`)}>
                       {post.title}
-                    </td>
-                    <td className="col-date">
-                      {post.date ? new Date(post.date).toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit' }) : '-'}
                     </td>
                     <td className="col-manage">
                       <button className="btn-delete" onClick={() => deleteItem('posts', post.id)}>🗑️</button>
