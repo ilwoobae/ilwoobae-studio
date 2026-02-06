@@ -1,0 +1,103 @@
+/* ================================================= */
+/* ilwoobae studio - Admin Dashboard Style           */
+/* ================================================= */
+
+/* Admin Container Layout */
+.admin-container { 
+    display: flex; 
+    width: 100vw; 
+    height: calc(100vh - 80px); 
+    text-transform: lowercase;
+}
+
+.admin-section { 
+    display: flex; 
+    flex-direction: column; 
+    height: 100%; 
+    padding: 20px; 
+    border-right: 0.6px solid #101010; 
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 15px 0;
+    border-bottom: 0.6px solid #101010;
+    margin-bottom: 20px;
+}
+
+/* Scroll Area & Scrollbar */
+.list-scroll-area { 
+    flex: 1; 
+    overflow-y: auto; 
+    margin-top: 10px; 
+    padding-right: 10px; 
+}
+.list-scroll-area::-webkit-scrollbar { width: 2px; }
+.list-scroll-area::-webkit-scrollbar-thumb { background: #e8e8e8; }
+
+/* Buttons Style */
+.btn-add, .btn-new-post, #logout-btn { 
+    width: fit-content; 
+    background: #ffffff; 
+    color: #101010; 
+    border: 1px solid #101010; 
+    padding: 5px 10px; 
+    border-radius: 20px; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: lowercase;
+}
+.btn-add:hover, .btn-new-post:hover, #logout-btn:hover { 
+    background: #101010; 
+    color: #fff; 
+}
+
+.btn-delete { 
+    background: transparent; 
+    border: none; 
+    cursor: pointer;
+    opacity: 0.3;
+}
+.btn-delete:hover { opacity: 1; }
+
+/* Lists & Table */
+.list-container { list-style: none; }
+.list-container li { 
+    padding: 5px 0; 
+    border-bottom: 1px solid #eee; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.archive-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+.archive-table td { padding: 8px 0; border-bottom: 0.6px solid #eee; }
+.col-cat { width: 30%; text-align: left; }
+.col-title { width: 54%; text-align: left; cursor: pointer; }
+.col-date { width: 10%; text-align: center; }
+.col-manage { width: 6%; text-align: center; }
+
+.title-cell:hover, .group-display span:hover, .cat-info strong:hover { color: #4a90e2; }
+
+/* Inline Edit Logic */
+.group-edit-form, .cat-edit-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.group-edit-form input, .cat-edit-form input {
+    border: none !important;
+    color: #4a90e2;
+    background: transparent;
+    padding: 0;
+    font-size: 12px;
+}
+.edit-actions { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 5px; 
+    margin-top: 8px; 
+}
