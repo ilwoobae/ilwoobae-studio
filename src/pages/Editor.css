@@ -1,14 +1,6 @@
 /* ================================================= */
-/* ilwoobae studio - Editor Style (Squircle Version) */
+/* ilwoobae studio - Editor Style (Library Integrated) */
 /* ================================================= */
-
-:root {
-    /* 스쿼클 느낌을 극대화하는 곡률 값 */
-    --sq-radius: 22px;
-    --sq-input-bg: #fafafa;
-    --sq-border: 0.6px solid #e0e0e0;
-    --sq-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
 .editor-container { 
     display: flex; 
@@ -18,61 +10,52 @@
     flex-direction: column; 
     gap: 15px; 
     text-transform: lowercase;
-    background: #fff;
-    /* 컨테이너도 큰 스쿼클 느낌으로 */
-    border-radius: 32px;
 }
 
 #editor-form { display: flex; flex-direction: column; gap: 20px; }
 
-/* 입력창 공통 스쿼클 적용 */
-#post-title, #post-content, .info-fields input {
-    border-radius: var(--sq-radius);
-    border: var(--sq-border);
-    padding: 12px 18px;
-    background-color: var(--sq-input-bg);
-    transition: var(--sq-transition);
-    font-size: 13px;
+/* 1. 입력창 스타일 (곡률은 라이브러리가 담당) */
+input[type="text"], textarea, select {
+    border: none;
     outline: none;
+    background-color: #fafafa;
+    padding: 15px 20px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box; /* 패딩이 너비에 영향을 주지 않도록 */
 }
 
-/* 제목 입력창 - 강조를 위해 배경 빼고 하단 라인만 남기되 곡률 유지 */
-#post-title { 
+input:focus, textarea:focus {
+    background-color: #f0f0f0;
+}
+
+/* 2. 제목 입력창 (라인 스타일 유지) */
+#post-title, .editor-section input[type="text"] { 
     background-color: transparent;
-    border: none;
     border-bottom: 0.6px solid #101010;
-    border-radius: 0; 
-    padding: 15px 0;
     font-size: 18px;
     font-weight: 500;
+    padding: 15px 0;
 }
 
-#post-title:focus {
-    border-bottom-width: 1.5px;
-}
-
-/* 파일 업로드 섹션 */
+/* 3. 파일 업로드 섹션 */
 .file-upload-section { 
-    padding: 30px; 
-    border: 0.6px dashed #101010; 
-    background-color: var(--sq-input-bg); 
-    border-radius: var(--sq-radius); /* 업로드 박스도 스쿼클 */
-    transition: var(--sq-transition);
+    padding: 40px; 
+    background-color: #fafafa; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* 버튼들 - 완벽한 스쿼클 버튼 */
+/* 4. 버튼 시리즈 스타일 */
 .custom-file-btn, .btn-primary, .btn-secondary { 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff; 
-    border: 1px solid #101010; 
-    padding: 8px 20px; 
-    border-radius: var(--sq-radius); 
+    border: none;
     cursor: pointer;
     font-size: 12px;
     font-weight: 600;
-    transition: var(--sq-transition);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
 }
 
 .btn-primary {
@@ -80,43 +63,34 @@
     color: #fff;
 }
 
-.btn-primary:hover { 
-    background: #333; 
-    transform: translateY(-2px); /* 살짝 떠오르는 느낌 */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.btn-secondary, .custom-file-btn {
+    background: #eee;
+    color: #101010;
 }
 
-.btn-secondary:hover {
-    background: #f0f0f0;
-    transform: translateY(-1px);
+.btn-primary:hover, .btn-secondary:hover { 
+    transform: scale(1.05); /* 라이브러리 스쿼클이 커질 때 진짜 쫀득합니다 */
 }
 
-/* 프리뷰 이미지 아이템 */
+/* 5. 프리뷰 이미지 */
 .preview-item { 
-    position: relative; 
     aspect-ratio: 1 / 1; 
-    border-radius: 14px; /* 이미지는 조금 더 작은 곡률이 예쁩니다 */
-    overflow: hidden; /* 곡률대로 이미지가 잘리도록 */
-    border: var(--sq-border);
+    overflow: hidden; /* 이미지가 스쿼클 밖으로 나가지 않게 */
 }
 
-#post-content { 
-    min-height: 250px; 
-    line-height: 1.6;
+.preview-item img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
 }
 
-#post-content:focus, .info-fields input:focus {
-    border-color: #101010;
-    background-color: #fff;
-    box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
-}
-
+/* 6. 레이아웃 마무리 */
 .info-fields { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
     gap: 15px; 
     border-top: 0.6px solid #eee; 
-    padding-top: 25px; 
+    padding-top: 25px;
 }
 
 .editor-buttons { 
@@ -124,4 +98,10 @@
     justify-content: flex-end; 
     gap: 12px; 
     margin-top: 30px; 
+}
+
+/* 텍스트 영역 높이 조절 */
+textarea {
+    min-height: 200px;
+    resize: vertical;
 }

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+// 1. 라이브러리 임포트
+import { SmoothCorners } from 'react-smooth-corners';
 import './Editor.css'; 
 
 function Editor() {
   const navigate = useNavigate();
-  // Editor.jsx
-useEffect(() => {
+  
+  useEffect(() => {
     const checkAuth = async () => {
       const res = await fetch('/api?type=groups');
       if (res.status === 401) {
@@ -14,19 +16,16 @@ useEffect(() => {
     };
     checkAuth();
   }, [navigate]);
+
   const [searchParams] = useSearchParams();
-  
-  // URL 파라미터 추출
   const mode = searchParams.get('type') || 'post';
   const postId = searchParams.get('id');
 
-  // 상태 관리
   const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]); // 신규 업로드 파일
-  const [previewUrls, setPreviewUrls] = useState([]); // 미리보기용 주소
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
   
-  // 폼 데이터 상태
   const [formData, setFormData] = useState({
     title: '',
     categoryId: '',
@@ -37,7 +36,6 @@ useEffect(() => {
     info3: ''
   });
 
-  // 1. 초기 데이터(그룹, 카테고리) 로드
   useEffect(() => {
     const initData = async () => {
       const [gRes, cRes] = await Promise.all([
@@ -47,7 +45,6 @@ useEffect(() => {
       setGroups(await gRes.json());
       setCategories(await cRes.json());
 
-      // 수정 모드일 경우 기존 데이터 불러오기
       if (postId) {
         const pRes = await fetch('/api?type=posts');
         const posts = await pRes.json();
@@ -68,21 +65,16 @@ useEffect(() => {
     initData();
   }, [postId]);
 
-  // 2. 파일 선택 핸들러 (미리보기 포함)
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setSelectedFiles(files);
-
     const newPreviews = files.map(file => URL.createObjectURL(file));
     setPreviewUrls(newPreviews);
   };
 
-  // 3. 저장 로직
   const handleSave = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    
-    // 모드별 액션 및 데이터 설정
     const action = postId ? `edit_${mode}` : `add_${mode}`;
     data.append('action', action);
     if (postId) data.append('id', postId);
@@ -112,6 +104,9 @@ useEffect(() => {
     }
   };
 
+  // 공통 스쿼클 설정값
+  const SQ_CORNERS = "20, 4"; // 쫀득한 곡률 강도
+
   return (
     <div className="admin-page">
       <div className="editor-container">
@@ -120,38 +115,31 @@ useEffect(() => {
         </header>
 
         <form id="editor-form" onSubmit={handleSave}>
-          {/* 그룹 선택 (카테고리 등록 시에만 노출) */}
-          {mode === 'category' && (
+          
+          {/* 그룹/카테고리 선택 (select 태그도 스쿼클 적용 가능) */}
+          {(mode === 'category' || mode === 'post') && (
             <div className="editor-section">
-              <select 
-                value={formData.groupId} 
-                onChange={e => setFormData({...formData, groupId: e.target.value})}
+              <SmoothCorners
+                as="select"
+                corners={SQ_CORNERS}
+                value={mode === 'category' ? formData.groupId : formData.categoryId}
+                onChange={e => setFormData({...formData, [mode === 'category' ? 'groupId' : 'categoryId']: e.target.value})}
                 required
               >
-                <option value="">select group</option>
-                {groups.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
-              </select>
+                <option value="">select {mode === 'category' ? 'group' : 'category'}</option>
+                {(mode === 'category' ? groups : categories).map(item => (
+                  <option key={item.id} value={item.id}>{item.name}</option>
+                ))}
+              </SmoothCorners>
             </div>
           )}
 
-          {/* 카테고리 선택 (포스트 등록 시에만 노출) */}
-          {mode === 'post' && (
-            <div className="editor-section">
-              <select 
-                value={formData.categoryId} 
-                onChange={e => setFormData({...formData, categoryId: e.target.value})}
-                required
-              >
-                <option value="">select category</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
-            </div>
-          )}
-
-          {/* 공통 제목 입력 */}
+          {/* 제목 입력 */}
           <div className="editor-section">
-            <input 
-              type="text" 
+            <SmoothCorners
+              as="input"
+              type="text"
+              corners={SQ_CORNERS}
               placeholder="enter title" 
               value={formData.title}
               onChange={e => setFormData({...formData, title: e.target.value})}
@@ -159,14 +147,24 @@ useEffect(() => {
             />
           </div>
 
-          {/* 파일 업로드 (포스트 모드 전용) */}
+          {/* 파일 업로드 섹션 */}
           {mode === 'post' && (
             <div className="editor-section upload-area">
               <div className="file-header">
                 <span>contents</span>
-                <label htmlFor="post-files" className="custom-file-btn">upload files</label>
+                <SmoothCorners
+                  as="label"
+                  htmlFor="post-files"
+                  corners="12, 4"
+                  className="custom-file-btn"
+                >
+                  upload files
+                </SmoothCorners>
               </div>
-              <div className="file-upload-section">
+              <SmoothCorners
+                corners={SQ_CORNERS}
+                className="file-upload-section"
+              >
                 <input 
                   type="file" id="post-files" 
                   onChange={handleFileChange}
@@ -174,48 +172,56 @@ useEffect(() => {
                 />
                 <div id="preview-container" className="preview-grid">
                   {previewUrls.map((url, idx) => (
-                    <div key={idx} className="preview-item">
+                    <SmoothCorners key={idx} corners="10, 4" className="preview-item">
                       {url.includes('pdf') ? (
                         <div className="file-icon">📄 pdf</div>
                       ) : (
                         <img src={url} alt="preview" />
                       )}
-                    </div>
+                    </SmoothCorners>
                   ))}
                 </div>
-              </div>
+              </SmoothCorners>
             </div>
           )}
 
-          {/* 설명 입력 (그룹 제외) */}
+          {/* 설명 입력 */}
           {mode !== 'group' && (
             <div className="editor-section">
-              <textarea 
+              <SmoothCorners
+                as="textarea"
+                corners={SQ_CORNERS}
                 placeholder="enter description"
                 value={formData.description}
                 onChange={e => setFormData({...formData, description: e.target.value})}
-              ></textarea>
+              />
             </div>
           )}
 
           {/* 상세 정보 (포스트 전용) */}
           {mode === 'post' && (
             <div className="info-fields">
-              <div className="info-input-wrapper">
-                <input type="text" placeholder="materials" value={formData.info1} onChange={e => setFormData({...formData, info1: e.target.value})} />
-              </div>
-              <div className="info-input-wrapper">
-                <input type="text" placeholder="size" value={formData.info2} onChange={e => setFormData({...formData, info2: e.target.value})} />
-              </div>
-              <div className="info-input-wrapper">
-                <input type="text" placeholder="date / year" value={formData.info3} onChange={e => setFormData({...formData, info3: e.target.value})} />
-              </div>
+              {['info1', 'info2', 'info3'].map((key, i) => (
+                <SmoothCorners
+                  key={key}
+                  as="input"
+                  type="text"
+                  corners="12, 4"
+                  placeholder={['materials', 'size', 'date / year'][i]}
+                  value={formData[key]}
+                  onChange={e => setFormData({...formData, [key]: e.target.value})}
+                />
+              ))}
             </div>
           )}
 
           <div className="editor-buttons">
-            <button type="submit" className="btn-primary">save</button>
-            <button type="button" className="btn-secondary" onClick={() => navigate(-1)}>cancel</button>
+            <SmoothCorners as="button" type="submit" corners="15, 4" className="btn-primary">
+              save
+            </SmoothCorners>
+            <SmoothCorners as="button" type="button" corners="15, 4" className="btn-secondary" onClick={() => navigate(-1)}>
+              cancel
+            </SmoothCorners>
           </div>
         </form>
       </div>
