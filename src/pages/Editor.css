@@ -1,85 +1,127 @@
 /* ================================================= */
-/* ilwoobae studio - Editor Style                    */
+/* ilwoobae studio - Editor Style (Squircle Version) */
 /* ================================================= */
+
+:root {
+    /* 스쿼클 느낌을 극대화하는 곡률 값 */
+    --sq-radius: 22px;
+    --sq-input-bg: #fafafa;
+    --sq-border: 0.6px solid #e0e0e0;
+    --sq-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 .editor-container { 
     display: flex; 
     width: 50vw; 
-    margin: 0 auto; 
-    padding: 20px; 
+    margin: 40px auto; 
+    padding: 30px; 
     flex-direction: column; 
     gap: 15px; 
     text-transform: lowercase;
+    background: #fff;
+    /* 컨테이너도 큰 스쿼클 느낌으로 */
+    border-radius: 32px;
 }
 
 #editor-form { display: flex; flex-direction: column; gap: 20px; }
 
+/* 입력창 공통 스쿼클 적용 */
+#post-title, #post-content, .info-fields input {
+    border-radius: var(--sq-radius);
+    border: var(--sq-border);
+    padding: 12px 18px;
+    background-color: var(--sq-input-bg);
+    transition: var(--sq-transition);
+    font-size: 13px;
+    outline: none;
+}
+
+/* 제목 입력창 - 강조를 위해 배경 빼고 하단 라인만 남기되 곡률 유지 */
 #post-title { 
-    border: none; 
-    border-bottom: 0.6px solid #eee; 
-    padding: 10px 0; 
-    font-size: 14px; /* 제목은 조금 더 크게 */
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.6px solid #101010;
+    border-radius: 0; 
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 500;
 }
 
+#post-title:focus {
+    border-bottom-width: 1.5px;
+}
+
+/* 파일 업로드 섹션 */
 .file-upload-section { 
-    padding: 20px; 
+    padding: 30px; 
     border: 0.6px dashed #101010; 
-    background-color: #fafafa; 
+    background-color: var(--sq-input-bg); 
+    border-radius: var(--sq-radius); /* 업로드 박스도 스쿼클 */
+    transition: var(--sq-transition);
 }
 
-.custom-file-btn { 
-    display: block; 
-    width: fit-content; 
-    margin: 0 0 15px auto; 
+/* 버튼들 - 완벽한 스쿼클 버튼 */
+.custom-file-btn, .btn-primary, .btn-secondary { 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: #fff; 
     border: 1px solid #101010; 
-    padding: 5px 10px; 
-    border-radius: 20px; 
+    padding: 8px 20px; 
+    border-radius: var(--sq-radius); 
     cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: var(--sq-transition);
 }
 
-.preview-grid { 
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 10px; 
+.btn-primary {
+    background: #101010;
+    color: #fff;
 }
 
+.btn-primary:hover { 
+    background: #333; 
+    transform: translateY(-2px); /* 살짝 떠오르는 느낌 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-secondary:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+/* 프리뷰 이미지 아이템 */
 .preview-item { 
     position: relative; 
     aspect-ratio: 1 / 1; 
-    border: 0.6px solid #eee; 
-    background: #fff;
+    border-radius: 14px; /* 이미지는 조금 더 작은 곡률이 예쁩니다 */
+    overflow: hidden; /* 곡률대로 이미지가 잘리도록 */
+    border: var(--sq-border);
 }
 
-.preview-item img { width: 100%; height: 100%; object-fit: cover; }
-
 #post-content { 
-    min-height: 200px; 
-    border: 0.6px solid #eee; 
-    padding: 10px; 
-    resize: vertical; 
+    min-height: 250px; 
+    line-height: 1.6;
+}
+
+#post-content:focus, .info-fields input:focus {
+    border-color: #101010;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
 }
 
 .info-fields { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
-    gap: 10px; 
+    gap: 15px; 
     border-top: 0.6px solid #eee; 
-    padding-top: 20px; 
+    padding-top: 25px; 
 }
 
 .editor-buttons { 
     display: flex; 
     justify-content: flex-end; 
-    gap: 10px; 
-    margin-top: 20px; 
+    gap: 12px; 
+    margin-top: 30px; 
 }
-
-.btn-primary, .btn-secondary {
-    background: #fff;
-    border: 1px solid #101010;
-    padding: 5px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-}
-.btn-primary:hover { background: #101010; color: #fff; }
