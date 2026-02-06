@@ -14,20 +14,27 @@
 
 #editor-form { display: flex; flex-direction: column; gap: 20px; }
 
-/* 1. 기본 입력창 (높이 44px 고정) */
-input[type="text"], select {
-    height: 44px; /* 표준 높이 */
+/* 1. 모든 입력창 공통 (제목 포함) */
+input[type="text"], select, #post-title {
+    height: 48px; /* 제목과 통일감을 위해 살짝 키움 */
     border: none;
     outline: none;
     background-color: #fafafa;
-    padding: 0 18px; /* 좌우 패딩만 */
-    font-size: 13px;
+    padding: 0 18px;
+    font-size: 14px; /* 가독성을 위해 살짝 키움 */
     transition: all 0.3s ease;
     width: 100%;
     box-sizing: border-box;
+    border-radius: 0; /* 스쿼클 라이브러리가 깎아줄 거라 0으로 고정 */
 }
 
-/* 2. 텍스트 영역 (최소 높이만 지정) */
+/* 제목 입력창만 폰트를 조금 더 굵게 강조 */
+#post-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* 2. 텍스트 영역 */
 textarea {
     min-height: 220px;
     border: none;
@@ -39,23 +46,14 @@ textarea {
     width: 100%;
     box-sizing: border-box;
     line-height: 1.6;
+    border-radius: 0;
 }
 
-input:focus, textarea:focus {
-    background-color: #f0f0f0;
+input:focus, textarea:focus, #post-title:focus {
+    background-color: #f0f0f0; /* 포커스 시 색상 변화 */
 }
 
-/* 3. 제목 입력창 (라인 스타일 - 높이는 유지하되 선만 노출) */
-#post-title { 
-    height: 50px;
-    background-color: transparent;
-    border-bottom: 0.6px solid #101010;
-    font-size: 18px;
-    font-weight: 500;
-    padding: 0;
-}
-
-/* 4. 파일 업로드 섹션 */
+/* 3. 파일 업로드 섹션 */
 .file-upload-section { 
     padding: 30px; 
     background-color: #fafafa; 
@@ -64,10 +62,10 @@ input:focus, textarea:focus {
     gap: 20px;
 }
 
-/* 5. 메인 버튼 (높이 44px 고정) */
+/* 4. 메인 버튼 */
 .btn-primary, .btn-secondary { 
-    height: 44px;
-    min-width: 100px; /* 버튼이 너무 좁아지지 않게 */
+    height: 46px;
+    min-width: 100px;
     border: none;
     cursor: pointer;
     font-size: 13px;
@@ -78,7 +76,7 @@ input:focus, textarea:focus {
     justify-content: center;
 }
 
-/* 6. 보조 버튼 (높이 36px로 조금 더 샤프하게) */
+/* 5. 보조 버튼 */
 .custom-file-btn { 
     height: 36px;
     padding: 0 15px;
@@ -97,11 +95,11 @@ input:focus, textarea:focus {
 .btn-secondary { background: #eee; color: #101010; }
 
 .btn-primary:hover, .btn-secondary:hover, .custom-file-btn:hover { 
-    transform: scale(1.03);
+    transform: scale(1.02);
     opacity: 0.9;
 }
 
-/* 7. 프리뷰 이미지 카드 */
+/* 6. 프리뷰 이미지 카드 */
 .preview-item { 
     aspect-ratio: 1 / 1; 
     overflow: hidden;
@@ -114,11 +112,11 @@ input:focus, textarea:focus {
     object-fit: cover; 
 }
 
-/* 8. 레이아웃 마무리 */
+/* 7. 상세 정보 그리드 */
 .info-fields { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
-    gap: 15px; 
+    gap: 12px; 
     border-top: 0.6px solid #eee; 
     padding-top: 25px;
 }
