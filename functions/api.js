@@ -1,5 +1,4 @@
 // functions/api.js
-const MASTER_PW = "66503";
 async function checkAuth(request) {
   const cookie = request.headers.get("Cookie") || "";
   return cookie.includes("auth=logged_in");
@@ -12,20 +11,25 @@ export async function onRequest(context) {
 
   // --- [A. 로그인 처리] ---
   if (request.method === "POST" && url.pathname.endsWith("/login")) {
-      const { password } = await request.json();
-      
-      // env를 못 믿겠으니 직접 설정한 MASTER_PW와 비교합니다.
-      if (password === MASTER_PW || password === env.ADMIN_PASSWORD) {
-          return new Response(JSON.stringify({ success: true }), {
-              headers: {
-                  "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400; Secure",
-                  "Content-Type": "application/json"
-              },
-          });
-      }
-      return new Response(JSON.stringify({ success: false }), { status: 401 });
-  }
+    const { password } = await request.json();
+    
+    // 1. 직접 입력하는 비밀번호 (테스트용)
+    const MY_REAL_PW = "66503"; // 여기에 진짜 쓰실 비번을 '따옴표' 안에 넣으세요!
+    
+    // 2. 입력값과 대조 (로그 출력 포함)
+    console.log("Input:", password); 
 
+    if (String(password).trim() === MY_REAL_PW || (env.ADMIN_PASSWORD && String(password).trim() === env.ADMIN_PASSWORD.trim())) {
+      return new Response(JSON.stringify({ success: true }), {
+        headers: {
+          "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400; Secure",
+          "Content-Type": "application/json"
+        },
+      });
+    }
+    // 실패 시 응답에 메시지를 명확히 담음
+    return new Response(JSON.stringify({ success: false, error: "wrong_password" }), { status: 401 });
+  }
   // --- [B. 로그아웃 처리] ---
   if (url.pathname.endsWith("/logout")) {
     // ✅ 로그아웃도 여기서 바로 끝내야 합니다.
