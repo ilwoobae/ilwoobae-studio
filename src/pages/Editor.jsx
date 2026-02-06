@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Squircle } from '@squircle-js/react'; // 공식 라이브러리 임포트
+import { Squircle } from '@squircle-js/react';
 import './Editor.css'; 
 
 function Editor() {
@@ -9,12 +9,9 @@ function Editor() {
   const mode = searchParams.get('type') || 'post';
   const postId = searchParams.get('id');
 
-  // --- ilwoobae studio 스쿼클 설정 ---
-  // 너무 둥글지 않으면서도 쫀득한 느낌의 수치입니다.
   const SQ_RADIUS = 14; 
-  const SQ_SMOOTH = 0.8; // 0.6~0.8 사이가 가장 세련되어 보입니다.
+  const SQ_SMOOTH = 0.8;
 
-  // ... (기존 데이터 로드 및 핸들러 로직은 동일) ...
   const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -90,9 +87,28 @@ function Editor() {
         </header>
 
         <form id="editor-form" onSubmit={handleSave}>
-          {/* 그룹/카테고리 선택 */}
+          
+          {/* 1. 그룹/카테고리 선택 영역 */}
           {(mode === 'category' || mode === 'post') && (
             <div className="editor-section">
+              <Squircle
+                as="select"
+                cornerRadius={SQ_RADIUS}
+                cornerSmoothing={SQ_SMOOTH}
+                value={mode === 'category' ? formData.groupId : formData.categoryId}
+                onChange={e => setFormData({...formData, [mode === 'category' ? 'groupId' : 'categoryId']: e.target.value})}
+                required
+              >
+                <option value="">select {mode === 'category' ? 'group' : 'category'}</option>
+                {(mode === 'category' ? groups : categories).map(item => (
+                  <option key={item.id} value={item.id}>{item.name}</option>
+                ))}
+              </Squircle>
+            </div>
+          )}
+
+          {/* 2. 제목 입력 영역 (여기에 스쿼클이 적용됩니다) */}
+          <div className="editor-section">
             <Squircle
               as="input"
               type="text"
@@ -105,16 +121,8 @@ function Editor() {
               required 
             />
           </div>
-          )}
 
-          {/* 제목 입력 - 라인 스타일 유지 */}
-          <div className="editor-section">
-            <input type="text" id="post-title" placeholder="enter title" 
-              value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required 
-            />
-          </div>
-
-          {/* 파일 업로드 섹션 */}
+          {/* 3. 파일 업로드 섹션 */}
           {mode === 'post' && (
             <div className="editor-section upload-area">
               <div className="file-header">
@@ -136,7 +144,7 @@ function Editor() {
             </div>
           )}
 
-          {/* 설명 입력 */}
+          {/* 4. 설명 입력 영역 */}
           {mode !== 'group' && (
             <div className="editor-section">
               <Squircle as="textarea" cornerRadius={SQ_RADIUS} cornerSmoothing={SQ_SMOOTH}
@@ -146,18 +154,25 @@ function Editor() {
             </div>
           )}
 
-          {/* 상세 정보 */}
+          {/* 5. 상세 정보 영역 (post 모드에서만 출력) */}
           {mode === 'post' && (
             <div className="info-fields">
-              {['info1', 'info2', 'info3'].map((key, i) => (
-                <Squircle key={key} as="input" type="text" cornerRadius={10} cornerSmoothing={SQ_SMOOTH}
-                  placeholder={['materials', 'size', 'date / year'][i]}
-                  value={formData[key]} onChange={e => setFormData({...formData, [key]: e.target.value})}
-                />
-              ))}
+              <Squircle as="input" type="text" cornerRadius={10} cornerSmoothing={SQ_SMOOTH}
+                placeholder="materials" value={formData.info1}
+                onChange={e => setFormData({...formData, info1: e.target.value})}
+              />
+              <Squircle as="input" type="text" cornerRadius={10} cornerSmoothing={SQ_SMOOTH}
+                placeholder="size" value={formData.info2}
+                onChange={e => setFormData({...formData, info2: e.target.value})}
+              />
+              <Squircle as="input" type="text" cornerRadius={10} cornerSmoothing={SQ_SMOOTH}
+                placeholder="date / year" value={formData.info3}
+                onChange={e => setFormData({...formData, info3: e.target.value})}
+              />
             </div>
           )}
 
+          {/* 6. 하단 버튼 영역 */}
           <div className="editor-buttons">
             <Squircle as="button" type="submit" cornerRadius={14} cornerSmoothing={SQ_SMOOTH} className="btn-primary">save</Squircle>
             <Squircle as="button" type="button" cornerRadius={14} cornerSmoothing={SQ_SMOOTH} className="btn-secondary" onClick={() => navigate(-1)}>cancel</Squircle>

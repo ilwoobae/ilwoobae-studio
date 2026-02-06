@@ -78,8 +78,8 @@ input:focus, textarea:focus, #post-title:focus {
 
 /* 5. 보조 버튼 */
 .custom-file-btn { 
-    height: 36px;
-    padding: 0 15px;
+    height: 18px;
+    padding: 0 7px;
     border: none;
     cursor: pointer;
     font-size: 11px;
