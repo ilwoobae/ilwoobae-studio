@@ -7,12 +7,12 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({ password }),
-      headers: { 'Content-Type': 'application/json' }
+    const res = await fetch('/api?action=login', { // 주소 변경
+        method: 'POST',
+        body: JSON.stringify({ password }),
+        headers: { 'Content-Type': 'application/json' }
     });
-
+      
     if (res.ok) {
       navigate('/admin');
     } else {

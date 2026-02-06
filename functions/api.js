@@ -7,7 +7,7 @@ async function checkAuth(request) {
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
-  const type = url.searchParams.get("type");
+  const action = url.searchParams.get("action");
 
   // --- [A. 로그인 처리] ---
   if (request.method === "POST" && url.pathname.endsWith("/login")) {
