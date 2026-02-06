@@ -1,5 +1,6 @@
 export async function onRequest(context) {
   const { request, env } = context;
+  
   const url = new URL(request.url);
 
   // 1. 데이터 불러오기 (GET)
