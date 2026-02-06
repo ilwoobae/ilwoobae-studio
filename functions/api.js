@@ -1,4 +1,4 @@
-// functions/api.js
+// 1. checkAuth 함수는 반드시 onRequest "밖"에 있어야 합니다.
 async function checkAuth(request) {
   const cookie = request.headers.get("Cookie") || "";
   return cookie.includes("auth=logged_in");
@@ -7,19 +7,19 @@ async function checkAuth(request) {
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
-  const action = url.searchParams.get("action");
+  // URL에서 action 파라미터를 가져옵니다 (?action=login 대응)
+  const actionParam = url.searchParams.get("action"); 
+  const type = url.searchParams.get("type");
 
   // --- [A. 로그인 처리] ---
-  if (request.method === "POST" && url.pathname.endsWith("/login")) {
+  // 주소가 /api/login 이거나, 주소가 /api 이면서 action이 login인 경우 모두 허용
+  if (request.method === "POST" && (url.pathname.endsWith("/login") || actionParam === "login")) {
     const { password } = await request.json();
     
-    // 1. 직접 입력하는 비밀번호 (테스트용)
-    const MY_REAL_PW = "66503"; // 여기에 진짜 쓰실 비번을 '따옴표' 안에 넣으세요!
-    
-    // 2. 입력값과 대조 (로그 출력 포함)
-    console.log("Input:", password); 
+    const MY_REAL_PW = "66503"; 
+    const inputPw = String(password || "").trim();
 
-    if (String(password).trim() === MY_REAL_PW || (env.ADMIN_PASSWORD && String(password).trim() === env.ADMIN_PASSWORD.trim())) {
+    if (inputPw === MY_REAL_PW || (env.ADMIN_PASSWORD && inputPw === env.ADMIN_PASSWORD.trim())) {
       return new Response(JSON.stringify({ success: true }), {
         headers: {
           "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400; Secure",
@@ -27,12 +27,11 @@ export async function onRequest(context) {
         },
       });
     }
-    // 실패 시 응답에 메시지를 명확히 담음
     return new Response(JSON.stringify({ success: false, error: "wrong_password" }), { status: 401 });
   }
+
   // --- [B. 로그아웃 처리] ---
-  if (url.pathname.endsWith("/logout")) {
-    // ✅ 로그아웃도 여기서 바로 끝내야 합니다.
+  if (url.pathname.endsWith("/logout") || actionParam === "logout") {
     return new Response(JSON.stringify({ success: true }), {
       headers: {
         "Set-Cookie": "auth=; Path=/; Max-Age=0",
@@ -42,7 +41,7 @@ export async function onRequest(context) {
   }
 
   // --- [C. 권한 체크] ---
-  // 위에서 로그인/로그아웃 처리가 끝난 요청들은 이 아래로 내려오지 않습니다.
+  // 로그인/로그아웃 외의 모든 API 요청은 여기서 걸러집니다.
   const isLoggedIn = await checkAuth(request);
   if (!isLoggedIn) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { 
@@ -55,6 +54,7 @@ export async function onRequest(context) {
   // 여기부터 관리자 전용 로직 (GET, POST, PUT, DELETE)
   // =========================================================
 
+  // 1. GET 요청 처리
   if (request.method === "GET") {
     if (type === "groups") {
       const { results } = await env.DB.prepare("SELECT * FROM groups").all();
@@ -68,6 +68,7 @@ export async function onRequest(context) {
     return Response.json(results);
   }
 
+  // 2. POST 요청 처리
   if (request.method === "POST") {
     const formData = await request.formData();
     const action = formData.get("action");
@@ -93,6 +94,7 @@ export async function onRequest(context) {
     return Response.json({ success: true });
   }
 
+  // 3. PUT 요청 처리
   if (request.method === "PUT") {
     const formData = await request.formData();
     const action = formData.get("action");
@@ -112,6 +114,7 @@ export async function onRequest(context) {
     return Response.json({ success: true });
   }
 
+  // 4. DELETE 요청 처리
   if (request.method === "DELETE") {
     const id = url.searchParams.get("id");
     const target = url.searchParams.get("target");
