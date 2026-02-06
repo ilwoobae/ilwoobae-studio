@@ -1,26 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-// 1. 라이브러리 임포트
 import { SmoothCorners } from 'react-smooth-corners';
 import './Editor.css'; 
 
 function Editor() {
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    const checkAuth = async () => {
-      const res = await fetch('/api?type=groups');
-      if (res.status === 401) {
-        navigate('/login');
-      }
-    };
-    checkAuth();
-  }, [navigate]);
-
   const [searchParams] = useSearchParams();
+  
+  // URL 파라미터 추출
   const mode = searchParams.get('type') || 'post';
   const postId = searchParams.get('id');
 
+  // 상태 관리
   const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -35,6 +26,19 @@ function Editor() {
     info2: '',
     info3: ''
   });
+
+  // --- 스쿼클 상수 정의 (CSS 고정 크기에 최적화) ---
+  const SQ_STD = "10, 2.2";   // 44px 높이 (입력창, 메인 버튼용) - 샤프한 느낌
+  const SQ_SMALL = "8, 2";    // 36px 높이 (파일 업로드 버튼용)
+  const SQ_BOX = "16, 3";     // 큰 박스 (업로드 영역, 이미지 프리뷰용)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const res = await fetch('/api?type=groups');
+      if (res.status === 401) navigate('/login');
+    };
+    checkAuth();
+  }, [navigate]);
 
   useEffect(() => {
     const initData = async () => {
@@ -104,9 +108,6 @@ function Editor() {
     }
   };
 
-  // 공통 스쿼클 설정값
-  const SQ_CORNERS = "20, 4"; // 쫀득한 곡률 강도
-
   return (
     <div className="admin-page">
       <div className="editor-container">
@@ -116,12 +117,12 @@ function Editor() {
 
         <form id="editor-form" onSubmit={handleSave}>
           
-          {/* 그룹/카테고리 선택 (select 태그도 스쿼클 적용 가능) */}
+          {/* 그룹/카테고리 선택 */}
           {(mode === 'category' || mode === 'post') && (
             <div className="editor-section">
               <SmoothCorners
                 as="select"
-                corners={SQ_CORNERS}
+                corners={SQ_STD}
                 value={mode === 'category' ? formData.groupId : formData.categoryId}
                 onChange={e => setFormData({...formData, [mode === 'category' ? 'groupId' : 'categoryId']: e.target.value})}
                 required
@@ -134,12 +135,11 @@ function Editor() {
             </div>
           )}
 
-          {/* 제목 입력 */}
+          {/* 제목 입력 (제목은 라인 스타일이므로 일반 input 유지 혹은 스쿼클 적용 가능) */}
           <div className="editor-section">
-            <SmoothCorners
-              as="input"
-              type="text"
-              corners={SQ_CORNERS}
+            <input 
+              type="text" 
+              id="post-title"
               placeholder="enter title" 
               value={formData.title}
               onChange={e => setFormData({...formData, title: e.target.value})}
@@ -155,14 +155,14 @@ function Editor() {
                 <SmoothCorners
                   as="label"
                   htmlFor="post-files"
-                  corners="12, 4"
+                  corners={SQ_SMALL}
                   className="custom-file-btn"
                 >
                   upload files
                 </SmoothCorners>
               </div>
               <SmoothCorners
-                corners={SQ_CORNERS}
+                corners={SQ_BOX}
                 className="file-upload-section"
               >
                 <input 
@@ -172,7 +172,7 @@ function Editor() {
                 />
                 <div id="preview-container" className="preview-grid">
                   {previewUrls.map((url, idx) => (
-                    <SmoothCorners key={idx} corners="10, 4" className="preview-item">
+                    <SmoothCorners key={idx} corners={SQ_SMALL} className="preview-item">
                       {url.includes('pdf') ? (
                         <div className="file-icon">📄 pdf</div>
                       ) : (
@@ -190,7 +190,7 @@ function Editor() {
             <div className="editor-section">
               <SmoothCorners
                 as="textarea"
-                corners={SQ_CORNERS}
+                corners={SQ_STD}
                 placeholder="enter description"
                 value={formData.description}
                 onChange={e => setFormData({...formData, description: e.target.value})}
@@ -206,7 +206,7 @@ function Editor() {
                   key={key}
                   as="input"
                   type="text"
-                  corners="12, 4"
+                  corners={SQ_STD}
                   placeholder={['materials', 'size', 'date / year'][i]}
                   value={formData[key]}
                   onChange={e => setFormData({...formData, [key]: e.target.value})}
@@ -216,10 +216,10 @@ function Editor() {
           )}
 
           <div className="editor-buttons">
-            <SmoothCorners as="button" type="submit" corners="15, 4" className="btn-primary">
+            <SmoothCorners as="button" type="submit" corners={SQ_STD} className="btn-primary">
               save
             </SmoothCorners>
-            <SmoothCorners as="button" type="button" corners="15, 4" className="btn-secondary" onClick={() => navigate(-1)}>
+            <SmoothCorners as="button" type="button" corners={SQ_STD} className="btn-secondary" onClick={() => navigate(-1)}>
               cancel
             </SmoothCorners>
           </div>

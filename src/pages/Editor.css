@@ -1,5 +1,5 @@
 /* ================================================= */
-/* ilwoobae studio - Editor Style (Library Integrated) */
+/* ilwoobae studio - Editor Style (Fixed Sizing)     */
 /* ================================================= */
 
 .editor-container { 
@@ -14,68 +14,98 @@
 
 #editor-form { display: flex; flex-direction: column; gap: 20px; }
 
-/* 1. 입력창 스타일 (곡률은 라이브러리가 담당) */
-input[type="text"], textarea, select {
+/* 1. 기본 입력창 (높이 44px 고정) */
+input[type="text"], select {
+    height: 44px; /* 표준 높이 */
     border: none;
     outline: none;
     background-color: #fafafa;
-    padding: 15px 20px;
+    padding: 0 18px; /* 좌우 패딩만 */
     font-size: 13px;
     transition: all 0.3s ease;
     width: 100%;
-    box-sizing: border-box; /* 패딩이 너비에 영향을 주지 않도록 */
+    box-sizing: border-box;
+}
+
+/* 2. 텍스트 영역 (최소 높이만 지정) */
+textarea {
+    min-height: 220px;
+    border: none;
+    outline: none;
+    background-color: #fafafa;
+    padding: 18px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 1.6;
 }
 
 input:focus, textarea:focus {
     background-color: #f0f0f0;
 }
 
-/* 2. 제목 입력창 (라인 스타일 유지) */
-#post-title, .editor-section input[type="text"] { 
+/* 3. 제목 입력창 (라인 스타일 - 높이는 유지하되 선만 노출) */
+#post-title { 
+    height: 50px;
     background-color: transparent;
     border-bottom: 0.6px solid #101010;
     font-size: 18px;
     font-weight: 500;
-    padding: 15px 0;
+    padding: 0;
 }
 
-/* 3. 파일 업로드 섹션 */
+/* 4. 파일 업로드 섹션 */
 .file-upload-section { 
-    padding: 40px; 
+    padding: 30px; 
     background-color: #fafafa; 
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* 4. 버튼 시리즈 스타일 */
-.custom-file-btn, .btn-primary, .btn-secondary { 
+/* 5. 메인 버튼 (높이 44px 고정) */
+.btn-primary, .btn-secondary { 
+    height: 44px;
+    min-width: 100px; /* 버튼이 너무 좁아지지 않게 */
     border: none;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-primary {
-    background: #101010;
-    color: #fff;
-}
-
-.btn-secondary, .custom-file-btn {
+/* 6. 보조 버튼 (높이 36px로 조금 더 샤프하게) */
+.custom-file-btn { 
+    height: 36px;
+    padding: 0 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
     background: #eee;
     color: #101010;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-primary:hover, .btn-secondary:hover { 
-    transform: scale(1.05); /* 라이브러리 스쿼클이 커질 때 진짜 쫀득합니다 */
+.btn-primary { background: #101010; color: #fff; }
+.btn-secondary { background: #eee; color: #101010; }
+
+.btn-primary:hover, .btn-secondary:hover, .custom-file-btn:hover { 
+    transform: scale(1.03);
+    opacity: 0.9;
 }
 
-/* 5. 프리뷰 이미지 */
+/* 7. 프리뷰 이미지 카드 */
 .preview-item { 
     aspect-ratio: 1 / 1; 
-    overflow: hidden; /* 이미지가 스쿼클 밖으로 나가지 않게 */
+    overflow: hidden;
+    background: #eee;
 }
 
 .preview-item img { 
@@ -84,7 +114,7 @@ input:focus, textarea:focus {
     object-fit: cover; 
 }
 
-/* 6. 레이아웃 마무리 */
+/* 8. 레이아웃 마무리 */
 .info-fields { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
@@ -96,12 +126,6 @@ input:focus, textarea:focus {
 .editor-buttons { 
     display: flex; 
     justify-content: flex-end; 
-    gap: 12px; 
-    margin-top: 30px; 
-}
-
-/* 텍스트 영역 높이 조절 */
-textarea {
-    min-height: 200px;
-    resize: vertical;
+    gap: 10px; 
+    margin-top: 20px; 
 }
