@@ -1,5 +1,5 @@
 /* ================================================= */
-/* ilwoobae studio - Editor Style (Fixed Sizing)     */
+/* ilwoobae studio - Editor Style (Squircle Fixed)   */
 /* ================================================= */
 
 .editor-container { 
@@ -14,46 +14,45 @@
 
 #editor-form { display: flex; flex-direction: column; gap: 20px; }
 
-/* 1. 모든 입력창 공통 (제목 포함) */
-input[type="text"], select, #post-title {
-    height: 48px; /* 제목과 통일감을 위해 살짝 키움 */
-    border: none;
-    outline: none;
+/* 1. Squircle 래퍼 공통 (모든 입력창의 배경 박스) */
+.sq-input-wrapper {
     background-color: #fafafa;
-    padding: 0 18px;
-    font-size: 14px; /* 가독성을 위해 살짝 키움 */
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
     width: 100%;
-    box-sizing: border-box;
-    border-radius: 0; /* 스쿼클 라이브러리가 깎아줄 거라 0으로 고정 */
 }
 
-/* 제목 입력창만 폰트를 조금 더 굵게 강조 */
+/* 포커스 효과를 wrapper에 전달 (가상 선택자 사용) */
+.sq-input-wrapper:focus-within {
+    background-color: #f0f0f0;
+}
+
+/* 2. 실제 입력 필드들 (배경을 투명하게) */
+input[type="text"], select, textarea {
+    border: none !important;
+    outline: none !important;
+    background-color: transparent !important; /* 배경 투명화 핵심 */
+    width: 100%;
+    font-size: 13px;
+    padding: 0 18px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10; /* 클릭 가능하도록 위로 */
+}
+
+/* 높이 설정 */
+.sq-input-wrapper { height: 48px; } /* 일반 박스 높이 */
+textarea { height: 220px; padding: 18px !important; }
+.sq-input-wrapper:has(textarea) { height: auto; }
+
+/* 3. 제목 입력창 강조 */
 #post-title {
     font-size: 18px;
     font-weight: 600;
 }
 
-/* 2. 텍스트 영역 */
-textarea {
-    min-height: 220px;
-    border: none;
-    outline: none;
-    background-color: #fafafa;
-    padding: 18px;
-    font-size: 13px;
-    transition: all 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
-    line-height: 1.6;
-    border-radius: 0;
-}
-
-input:focus, textarea:focus, #post-title:focus {
-    background-color: #f0f0f0; /* 포커스 시 색상 변화 */
-}
-
-/* 3. 파일 업로드 섹션 */
+/* 4. 파일 업로드 섹션 */
 .file-upload-section { 
     padding: 30px; 
     background-color: #fafafa; 
@@ -62,7 +61,7 @@ input:focus, textarea:focus, #post-title:focus {
     gap: 20px;
 }
 
-/* 4. 메인 버튼 */
+/* 5. 메인 버튼 (Squircle이 as="button"인 경우) */
 .btn-primary, .btn-secondary { 
     height: 46px;
     min-width: 100px;
@@ -74,12 +73,16 @@ input:focus, textarea:focus, #post-title:focus {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-transform: lowercase;
 }
 
-/* 5. 보조 버튼 */
+.btn-primary { background: #101010; color: #fff; }
+.btn-secondary { background: #eee; color: #101010; }
+
+/* 6. 보조 버튼 (upload files) */
 .custom-file-btn { 
-    height: 18px;
-    padding: 0 7px;
+    height: 24px; /* 기존 18px은 너무 낮아 클릭이 힘드므로 살짝 보정 */
+    padding: 0 10px;
     border: none;
     cursor: pointer;
     font-size: 11px;
@@ -91,15 +94,12 @@ input:focus, textarea:focus, #post-title:focus {
     justify-content: center;
 }
 
-.btn-primary { background: #101010; color: #fff; }
-.btn-secondary { background: #eee; color: #101010; }
-
 .btn-primary:hover, .btn-secondary:hover, .custom-file-btn:hover { 
     transform: scale(1.02);
     opacity: 0.9;
 }
 
-/* 6. 프리뷰 이미지 카드 */
+/* 7. 프리뷰 이미지 카드 */
 .preview-item { 
     aspect-ratio: 1 / 1; 
     overflow: hidden;
@@ -112,7 +112,7 @@ input:focus, textarea:focus, #post-title:focus {
     object-fit: cover; 
 }
 
-/* 7. 상세 정보 그리드 */
+/* 8. 상세 정보 그리드 */
 .info-fields { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 

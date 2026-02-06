@@ -79,6 +79,19 @@ function Editor() {
     if (res.ok) { alert(`${mode} saved!`); navigate('/admin'); }
   };
 
+  // 공통 입력창 스타일 (Squircle 내부용)
+  const inputBaseStyle = {
+    border: 'none',
+    outline: 'none',
+    width: '100%',
+    height: '100%',
+    background: 'transparent',
+    padding: '0 18px',
+    fontSize: '13px',
+    position: 'relative',
+    zIndex: 10 // 클릭 가능하도록 위로 올림
+  };
+
   return (
     <div className="admin-page">
       <div className="editor-container">
@@ -91,35 +104,34 @@ function Editor() {
           {/* 1. 그룹/카테고리 선택 영역 */}
           {(mode === 'category' || mode === 'post') && (
             <div className="editor-section">
-              <Squircle
-                as="select"
-                cornerRadius={SQ_RADIUS}
-                cornerSmoothing={SQ_SMOOTH}
-                value={mode === 'category' ? formData.groupId : formData.categoryId}
-                onChange={e => setFormData({...formData, [mode === 'category' ? 'groupId' : 'categoryId']: e.target.value})}
-                required
-              >
-                <option value="">select {mode === 'category' ? 'group' : 'category'}</option>
-                {(mode === 'category' ? groups : categories).map(item => (
-                  <option key={item.id} value={item.id}>{item.name}</option>
-                ))}
+              <Squircle cornerRadius={SQ_RADIUS} cornerSmoothing={SQ_SMOOTH} className="sq-input-wrapper">
+                <select
+                  value={mode === 'category' ? formData.groupId : formData.categoryId}
+                  onChange={e => setFormData({...formData, [mode === 'category' ? 'groupId' : 'categoryId']: e.target.value})}
+                  required
+                  style={inputBaseStyle}
+                >
+                  <option value="">select {mode === 'category' ? 'group' : 'category'}</option>
+                  {(mode === 'category' ? groups : categories).map(item => (
+                    <option key={item.id} value={item.id}>{item.name}</option>
+                  ))}
+                </select>
               </Squircle>
             </div>
           )}
 
-          {/* 2. 제목 입력 영역 (여기에 스쿼클이 적용됩니다) */}
+          {/* 2. 제목 입력 영역 */}
           <div className="editor-section">
-            <Squircle
-              as="input"
-              type="text"
-              id="post-title"
-              cornerRadius={SQ_RADIUS}
-              cornerSmoothing={SQ_SMOOTH}
-              placeholder="enter title" 
-              value={formData.title}
-              onChange={e => setFormData({...formData, title: e.target.value})}
-              required 
-            />
+            <Squircle cornerRadius={SQ_RADIUS} cornerSmoothing={SQ_SMOOTH} className="sq-input-wrapper">
+                <input
+                  type="text"
+                  placeholder="enter title"
+                  value={formData.title}
+                  onChange={e => setFormData({...formData, title: e.target.value})}
+                  required
+                  style={inputBaseStyle}
+                />
+            </Squircle>
           </div>
 
           {/* 3. 파일 업로드 섹션 */}
@@ -147,28 +159,32 @@ function Editor() {
           {/* 4. 설명 입력 영역 */}
           {mode !== 'group' && (
             <div className="editor-section">
-              <Squircle as="textarea" cornerRadius={SQ_RADIUS} cornerSmoothing={SQ_SMOOTH}
-                placeholder="enter description" value={formData.description}
-                onChange={e => setFormData({...formData, description: e.target.value})}
-              />
+              <Squircle cornerRadius={SQ_RADIUS} cornerSmoothing={SQ_SMOOTH} className="sq-input-wrapper" style={{ height: 'auto' }}>
+                <textarea
+                  placeholder="enter description"
+                  value={formData.description}
+                  onChange={e => setFormData({...formData, description: e.target.value})}
+                  style={{ ...inputBaseStyle, height: '220px', padding: '18px', display: 'block' }}
+                />
+              </Squircle>
             </div>
           )}
 
           {/* 5. 상세 정보 영역 (post 모드에서만 출력) */}
           {mode === 'post' && (
             <div className="info-fields">
-              <Squircle as="input" type="text" cornerRadius={10} cornerSmoothing={SQ_SMOOTH}
-                placeholder="materials" value={formData.info1}
-                onChange={e => setFormData({...formData, info1: e.target.value})}
-              />
-              <Squircle as="input" type="text" cornerRadius={10} cornerSmoothing={SQ_SMOOTH}
-                placeholder="size" value={formData.info2}
-                onChange={e => setFormData({...formData, info2: e.target.value})}
-              />
-              <Squircle as="input" type="text" cornerRadius={10} cornerSmoothing={SQ_SMOOTH}
-                placeholder="date / year" value={formData.info3}
-                onChange={e => setFormData({...formData, info3: e.target.value})}
-              />
+              <Squircle cornerRadius={10} cornerSmoothing={SQ_SMOOTH} className="sq-input-wrapper">
+                <input type="text" placeholder="materials" value={formData.info1}
+                  onChange={e => setFormData({...formData, info1: e.target.value})} style={inputBaseStyle} />
+              </Squircle>
+              <Squircle cornerRadius={10} cornerSmoothing={SQ_SMOOTH} className="sq-input-wrapper">
+                <input type="text" placeholder="size" value={formData.info2}
+                  onChange={e => setFormData({...formData, info2: e.target.value})} style={inputBaseStyle} />
+              </Squircle>
+              <Squircle cornerRadius={10} cornerSmoothing={SQ_SMOOTH} className="sq-input-wrapper">
+                <input type="text" placeholder="date / year" value={formData.info3}
+                  onChange={e => setFormData({...formData, info3: e.target.value})} style={inputBaseStyle} />
+              </Squircle>
             </div>
           )}
 
