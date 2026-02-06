@@ -42,7 +42,7 @@ input[type="text"], select, textarea {
 }
 
 /* 높이 설정 */
-.sq-input-wrapper { height: 48px; } /* 일반 박스 높이 */
+.sq-input-wrapper { height: 27px; } /* 일반 박스 높이 */
 textarea { height: 220px; padding: 18px !important; }
 .sq-input-wrapper:has(textarea) { height: auto; }
 
@@ -63,12 +63,12 @@ textarea { height: 220px; padding: 18px !important; }
 
 /* 5. 메인 버튼 (Squircle이 as="button"인 경우) */
 .btn-primary, .btn-secondary { 
-    height: 37px;
-    min-width: 60px;
+    height: 27px;
+    min-width: 61px;
     border: none;
     cursor: pointer;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
@@ -81,8 +81,8 @@ textarea { height: 220px; padding: 18px !important; }
 
 /* 6. 보조 버튼 (upload files) */
 .custom-file-btn { 
-    height: 37px; /* 기존 18px은 너무 낮아 클릭이 힘드므로 살짝 보정 */
-    min-width: 60px;
+    height: 27px; /* 기존 18px은 너무 낮아 클릭이 힘드므로 살짝 보정 */
+    min-width: 63px;
     padding: 0 10px;
     border: none;
     cursor: pointer;
@@ -91,7 +91,7 @@ textarea { height: 220px; padding: 18px !important; }
     background: #eee;
     color: #101010;
     display: inline-flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
 }
 
