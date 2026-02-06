@@ -5,6 +5,24 @@ import './Admin.css';
 
 function Admin() {
   const navigate = useNavigate();
+  useEffect(() => {
+    const initAdmin = async () => {
+      // 1. 권한 체크: 아무 데이터나 하나 불러와봅니다.
+      const res = await fetch('/api?type=groups');
+      
+      // 2. 만약 서버에서 401(권한없음)을 던지면 로그인 페이지로 우회
+      if (res.status === 401) {
+        navigate('/login');
+        return;
+      }
+      
+      // 3. 로그인이 확인되면 그때 데이터를 상태에 담습니다.
+      const data = await res.json();
+      // setGroups(data); ... 기존 로직 실행
+    };
+
+    initAdmin();
+  }, [navigate]);
   const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);

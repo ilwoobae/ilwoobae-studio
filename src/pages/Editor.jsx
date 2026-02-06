@@ -4,6 +4,16 @@ import './Editor.css';
 
 function Editor() {
   const navigate = useNavigate();
+  // Editor.jsx
+useEffect(() => {
+    const checkAuth = async () => {
+      const res = await fetch('/api?type=groups');
+      if (res.status === 401) {
+        navigate('/login');
+      }
+    };
+    checkAuth();
+  }, [navigate]);
   const [searchParams] = useSearchParams();
   
   // URL 파라미터 추출

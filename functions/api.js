@@ -1,24 +1,23 @@
-// 1. 보안 체크 함수 (onRequest 밖에 정의)
+// functions/api.js
+
 async function checkAuth(request) {
   const cookie = request.headers.get("Cookie") || "";
-  // 쿠키에 auth=logged_in 이라는 값이 포함되어 있는지 확인
   return cookie.includes("auth=logged_in");
 }
 
-// 2. 통합 onRequest 함수 (파일에 딱 하나만 존재해야 함)
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const type = url.searchParams.get("type");
 
   // --- [A. 로그인 처리] ---
-  // POST /api/login 요청인 경우
   if (request.method === "POST" && url.pathname.endsWith("/login")) {
     const { password } = await request.json();
     if (password === env.ADMIN_PASSWORD) {
+      // ✅ 로그인이 성공하면 여기서 바로 Response를 리턴하고 끝내야 합니다!
       return new Response(JSON.stringify({ success: true }), {
         headers: {
-          "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400",
+          "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400; Secure",
           "Content-Type": "application/json"
         },
       });
@@ -28,6 +27,7 @@ export async function onRequest(context) {
 
   // --- [B. 로그아웃 처리] ---
   if (url.pathname.endsWith("/logout")) {
+    // ✅ 로그아웃도 여기서 바로 끝내야 합니다.
     return new Response(JSON.stringify({ success: true }), {
       headers: {
         "Set-Cookie": "auth=; Path=/; Max-Age=0",
@@ -37,7 +37,7 @@ export async function onRequest(context) {
   }
 
   // --- [C. 권한 체크] ---
-  // 로그인(/login) 요청이 아닌 모든 API 요청은 로그인이 되어있어야 진행됨
+  // 위에서 로그인/로그아웃 처리가 끝난 요청들은 이 아래로 내려오지 않습니다.
   const isLoggedIn = await checkAuth(request);
   if (!isLoggedIn) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { 
@@ -47,10 +47,9 @@ export async function onRequest(context) {
   }
 
   // =========================================================
-  // 여기서부터는 로그인이 확인된 관리자만 접근 가능한 로직입니다.
+  // 여기부터 관리자 전용 로직 (GET, POST, PUT, DELETE)
   // =========================================================
 
-  // --- 1. GET: 목록 불러오기 ---
   if (request.method === "GET") {
     if (type === "groups") {
       const { results } = await env.DB.prepare("SELECT * FROM groups").all();
@@ -64,7 +63,6 @@ export async function onRequest(context) {
     return Response.json(results);
   }
 
-  // --- 2. POST: 데이터 등록 (action 값에 따라 분기) ---
   if (request.method === "POST") {
     const formData = await request.formData();
     const action = formData.get("action");
@@ -90,7 +88,6 @@ export async function onRequest(context) {
     return Response.json({ success: true });
   }
 
-  // --- 3. PUT: 데이터 수정 ---
   if (request.method === "PUT") {
     const formData = await request.formData();
     const action = formData.get("action");
@@ -110,7 +107,6 @@ export async function onRequest(context) {
     return Response.json({ success: true });
   }
 
-  // --- 4. DELETE: 데이터 삭제 ---
   if (request.method === "DELETE") {
     const id = url.searchParams.get("id");
     const target = url.searchParams.get("target");
