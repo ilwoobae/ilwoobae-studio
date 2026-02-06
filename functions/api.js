@@ -13,8 +13,12 @@ export async function onRequest(context) {
   // --- [A. 로그인 처리] ---
   if (request.method === "POST" && url.pathname.endsWith("/login")) {
     const { password } = await request.json();
-    if (password === env.ADMIN_PASSWORD) {
-      // ✅ 로그인이 성공하면 여기서 바로 Response를 리턴하고 끝내야 합니다!
+    
+    // 🔍 디버깅: 설정된 비밀번호가 있는지, 입력된 값과 대조 결과는 어떤지 확인
+    const storedPassword = env.ADMIN_PASSWORD;
+    const isMatch = (password === storedPassword);
+
+    if (isMatch) {
       return new Response(JSON.stringify({ success: true }), {
         headers: {
           "Set-Cookie": "auth=logged_in; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400; Secure",
@@ -22,7 +26,12 @@ export async function onRequest(context) {
         },
       });
     }
-    return new Response(JSON.stringify({ success: false }), { status: 401 });
+
+    // 🔴 실패 시 상세 이유를 응답에 담아 보냅니다. (나중에 반드시 원복!)
+    return new Response(JSON.stringify({ 
+      success: false, 
+      reason: !storedPassword ? "환경변수가 설정되지 않음" : "비밀번호 불일치"
+    }), { status: 401 });
   }
 
   // --- [B. 로그아웃 처리] ---
