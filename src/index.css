@@ -1,0 +1,200 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  font-family: "Space Grotesk", sans-serif;
+  color: #121417;
+  background: #f6f4f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f6f4f0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page {
+  padding: 32px;
+}
+
+.admin-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.admin-columns {
+  display: flex;
+  gap: 16px;
+}
+
+.admin-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.col-20 {
+  flex: 0 0 20vw;
+}
+
+.col-30 {
+  flex: 0 0 30vw;
+}
+
+.col-50 {
+  flex: 1 1 50vw;
+}
+
+.panel {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.table {
+  display: grid;
+  gap: 8px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.row.header {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: transparent;
+  padding: 0 4px 4px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+  justify-self: end;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  background: #111111;
+  color: #ffffff;
+}
+
+.btn.ghost {
+  background: transparent;
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #111111;
+}
+
+.btn.primary {
+  background: #111111;
+  color: #ffffff;
+}
+
+.btn.danger {
+  background: #c0392b;
+  color: #ffffff;
+}
+
+.form-card {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.admin-form {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+input,
+select,
+textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.preview.media {
+  display: block;
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.error {
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .admin-columns {
+    flex-direction: column;
+  }
+
+  .col-20,
+  .col-30,
+  .col-50 {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

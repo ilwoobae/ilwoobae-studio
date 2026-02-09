@@ -7,6 +7,31 @@ function json(data, status = 200) {
   });
 }
 
+export async function onRequestGet({ request, env, params }) {
+  if (!(await isAuthed(request, env))) {
+    return json({ ok: false, error: "Unauthorized" }, 401);
+  }
+
+  if (!env.DB) {
+    return json({ ok: false, error: "Missing DB binding" }, 500);
+  }
+
+  const id = params?.id;
+  if (!id) return json({ ok: false, error: "Missing id" }, 400);
+
+  const result = await env.DB.prepare(
+    "SELECT id, title, created_at FROM groups WHERE id = ?"
+  )
+    .bind(id)
+    .first();
+
+  if (!result) {
+    return json({ ok: false, error: "Not found" }, 404);
+  }
+
+  return json({ ok: true, data: result });
+}
+
 export async function onRequestPut({ request, env, params }) {
   if (!(await isAuthed(request, env))) {
     return json({ ok: false, error: "Unauthorized" }, 401);

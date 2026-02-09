@@ -9,6 +9,9 @@ import BlogCategory from "./pages/BlogCategory";
 import BlogPost from "./pages/BlogPost";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminGroupForm from "./pages/AdminGroupForm";
+import AdminCategoryForm from "./pages/AdminCategoryForm";
+import AdminPostForm from "./pages/AdminPostForm";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -30,6 +33,30 @@ export default function App() {
           element={
             <AdminGate>
               <AdminDashboard />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="admin/groups/:id"
+          element={
+            <AdminGate>
+              <AdminGroupForm />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="admin/categories/:id"
+          element={
+            <AdminGate>
+              <AdminCategoryForm />
+            </AdminGate>
+          }
+        />
+        <Route
+          path="admin/posts/:id"
+          element={
+            <AdminGate>
+              <AdminPostForm />
             </AdminGate>
           }
         />
