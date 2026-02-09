@@ -1,35 +1,62 @@
-import { useParams, Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { blogPosts } from "../data/blog";
-import { getText } from "../utils/text";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+
+async function fetchJson(url) {
+  const response = await fetch(url);
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data?.ok === false) {
+    throw new Error(data?.error || "Request failed");
+  }
+  return data?.data ?? data;
+}
+
+const renderAttachment = (post) => {
+  if (!post?.attachment_url) return null;
+  if (post.attachment_type === "image") {
+    return <img src={post.attachment_url} alt={post.title} className="preview media" />;
+  }
+  if (post.attachment_type === "video") {
+    return <video src={post.attachment_url} controls className="preview media" />;
+  }
+  return (
+    <a className="link" href={post.attachment_url} target="_blank" rel="noreferrer">
+      Open attachment
+    </a>
+  );
+};
 
 export default function BlogPost() {
   const { postId } = useParams();
-  const { i18n } = useTranslation();
-  const post = blogPosts.find((item) => item.id === postId);
+  const [post, setPost] = useState(null);
+  const [error, setError] = useState("");
 
-  if (!post) {
-    return (
-      <div className="page">
-        <h1>Post not found</h1>
-        <Link to="/blog" className="link">Back to blog</Link>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (!postId) return;
+    fetchJson(`/api/public/posts/${postId}`)
+      .then((data) => setPost(data))
+      .catch(() => setError("포스트를 불러오지 못했습니다."));
+  }, [postId]);
 
   return (
-    <article className="page post">
-      <Link to="/blog" className="link">← Blog</Link>
-      <header className="post-head">
-        <p className="meta">{post.date}</p>
-        <h1>{getText(post.title, i18n.language)}</h1>
-        <p className="lead">{getText(post.excerpt, i18n.language)}</p>
-      </header>
-      <div className="post-body">
-        {getText(post.content, i18n.language).map((paragraph, index) => (
-          <p key={`${post.id}-${index}`}>{paragraph}</p>
-        ))}
+    <div className="page blog">
+      <div className="page-head">
+        <h1>{post?.title || "Post"}</h1>
+        <Link className="link" to={`/blog/category/${post?.category_id || ""}`}>
+          Back to category
+        </Link>
       </div>
-    </article>
+      {error ? <p className="error">{error}</p> : null}
+      {post ? (
+        <section className="panel">
+          {post.description ? <p className="lead">{post.description}</p> : null}
+          {renderAttachment(post)}
+          <div className="meta">
+            {post.info1 ? <span>{post.info1}</span> : null}
+            {post.info2 ? <span>{post.info2}</span> : null}
+            {post.info3 ? <span>{post.info3}</span> : null}
+          </div>
+        </section>
+      ) : null}
+    </div>
   );
 }

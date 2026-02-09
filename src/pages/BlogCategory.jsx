@@ -1,40 +1,80 @@
-import { useParams, Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { blogCategories, blogPosts } from "../data/blog";
-import { getText } from "../utils/text";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+
+async function fetchJson(url) {
+  const response = await fetch(url);
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data?.ok === false) {
+    throw new Error(data?.error || "Request failed");
+  }
+  return data?.data ?? data;
+}
+
+const renderAttachment = (post) => {
+  if (!post?.attachment_url) return null;
+  if (post.attachment_type === "image") {
+    return <img src={post.attachment_url} alt={post.title} className="preview media" />;
+  }
+  if (post.attachment_type === "video") {
+    return <video src={post.attachment_url} controls className="preview media" />;
+  }
+  return (
+    <a className="link" href={post.attachment_url} target="_blank" rel="noreferrer">
+      Open attachment
+    </a>
+  );
+};
 
 export default function BlogCategory() {
   const { categoryId } = useParams();
-  const { i18n } = useTranslation();
-  const category = blogCategories.find((item) => item.id === categoryId);
-  const posts = blogPosts.filter((post) => post.categoryId === categoryId);
+  const [category, setCategory] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
 
-  if (!category) {
-    return (
-      <div className="page">
-        <h1>Category not found</h1>
-        <Link to="/blog" className="link">Back to blog</Link>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (!categoryId) return;
+    setError("");
+    Promise.all([
+      fetchJson(`/api/public/categories/${categoryId}`),
+      fetchJson(`/api/public/posts?category_id=${categoryId}`),
+    ])
+      .then(([categoryData, postData]) => {
+        setCategory(categoryData);
+        setPosts(postData || []);
+      })
+      .catch(() => setError("포스트를 불러오지 못했습니다."));
+  }, [categoryId]);
 
   return (
-    <div className="page blog-detail">
+    <div className="page blog">
       <div className="page-head">
-        <h1>{getText(category.title, i18n.language)}</h1>
-        <p className="lead">이 카테고리에 속한 포스트 목록.</p>
+        <h1>{category?.title || "Category"}</h1>
+        {category?.description ? <p className="lead">{category.description}</p> : null}
       </div>
-      <div className="list">
-        {posts.map((post) => (
-          <Link key={post.id} className="list-item" to={`/blog/post/${post.id}`}>
-            <div>
-              <h3>{getText(post.title, i18n.language)}</h3>
-              <p>{getText(post.excerpt, i18n.language)}</p>
+
+      {error ? <p className="error">{error}</p> : null}
+
+      <section className="panel">
+        <div className="list">
+          {posts.map((post) => (
+            <div key={post.id} className="list-item">
+              <div>
+                <h3>{post.title}</h3>
+                {post.description ? <p>{post.description}</p> : null}
+                {renderAttachment(post)}
+                <div className="meta">
+                  {post.info1 ? <span>{post.info1}</span> : null}
+                  {post.info2 ? <span>{post.info2}</span> : null}
+                  {post.info3 ? <span>{post.info3}</span> : null}
+                </div>
+              </div>
+              <Link className="link" to={`/blog/post/${post.id}`}>
+                View
+              </Link>
             </div>
-            <span className="meta">{post.date}</span>
-          </Link>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
