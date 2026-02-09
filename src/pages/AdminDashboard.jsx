@@ -21,6 +21,8 @@ export default function AdminDashboard() {
   const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [uploadingPostId, setUploadingPostId] = useState("");
+  const [uploadingNew, setUploadingNew] = useState(false);
 
   const [newGroupTitle, setNewGroupTitle] = useState("");
   const [newCategory, setNewCategory] = useState({
@@ -70,6 +72,40 @@ export default function AdminDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const inferAttachmentType = (file) => {
+    const type = file?.type || "";
+    if (type.startsWith("image/")) return "image";
+    if (type.startsWith("video/")) return "video";
+    if (type === "application/pdf") return "pdf";
+    return "";
+  };
+
+  const uploadToR2 = async (file, folder = "posts") => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", folder);
+    const data = await fetchJson("/api/upload", { method: "POST", body: formData });
+    return {
+      url: data?.url || "",
+      type: inferAttachmentType(file),
+    };
+  };
+
+  const renderAttachmentPreview = (type, url) => {
+    if (!url) return null;
+    if (type === "image") {
+      return <img src={url} alt="attachment preview" className="preview media" />;
+    }
+    if (type === "video") {
+      return <video src={url} controls className="preview media" />;
+    }
+    return (
+      <a className="link" href={url} target="_blank" rel="noreferrer">
+        Open attachment
+      </a>
+    );
+  };
+
   const handleUpload = async (event) => {
     event.preventDefault();
     const file = event.target.file?.files?.[0];
@@ -90,6 +126,45 @@ export default function AdminDashboard() {
       event.target.reset();
     } catch (err) {
       setError("업로드에 실패했습니다. 인증 또는 버킷 설정을 확인하세요.");
+    }
+  };
+
+  const handleNewPostFile = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setError("");
+    setUploadingNew(true);
+    try {
+      const { url, type } = await uploadToR2(file, "posts");
+      setNewPost((prev) => ({
+        ...prev,
+        attachment_url: url,
+        attachment_type: type || prev.attachment_type,
+      }));
+    } catch (err) {
+      setError("첨부 파일 업로드에 실패했습니다.");
+    } finally {
+      setUploadingNew(false);
+    }
+  };
+
+  const handleExistingPostFile = async (postId, file) => {
+    if (!file) return;
+    setError("");
+    setUploadingPostId(postId);
+    try {
+      const { url, type } = await uploadToR2(file, "posts");
+      setPosts((prev) =>
+        prev.map((item) =>
+          item.id === postId
+            ? { ...item, attachment_url: url, attachment_type: type || item.attachment_type }
+            : item
+        )
+      );
+    } catch (err) {
+      setError("첨부 파일 업로드에 실패했습니다.");
+    } finally {
+      setUploadingPostId("");
     }
   };
 
@@ -482,6 +557,12 @@ export default function AdminDashboard() {
             />
           </label>
           <label>
+            Attachment File
+            <input type="file" onChange={handleNewPostFile} />
+          </label>
+          {uploadingNew ? <p className="meta">Uploading file...</p> : null}
+          {renderAttachmentPreview(newPost.attachment_type, newPost.attachment_url)}
+          <label>
             Info 1
             <input
               type="text"
@@ -591,6 +672,12 @@ export default function AdminDashboard() {
                   }
                   placeholder="https://..."
                 />
+                <input
+                  type="file"
+                  onChange={(event) => handleExistingPostFile(post.id, event.target.files?.[0])}
+                />
+                {uploadingPostId === post.id ? <p className="meta">Uploading...</p> : null}
+                {renderAttachmentPreview(post.attachment_type, post.attachment_url)}
               </div>
               <div>
                 <textarea
