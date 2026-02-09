@@ -1,0 +1,16 @@
+name = "portfolio-base"
+compatibility_date = "2025-01-15"
+
+[vars]
+ADMIN_PASSWORD = "0000"
+ADMIN_SECRET = "0000"
+R2_PUBLIC_BASE = ""
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "name"
+
+[dev]
+ip = "127.0.0.1"
+port = 8788
+local_protocol = "http"

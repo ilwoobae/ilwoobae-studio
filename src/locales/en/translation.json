@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog"
+  },
+  "home": {
+    "title": "Portfolio Base",
+    "subtitle": "A clean, extensible foundation for personal sites.",
+    "ctaPrimary": "View Blog",
+    "ctaSecondary": "Contact",
+    "sections": {
+      "now": "Now",
+      "projects": "Projects",
+      "writing": "Writing"
+    },
+    "cards": [
+      "Building a React + Vite portfolio foundation",
+      "Planning Cloudflare D1/R2 integration",
+      "Designing a scalable blog structure"
+    ]
+  },
+  "about": {
+    "title": "About",
+    "body": "This is a starter template focused on clarity, structure, and easy expansion.",
+    "focusTitle": "Focus",
+    "focusBody": "Design systems, frontend architecture, and product thinking.",
+    "stackTitle": "Stack",
+    "stackBody": "React, TypeScript, Cloudflare, and modern design tooling.",
+    "nowTitle": "Now",
+    "nowBody": "Building a scalable portfolio base with multilingual content."
+  },
+  "blog": {
+    "title": "Blog",
+    "groups": "Groups",
+    "categories": "Categories",
+    "posts": "Posts",
+    "latest": "Latest"
+  },
+  "footer": {
+    "note": "Built with React + Vite. Ready for Cloudflare Pages + D1 + R2."
+  },
+  "language": {
+    "label": "Language",
+    "ko": "Korean",
+    "en": "English"
+  }
+}
