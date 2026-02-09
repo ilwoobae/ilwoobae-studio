@@ -55,3 +55,5 @@ Cloudflare Pages 환경 변수:
 
 업로드 API:
 - `POST /api/upload` (multipart/form-data, `file`, `folder`)
+
+
