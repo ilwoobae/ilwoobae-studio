@@ -2,13 +2,18 @@ name = "portfolio-base"
 compatibility_date = "2025-01-15"
 
 [vars]
-ADMIN_PASSWORD = "0000"
-ADMIN_SECRET = "0000"
-R2_PUBLIC_BASE = ""
+ADMIN_PASSWORD = "66503"
+ADMIN_SECRET = "m7Kz2Qp9Vx4Rj8Tn6Lw1Yc3Hs5Df0BaG"
+R2_PUBLIC_BASE = "https://pub-42fedd82652546eaa8b7f53f2d9ce637.r2.dev"
 
 [[r2_buckets]]
 binding = "R2_BUCKET"
-bucket_name = "name"
+bucket_name = "studiobucket"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "studiodb"
+database_id = "34649ff0-142f-4e19-a111-ca25dd334834"
 
 [dev]
 ip = "127.0.0.1"
