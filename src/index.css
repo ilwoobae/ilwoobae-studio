@@ -3,7 +3,7 @@
 :root {
   font-family: "Pretendard", sans-serif;
   color: #121417;
-  background: #f6f4f0;
+  background: #ffffff;
 }
 
 * {
@@ -12,7 +12,7 @@
 
 body {
   margin: 0;
-  background: #f6f4f0;
+  background: #ffffff;
 }
 
 a {
@@ -261,17 +261,20 @@ textarea {
 
 .home-page {
   padding: 0;
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
 }
 
 .home-scroll {
   display: flex;
-  gap: 24px;
-  padding: 32px;
-  height: 100%;
+  gap: 30px;
+  padding: 24px 32px;
+  height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 }
 
 .home-scroll > section {
@@ -301,7 +304,7 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 73px;
+  font-size: 143px;
   font-weight: 600;
   transform: rotate(-90deg);
   white-space: nowrap;
@@ -322,13 +325,14 @@ textarea {
 }
 
 .artwork-desc {
-  font-size: 17px;
-  line-height: 1.8;
+  font-size: 18px;
+  line-height: 1.6;
   color: #3b3f44;
-  height: 20vh;
-  column-width: 25vw;
-  column-gap: 10px;
+  height: 30vh;
+  column-width: 30vw;
+  column-gap: 24px;
   column-fill: auto;
+  display: inline-block;
 }
 
 .artwork-images {
@@ -342,7 +346,7 @@ textarea {
 .artwork-images img,
 .artwork-images video {
   width: auto;
-  height: 30vw;
+  height: 40vw;
   object-fit: cover;
   display: block;
 }
@@ -353,7 +357,7 @@ textarea {
 }
 
 .media-caption {
-  font-size: 12px;
+  font-size: 14px;
   color: #6b7077;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -391,6 +395,68 @@ textarea {
   color: #7a7f86;
   font-size: 14px;
 }
+
+.intro-card {
+  flex: 0 0 auto;
+  min-width: 60vw;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-characters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.intro-char {
+  position: absolute;
+  font-size: 143px;
+  font-weight: 600;
+  color: #ffffff;
+  transform: rotate(-90deg);
+  text-shadow:
+    1px 0 0 #111111,
+    -1px 0 0 #111111,
+    0 1px 0 #111111,
+    0 -1px 0 #111111;
+}
+
+.intro-char-top {
+  top: 24px;
+  left: 24px;
+}
+
+.intro-char-bottom {
+  bottom: 24px;
+  left: 24px;
+}
+
+.intro-triangles {
+  position: relative;
+  width: 240px;
+  height: 240px;
+}
+
+.triangle {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  left: 0;
+  top: 0;
+}
+
+.triangle.t-1 { transform: translate(0, 0); }
+.triangle.t-2 { transform: translate(8px, 6px); }
+.triangle.t-3 { transform: translate(16px, 12px); }
+.triangle.t-4 { transform: translate(24px, 18px); }
+.triangle.t-5 { transform: translate(32px, 24px); }
+.triangle.t-6 { transform: translate(40px, 30px); }
+.triangle.t-7 { transform: translate(48px, 36px); }
+.triangle.t-8 { transform: translate(56px, 42px); }
 
 @media (max-width: 1100px) {
   .admin-columns {

@@ -33,6 +33,24 @@ export default function Home() {
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
       <div className="home-scroll">
+        <section className="intro-card">
+          <div className="intro-characters">
+            <span className="intro-char intro-char-top">一宇</span>
+            <span className="intro-char intro-char-bottom">裵</span>
+          </div>
+          <div className="intro-triangles">
+            {Array.from({ length: 8 }).map((_, idx) => (
+              <svg
+                key={idx}
+                className={`triangle t-${idx + 1}`}
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+              >
+                <polygon points="100,0 0,50 100,100" fill="#ffffff" stroke="#111111" strokeWidth="1" />
+              </svg>
+            ))}
+          </div>
+        </section>
         {orderedCategories.map((category, index) => {
           const categoryPosts = posts.filter((post) => post.category_id === category.id);
           const mediaPosts = categoryPosts.filter((post) => post.attachment_url);
@@ -91,7 +109,7 @@ export default function Home() {
           return (
             <section className="text-card" key={category.id}>
               <div className="text-head">
-                <span className="index">{index + 1}.</span>
+                <span className="index">#{index + 1}</span>
                 <h2>{category.title}</h2>
               </div>
               {category.description ? <p className="lead">{category.description}</p> : null}
