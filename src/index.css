@@ -302,7 +302,6 @@ textarea {
 
 .artwork-title {
   display: flex;
-  text-align: left;
   justify-content: center;
   gap: 8px;
   font-size: 73px;
@@ -423,29 +422,20 @@ textarea {
   transform: rotate(-90deg);
   transform-origin: left top;
   white-space: nowrap;
-  text-shadow:
-    1px 0 0 #111111,
-    -1px 0 0 #111111,
-    0 1px 0 #111111,
-    0 -1px 0 #111111;
 }
 
 
 .intro-char-top {
-  left: 20px;
-  top: 20px;
 }
 
 .intro-char-bottom {
-  left: 20px;
-  bottom: 20px;
 }
 
 .intro-triangles {
   position: absolute;
   width: 180px;
   height: 180px;
-  left: 50%;
+  left: 0%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
