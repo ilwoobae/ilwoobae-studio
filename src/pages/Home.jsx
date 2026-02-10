@@ -46,7 +46,12 @@ export default function Home() {
                 viewBox="0 0 100 100"
                 aria-hidden="true"
               >
-                <polygon points="100,0 0,50 100,100" fill="#ffffff" stroke="#111111" strokeWidth="1" />
+                <polygon
+                  points="100,0 0,50 100,100"
+                  fill="#ffffff"
+                  stroke="#111111"
+                  strokeWidth="0.6"
+                />
               </svg>
             ))}
           </div>
