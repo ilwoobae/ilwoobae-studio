@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { TYPES, typeLabelById } from "../data/types";
 
 async function fetchJson(url, options = {}) {
   const response = await fetch(url, {
@@ -18,7 +19,6 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [groups, setGroups] = useState([]);
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
 
@@ -26,12 +26,10 @@ export default function AdminDashboard() {
     setLoading(true);
     setError("");
     try {
-      const [groupData, categoryData, postData] = await Promise.all([
-        fetchJson("/api/groups"),
+      const [categoryData, postData] = await Promise.all([
         fetchJson("/api/categories"),
         fetchJson("/api/posts"),
       ]);
-      setGroups(groupData || []);
       setCategories(categoryData || []);
       setPosts(postData || []);
     } catch (err) {
@@ -49,11 +47,6 @@ export default function AdminDashboard() {
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST", credentials: "include" });
     navigate("/admin/login", { replace: true });
-  };
-
-  const deleteGroup = async (groupId) => {
-    await fetchJson(`/api/groups/${groupId}`, { method: "DELETE" });
-    await loadAll();
   };
 
   const deleteCategory = async (categoryId) => {
@@ -85,27 +78,15 @@ export default function AdminDashboard() {
       <div className="admin-columns">
         <section className="panel admin-col col-20">
           <div className="panel-head">
-            <h2>Groups</h2>
-            <Link className="btn primary" to="/admin/groups/new">
-              Add
-            </Link>
+            <h2>Types</h2>
           </div>
           <div className="table">
             <div className="row header">
-              <div>Title</div>
-              <div>Actions</div>
+              <div>Fixed Types</div>
             </div>
-            {groups.map((group) => (
-              <div className="row" key={group.id}>
-                <div>{group.title}</div>
-                <div className="row-actions">
-                  <Link className="btn ghost" to={`/admin/groups/${group.id}`}>
-                    Edit
-                  </Link>
-                  <button className="btn danger" type="button" onClick={() => deleteGroup(group.id)}>
-                    Delete
-                  </button>
-                </div>
+            {TYPES.map((type) => (
+              <div className="row" key={type.id}>
+                <div>{type.label}</div>
               </div>
             ))}
           </div>
@@ -120,15 +101,13 @@ export default function AdminDashboard() {
           </div>
           <div className="table">
             <div className="row header">
-              <div>Group</div>
+              <div>Type</div>
               <div>Title</div>
               <div>Actions</div>
             </div>
             {categories.map((category) => (
               <div className="row" key={category.id}>
-                <div>
-                  {groups.find((group) => group.id === category.group_id)?.title || "-"}
-                </div>
+                <div>{typeLabelById(category.group_id)}</div>
                 <div>{category.title}</div>
                 <div className="row-actions">
                   <Link className="btn ghost" to={`/admin/categories/${category.id}`}>

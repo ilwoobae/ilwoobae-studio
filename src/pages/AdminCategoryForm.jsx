@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { TYPES } from "../data/types";
 
 async function fetchJson(url, options = {}) {
   const response = await fetch(url, {
@@ -18,28 +19,18 @@ export default function AdminCategoryForm() {
   const navigate = useNavigate();
   const { id } = useParams();
   const isNew = id === "new" || !id;
-  const [groups, setGroups] = useState([]);
-  const [groupId, setGroupId] = useState("");
+  const [groupId, setGroupId] = useState(TYPES[0]?.id || "");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchJson("/api/groups")
-      .then((data) => {
-        setGroups(data || []);
-        if (!groupId && data?.length) setGroupId(data[0].id);
-      })
-      .catch(() => setError("그룹 목록을 불러오지 못했습니다."));
-  }, [groupId]);
-
-  useEffect(() => {
     if (isNew) return;
     setLoading(true);
     fetchJson(`/api/categories/${id}`)
       .then((data) => {
-        setGroupId(data?.group_id || "");
+        setGroupId(data?.group_id || TYPES[0]?.id || "");
         setTitle(data?.title || "");
         setDescription(data?.description || "");
       })
@@ -88,12 +79,11 @@ export default function AdminCategoryForm() {
 
       <form className="form-card" onSubmit={handleSubmit}>
         <label>
-          Group
+          Type
           <select value={groupId} onChange={(event) => setGroupId(event.target.value)} required>
-            <option value="">Select group</option>
-            {groups.map((group) => (
-              <option key={group.id} value={group.id}>
-                {group.title}
+            {TYPES.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.label}
               </option>
             ))}
           </select>
