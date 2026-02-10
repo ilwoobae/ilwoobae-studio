@@ -289,10 +289,9 @@ textarea {
   min-height: 70vh;
   display: grid;
   grid-template-columns: 90px 1fr;
-  gap: 16px;
+  gap: 12px;
   background: #ffffff;
-  border-radius: 24px;
-  padding: 24px;
+  padding: 10px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
 }
@@ -302,7 +301,7 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 143px;
+  font-size: 73px;
   font-weight: 600;
   transform: rotate(-90deg);
   white-space: nowrap;
@@ -313,7 +312,7 @@ textarea {
 .artwork-right {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 16px;
+  gap: 10px;
   min-height: 0;
 }
 
@@ -323,18 +322,18 @@ textarea {
 }
 
 .artwork-desc {
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.8;
   color: #3b3f44;
-  height: 30vh;
-  column-width: 30vw;
-  column-gap: 24px;
+  height: 20vh;
+  column-width: 25vw;
+  column-gap: 10px;
   column-fill: auto;
 }
 
 .artwork-images {
   display: flex;
-  gap: 16px;
+  gap: 10px;
   align-items: flex-start;
   overflow-x: auto;
   padding-bottom: 8px;
@@ -343,9 +342,8 @@ textarea {
 .artwork-images img,
 .artwork-images video {
   width: auto;
-  height: 40vw;
+  height: 30vw;
   object-fit: cover;
-  border-radius: 14px;
   display: block;
 }
 
