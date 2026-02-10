@@ -285,7 +285,7 @@ textarea {
 }
 
 .artwork-card {
-  flex: 0 0 72vw;
+  flex: 0 0 auto;
   min-height: 70vh;
   display: grid;
   grid-template-columns: 90px 1fr;
