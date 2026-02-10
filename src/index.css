@@ -269,7 +269,7 @@ textarea {
 .home-scroll {
   display: flex;
   gap: 30px;
-  padding: 24px 32px;
+  padding: 16px;
   height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
@@ -282,8 +282,8 @@ textarea {
 }
 
 .index {
-  font-size: 143px;
-  font-weight: 600;
+  font-size: 73px;
+  font-weight: 400;
   margin-right: 12px;
 }
 
@@ -304,8 +304,8 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 143px;
-  font-weight: 600;
+  font-size: 73px;
+  font-weight: 400;
   transform: rotate(-90deg);
   white-space: nowrap;
   height: 90px;
@@ -325,10 +325,10 @@ textarea {
 }
 
 .artwork-desc {
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1.6;
   color: #3b3f44;
-  height: 30vh;
+  height: 20vh;
   column-width: 30vw;
   column-gap: 24px;
   column-fill: auto;
@@ -346,7 +346,7 @@ textarea {
 .artwork-images img,
 .artwork-images video {
   width: auto;
-  height: 40vw;
+  height: 25vw;
   object-fit: cover;
   display: block;
 }
@@ -426,13 +426,13 @@ textarea {
 }
 
 .intro-char-top {
-  top: 24px;
-  left: 24px;
+  top: 20px;
+  left: 0px;
 }
 
 .intro-char-bottom {
-  bottom: 24px;
-  left: 24px;
+  bottom: 20px;
+  left: 0px;
 }
 
 .intro-triangles {
@@ -443,20 +443,20 @@ textarea {
 
 .triangle {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 260px;
+  height: 260px;
   left: 0;
   top: 0;
 }
 
 .triangle.t-1 { transform: translate(0, 0); }
-.triangle.t-2 { transform: translate(8px, 6px); }
-.triangle.t-3 { transform: translate(16px, 12px); }
-.triangle.t-4 { transform: translate(24px, 18px); }
-.triangle.t-5 { transform: translate(32px, 24px); }
-.triangle.t-6 { transform: translate(40px, 30px); }
-.triangle.t-7 { transform: translate(48px, 36px); }
-.triangle.t-8 { transform: translate(56px, 42px); }
+.triangle.t-2 { transform: translate(80px, 60px); }
+.triangle.t-3 { transform: translate(160px, 120px); }
+.triangle.t-4 { transform: translate(240px, 180px); }
+.triangle.t-5 { transform: translate(320px, 240px); }
+.triangle.t-6 { transform: translate(400px, 300px); }
+.triangle.t-7 { transform: translate(480px, 360px); }
+.triangle.t-8 { transform: translate(560px, 420px); }
 
 @media (max-width: 1100px) {
   .admin-columns {
