@@ -302,7 +302,7 @@ textarea {
 
 .artwork-title {
   display: flex;
-  align-items: center;
+  text-align: left;
   justify-content: center;
   gap: 8px;
   font-size: 73px;
@@ -310,7 +310,6 @@ textarea {
   transform: rotate(-90deg);
   white-space: nowrap;
   height: 90px;
-  align-self: end;
 }
 
 .artwork-right {
@@ -412,15 +411,12 @@ textarea {
 .intro-characters {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 0 20px 20px;
+  padding: 0;
   pointer-events: none;
 }
 
 .intro-char {
-  position: relative;
+  position: absolute;
   font-size: 243px;
   font-weight: 600;
   color: #ffffff;
@@ -435,13 +431,20 @@ textarea {
 }
 
 
-.intro-char-top {}
-.intro-char-bottom {}
+.intro-char-top {
+  left: 20px;
+  top: 20px;
+}
+
+.intro-char-bottom {
+  left: 20px;
+  bottom: 20px;
+}
 
 .intro-triangles {
   position: absolute;
-  width: 240px;
-  height: 240px;
+  width: 180px;
+  height: 180px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -449,8 +452,8 @@ textarea {
 
 .triangle {
   position: absolute;
-  width: 260px;
-  height: 260px;
+  width: 180px;
+  height: 180px;
   left: 0;
   top: 0;
 }
