@@ -306,7 +306,8 @@ textarea {
   justify-content: center;
   gap: 8px;
   font-size: 73px;
-  font-weight: 600;
+  font-weight: 400;
+  transform: rotate(-90deg);
   white-space: nowrap;
   height: 90px;
   align-self: end;
@@ -423,7 +424,6 @@ textarea {
   font-size: 243px;
   font-weight: 600;
   color: #ffffff;
-  transform: rotate(-90deg);
   transform-origin: left top;
   white-space: nowrap;
   text-shadow:
