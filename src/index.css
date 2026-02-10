@@ -413,8 +413,9 @@ textarea {
 }
 
 .intro-char {
+  left: 20px;
   position: absolute;
-  font-size: 143px;
+  font-size: 243px;
   font-weight: 600;
   color: #ffffff;
   transform: rotate(-90deg);
@@ -428,12 +429,10 @@ textarea {
 
 .intro-char-top {
   top: 20px;
-  left: 0px;
 }
 
 .intro-char-bottom {
   bottom: 20px;
-  left: 0px;
 }
 
 .intro-triangles {
@@ -451,13 +450,13 @@ textarea {
 }
 
 .triangle.t-1 { transform: translate(0, 0); }
-.triangle.t-2 { transform: translate(80px, 60px); }
-.triangle.t-3 { transform: translate(160px, 120px); }
-.triangle.t-4 { transform: translate(240px, 180px); }
-.triangle.t-5 { transform: translate(320px, 240px); }
-.triangle.t-6 { transform: translate(400px, 300px); }
-.triangle.t-7 { transform: translate(480px, 360px); }
-.triangle.t-8 { transform: translate(560px, 420px); }
+.triangle.t-2 { transform: translate(80px, 0); }
+.triangle.t-3 { transform: translate(160px, 0); }
+.triangle.t-4 { transform: translate(240px, 0); }
+.triangle.t-5 { transform: translate(320px, 0); }
+.triangle.t-6 { transform: translate(400px, 0); }
+.triangle.t-7 { transform: translate(480px, 0); }
+.triangle.t-8 { transform: translate(560px, 0); }
 
 @media (max-width: 1100px) {
   .admin-columns {
