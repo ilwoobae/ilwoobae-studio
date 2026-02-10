@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/pretendard.css");
 
 :root {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Pretendard", sans-serif;
   color: #121417;
   background: #f6f4f0;
 }
@@ -279,9 +279,9 @@ textarea {
 }
 
 .index {
-  font-size: 18px;
-  font-weight: 700;
-  margin-right: 8px;
+  font-size: 143px;
+  font-weight: 600;
+  margin-right: 12px;
 }
 
 .artwork-card {
@@ -302,8 +302,8 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 143px;
+  font-weight: 600;
   transform: rotate(-90deg);
   white-space: nowrap;
   height: 90px;
@@ -317,23 +317,33 @@ textarea {
   min-height: 0;
 }
 
+.artwork-desc-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .artwork-desc {
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.6;
   color: #3b3f44;
+  height: 30vh;
+  column-width: 30vw;
+  column-gap: 24px;
+  column-fill: auto;
 }
 
 .artwork-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  align-content: start;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding-bottom: 8px;
 }
 
 .artwork-images img,
 .artwork-images video {
-  width: 100%;
-  height: 160px;
+  width: auto;
+  height: 40vw;
   object-fit: cover;
   border-radius: 14px;
   display: block;

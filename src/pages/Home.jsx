@@ -43,7 +43,15 @@ export default function Home() {
               return <img src={post.attachment_url} alt={post.title} />;
             }
             if (post.attachment_type === "video") {
-              return <video src={post.attachment_url} muted playsInline controls />;
+              return (
+                <video
+                  src={post.attachment_url}
+                  muted
+                  playsInline
+                  autoPlay
+                  loop
+                />
+              );
             }
             return (
               <a href={post.attachment_url} target="_blank" rel="noreferrer">
@@ -56,12 +64,12 @@ export default function Home() {
             return (
               <section className="artwork-card" key={category.id}>
                 <div className="artwork-title">
-                  <span className="index">{index + 1}.</span>
+                  <span className="index">#{index + 1}</span>
                   <span>{category.title}</span>
                 </div>
                 <div className="artwork-right">
-                  <div className="artwork-desc">
-                    {category.description || ""}
+                  <div className="artwork-desc-wrap">
+                    <div className="artwork-desc">{category.description || ""}</div>
                   </div>
                   <div className="artwork-images">
                     {mediaPosts.length ? (
