@@ -35,9 +35,22 @@ export default function Home() {
       <div className="home-scroll">
         {orderedCategories.map((category, index) => {
           const categoryPosts = posts.filter((post) => post.category_id === category.id);
-          const imagePosts = categoryPosts.filter(
-            (post) => post.attachment_url && post.attachment_type === "image"
-          );
+          const mediaPosts = categoryPosts.filter((post) => post.attachment_url);
+
+          const renderMedia = (post) => {
+            if (!post?.attachment_url) return null;
+            if (post.attachment_type === "image") {
+              return <img src={post.attachment_url} alt={post.title} />;
+            }
+            if (post.attachment_type === "video") {
+              return <video src={post.attachment_url} muted playsInline controls />;
+            }
+            return (
+              <a href={post.attachment_url} target="_blank" rel="noreferrer">
+                View PDF
+              </a>
+            );
+          };
 
           if (category.group_id === "artwork") {
             return (
@@ -51,16 +64,15 @@ export default function Home() {
                     {category.description || ""}
                   </div>
                   <div className="artwork-images">
-                    {imagePosts.length ? (
-                      imagePosts.map((post) => (
-                        <img
-                          key={post.id}
-                          src={post.attachment_url}
-                          alt={post.title}
-                        />
+                    {mediaPosts.length ? (
+                      mediaPosts.map((post) => (
+                        <div key={post.id} className="media-tile">
+                          {renderMedia(post)}
+                          <div className="media-caption">{post.title}</div>
+                        </div>
                       ))
                     ) : (
-                      <div className="placeholder">No images yet.</div>
+                      <div className="placeholder">No media yet.</div>
                     )}
                   </div>
                 </div>

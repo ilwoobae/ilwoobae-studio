@@ -330,11 +330,26 @@ textarea {
   align-content: start;
 }
 
-.artwork-images img {
+.artwork-images img,
+.artwork-images video {
   width: 100%;
   height: 160px;
   object-fit: cover;
   border-radius: 14px;
+  display: block;
+}
+
+.media-tile {
+  display: grid;
+  gap: 6px;
+}
+
+.media-caption {
+  font-size: 12px;
+  color: #6b7077;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .text-card {
