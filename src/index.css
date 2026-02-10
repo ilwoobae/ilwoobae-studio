@@ -268,10 +268,12 @@ textarea {
 
 .home-scroll {
   display: flex;
-  padding: 20px;
+  gap: 30px;
+  padding: 16px;
   height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
+  scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 }
 
@@ -281,14 +283,16 @@ textarea {
 
 .index {
   font-size: 73px;
-  font-weight: 400;
+  font-weight: 600;
   margin-right: 12px;
 }
 
 .artwork-card {
+  flex: 0 0 auto;
   min-height: 70vh;
   display: grid;
-  gap: 20px;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
   background: #ffffff;
   padding: 10px;
   border: 0;
@@ -298,12 +302,15 @@ textarea {
 
 .artwork-title {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
   font-size: 73px;
-  font-weight: 400;
+  font-weight: 600;
   transform: rotate(-90deg);
   white-space: nowrap;
+  height: 90px;
+  align-self: end;
 }
 
 .artwork-right {
@@ -323,9 +330,9 @@ textarea {
   font-size: 14px;
   line-height: 1.6;
   color: #3b3f44;
-  height: 18vh;
+  height: 20vh;
   column-width: 30vw;
-  column-gap: 20px;
+  column-gap: 24px;
   column-fill: auto;
   display: inline-block;
 }
@@ -392,6 +399,7 @@ textarea {
 }
 
 .intro-card {
+  flex: 0 0 auto;
   width: 100vw;
   height: 100vh;
   position: relative;
@@ -403,34 +411,38 @@ textarea {
 
 .intro-characters {
   position: absolute;
-  left: 0;
-  top: 0;
   inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0 20px 20px;
   pointer-events: none;
 }
 
 .intro-char {
-  position: absolute;
+  position: relative;
   font-size: 243px;
   font-weight: 600;
   color: #ffffff;
   transform: rotate(-90deg);
   transform-origin: left top;
   white-space: nowrap;
+  text-shadow:
+    1px 0 0 #111111,
+    -1px 0 0 #111111,
+    0 1px 0 #111111,
+    0 -1px 0 #111111;
 }
 
 
-.intro-char-top {
-}
-
-.intro-char-bottom {
-}
+.intro-char-top {}
+.intro-char-bottom {}
 
 .intro-triangles {
   position: absolute;
   width: 180px;
   height: 180px;
-  left: 0%;
+  left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
