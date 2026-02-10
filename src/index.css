@@ -434,14 +434,18 @@ textarea {
 }
 
 
-.intro-char-top {}
-.intro-char-bottom {}
+.intro-char-top {
+  transform: rotate(-90deg);
+}
+.intro-char-bottom {
+  transform: rotate(-90deg);
+}
 
 .intro-triangles {
   position: absolute;
   width: 180px;
   height: 180px;
-  left: 50%;
+  left: 30%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
