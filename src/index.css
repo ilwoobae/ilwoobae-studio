@@ -24,6 +24,17 @@ a {
   padding: 32px;
 }
 
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-main {
+  flex: 1;
+  overflow: hidden;
+}
+
 .admin-head {
   display: flex;
   align-items: center;
@@ -246,6 +257,116 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.home-page {
+  padding: 0;
+  height: 100%;
+}
+
+.home-scroll {
+  display: flex;
+  gap: 24px;
+  padding: 32px;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+}
+
+.home-scroll > section {
+  scroll-snap-align: start;
+}
+
+.index {
+  font-size: 18px;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.artwork-card {
+  flex: 0 0 72vw;
+  min-height: 70vh;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
+}
+
+.artwork-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  transform: rotate(-90deg);
+  white-space: nowrap;
+  height: 90px;
+  align-self: center;
+}
+
+.artwork-right {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  min-height: 0;
+}
+
+.artwork-desc {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #3b3f44;
+}
+
+.artwork-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+.artwork-images img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.text-card {
+  flex: 0 0 56vw;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
+}
+
+.text-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.text-posts {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.text-post {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.placeholder {
+  color: #7a7f86;
+  font-size: 14px;
 }
 
 @media (max-width: 1100px) {
