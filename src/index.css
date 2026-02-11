@@ -437,8 +437,8 @@ textarea {
 
 .intro-triangles {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 100%;
+  height: 100%;
   left: 30%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -446,8 +446,8 @@ textarea {
 
 .triangle {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 80px;
+  height: 80px;
   left: 0;
   top: 0;
 }
