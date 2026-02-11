@@ -36,7 +36,7 @@ button {
 
 .home-scroll {
   display: flex;
-  gap: 48px;
+  gap: 16px;
   height: 100vh;
   padding: 24px 32px;
   overflow-x: auto;
