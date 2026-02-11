@@ -36,7 +36,7 @@ button {
 
 .home-scroll {
   display: flex;
-  gap: 16px;
+  gap: 24px;
   height: 100vh;
   padding: 24px 32px;
   overflow-x: auto;
@@ -61,6 +61,7 @@ button {
 .intro-title {
   font-size: 143px;
   font-weight: 600;
+  transform: rotate(-90deg);
   margin: 0;
 }
 
@@ -78,7 +79,7 @@ button {
   align-items: center;
   justify-content: center;
   transform: rotate(-90deg);
-  transform-origin: left center;
+  transform-origin: right center;
   white-space: nowrap;
   gap: 12px;
 }
