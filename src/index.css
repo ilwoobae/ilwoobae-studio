@@ -55,7 +55,7 @@ button {
   height: calc(100vh - 48px);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .intro-title {
@@ -79,7 +79,7 @@ button {
   align-items: center;
   justify-content: center;
   transform: rotate(-90deg);
-  transform-origin: right center;
+  transform-origin: center;
   white-space: nowrap;
   gap: 12px;
 }
