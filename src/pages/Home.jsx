@@ -13,7 +13,6 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
-  const [introScale, setIntroScale] = useState(1);
   const [fitScale, setFitScale] = useState({ x: 1, y: 1 });
   const introRef = useRef(null);
   const textRef = useRef(null);
@@ -25,19 +24,6 @@ export default function Home() {
         setPosts(postData || []);
       })
       .catch(() => setError("콘텐츠를 불러오지 못했습니다."));
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const y = window.scrollY;
-      const vh = window.innerHeight || 1;
-      const t = Math.min(Math.max(y / vh, 0), 1);
-      setIntroScale(1 - t);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -87,7 +73,7 @@ export default function Home() {
       <section className="intro-section" ref={introRef}>
         <div
           className="intro-title"
-          style={{ transform: `scale(${fitScale.x}, ${fitScale.y * introScale})` }}
+          style={{ transform: `scale(${fitScale.x}, ${fitScale.y})` }}
         >
           <span className="intro-text" ref={textRef}>裵一宇</span>
         </div>
