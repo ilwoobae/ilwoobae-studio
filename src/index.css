@@ -56,11 +56,9 @@ button {
 .intro-text {
   display: block;
   font-weight: 600;
-  font-size: 100vh;
+  font-size: 100px;
   line-height: 1;
   white-space: nowrap;
-  transform: scaleX(1);
-  transform-origin: center;
 }
 
 .content-section {

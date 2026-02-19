@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 async function fetchJson(url) {
   const response = await fetch(url);
@@ -14,6 +14,9 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [introScale, setIntroScale] = useState(1);
+  const [fitScale, setFitScale] = useState({ x: 1, y: 1 });
+  const introRef = useRef(null);
+  const textRef = useRef(null);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -35,6 +38,26 @@ export default function Home() {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const introEl = introRef.current;
+    const textEl = textRef.current;
+    if (!introEl || !textEl) return;
+
+    const updateScale = () => {
+      const { width: cw, height: ch } = introEl.getBoundingClientRect();
+      const { width: tw, height: th } = textEl.getBoundingClientRect();
+      if (!tw || !th) return;
+      setFitScale({ x: cw / tw, y: ch / th });
+    };
+
+    const ro = new ResizeObserver(updateScale);
+    ro.observe(introEl);
+    ro.observe(textEl);
+    updateScale();
+
+    return () => ro.disconnect();
   }, []);
 
   const orderedCategories = useMemo(() => {
@@ -61,9 +84,12 @@ export default function Home() {
   return (
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
-      <section className="intro-section">
-        <div className="intro-title" style={{ transform: `scaleY(${introScale})` }}>
-          <span className="intro-text">裵一宇</span>
+      <section className="intro-section" ref={introRef}>
+        <div
+          className="intro-title"
+          style={{ transform: `scale(${fitScale.x}, ${fitScale.y * introScale})` }}
+        >
+          <span className="intro-text" ref={textRef}>裵一宇</span>
         </div>
       </section>
 
