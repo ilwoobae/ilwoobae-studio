@@ -59,7 +59,7 @@ button {
   font-size: 100vh;
   line-height: 1;
   white-space: nowrap;
-  transform: scaleX(0.35);
+  transform: scaleX(1);
   transform-origin: center;
 }
 
