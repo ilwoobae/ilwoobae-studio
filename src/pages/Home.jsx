@@ -13,7 +13,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
-  const [expandedPostId, setExpandedPostId] = useState(null);
+  const [introScale, setIntroScale] = useState(1);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -22,6 +22,19 @@ export default function Home() {
         setPosts(postData || []);
       })
       .catch(() => setError("콘텐츠를 불러오지 못했습니다."));
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      const vh = window.innerHeight || 1;
+      const t = Math.min(Math.max(y / vh, 0), 1);
+      setIntroScale(1 - t);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const orderedCategories = useMemo(() => {
@@ -48,25 +61,29 @@ export default function Home() {
   return (
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
-      <div className="home-scroll">
-        <section className="intro-card">
-          <h1 className="intro-title">裵一宇</h1>
-        </section>
+      <section className="intro-section">
+        <h1
+          className="intro-title"
+          style={{ transform: `scaleY(${introScale})` }}
+        >
+          裵一宇
+        </h1>
+      </section>
 
+      <section className="content-section">
         {orderedCategories.map((category, index) => {
           const categoryPosts = posts.filter((post) => post.category_id === category.id);
 
-          if (category.group_id === "artwork") {
-            return (
-              <section className="category-card artwork-card" key={category.id}>
-                <div className="category-left">
-                  <div className="category-index">#{index + 1}</div>
-                  <div className="category-title">{category.title}</div>
-                </div>
-                <div className="category-right">
-                  <div className="artwork-desc-wrap">
-                    <div className="artwork-desc">{category.description || ""}</div>
-                  </div>
+          return (
+            <section className="category-block" key={category.id}>
+              <div className="category-head">
+                <span className="category-index">#{index + 1}</span>
+                <h2 className="category-title">{category.title}</h2>
+              </div>
+
+              {category.group_id === "artwork" ? (
+                <div className="artwork-content">
+                  <div className="artwork-desc">{category.description || ""}</div>
                   <div className="artwork-media">
                     {categoryPosts.filter((post) => post.attachment_url).length ? (
                       categoryPosts
@@ -81,49 +98,24 @@ export default function Home() {
                     )}
                   </div>
                 </div>
-              </section>
-            );
-          }
-
-          return (
-            <section className="category-card text-card" key={category.id}>
-              <div className="category-left">
-                <div className="category-index">#{index + 1}</div>
-                <div className="category-title">{category.title}</div>
-              </div>
-              <div className="category-right text-posts">
-                {categoryPosts.length ? (
-                  categoryPosts.map((post) => {
-                    const isExpanded = expandedPostId === post.id;
-                    return (
-                      <article
-                        key={post.id}
-                        className={`text-post ${isExpanded ? "expanded" : ""}`}
-                      >
-                        <div className="text-post-title">{post.title}</div>
-                        <div className="text-post-body">
-                          {post.description || ""}
-                        </div>
-                        <button
-                          className="text-post-toggle"
-                          type="button"
-                          onClick={() =>
-                            setExpandedPostId(isExpanded ? null : post.id)
-                          }
-                        >
-                          {isExpanded ? "Close" : "More"}
-                        </button>
+              ) : (
+                <div className="text-content">
+                  {categoryPosts.length ? (
+                    categoryPosts.map((post) => (
+                      <article key={post.id} className="text-post">
+                        <h3>{post.title}</h3>
+                        {post.description ? <p>{post.description}</p> : null}
                       </article>
-                    );
-                  })
-                ) : (
-                  <div className="placeholder">No posts yet.</div>
-                )}
-              </div>
+                    ))
+                  ) : (
+                    <div className="placeholder">No posts yet.</div>
+                  )}
+                </div>
+              )}
             </section>
           );
         })}
-      </div>
+      </section>
     </div>
   );
 }
