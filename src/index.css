@@ -44,13 +44,13 @@ button {
 }
 
 .intro-title {
-  font-size: 50vmin;
+  font-size: 100vmin;
   font-weight: 600;
   margin: 0;
-  line-height: 1;
+  line-height: 0.85;
   width: 100vw;
   text-align: center;
-  transform-origin: center bottom;
+  transform-origin: center top;
   transition: transform 0.1s linear;
 }
 
