@@ -62,12 +62,9 @@ export default function Home() {
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
       <section className="intro-section">
-        <h1
-          className="intro-title"
-          style={{ transform: `scaleY(${introScale})` }}
-        >
-          裵一宇
-        </h1>
+        <div className="intro-title" style={{ transform: `scaleY(${introScale})` }}>
+          <span className="intro-text">裵一宇</span>
+        </div>
       </section>
 
       <section className="content-section">

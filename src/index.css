@@ -44,14 +44,23 @@ button {
 }
 
 .intro-title {
-  font-size: 70vmin;
-  font-weight: 600;
-  margin: 0;
-  line-height: 0.85;
   width: 100vw;
-  text-align: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform-origin: center top;
   transition: transform 0.1s linear;
+}
+
+.intro-text {
+  display: block;
+  font-weight: 600;
+  font-size: 100vh;
+  line-height: 1;
+  white-space: nowrap;
+  transform: scaleX(0.35);
+  transform-origin: center;
 }
 
 .content-section {
