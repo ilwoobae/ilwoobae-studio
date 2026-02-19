@@ -15,7 +15,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [fitScale, setFitScale] = useState({ x: 1, y: 1 });
   const introRef = useRef(null);
-  const textRef = useRef(null);
+  const measureRef = useRef(null);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -28,19 +28,19 @@ export default function Home() {
 
   useEffect(() => {
     const introEl = introRef.current;
-    const textEl = textRef.current;
-    if (!introEl || !textEl) return;
+    const measureEl = measureRef.current;
+    if (!introEl || !measureEl) return;
 
     const updateScale = () => {
       const { width: cw, height: ch } = introEl.getBoundingClientRect();
-      const { width: tw, height: th } = textEl.getBoundingClientRect();
+      const { width: tw, height: th } = measureEl.getBoundingClientRect();
       if (!tw || !th) return;
       setFitScale({ x: cw / tw, y: ch / th });
     };
 
     const ro = new ResizeObserver(updateScale);
     ro.observe(introEl);
-    ro.observe(textEl);
+    ro.observe(measureEl);
     updateScale();
 
     return () => ro.disconnect();
@@ -71,11 +71,16 @@ export default function Home() {
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
       <section className="intro-section" ref={introRef}>
-        <div
-          className="intro-title"
-          style={{ transform: `scale(${fitScale.x}, ${fitScale.y})` }}
-        >
-          <span className="intro-text" ref={textRef}>裵一宇</span>
+        <div className="intro-title">
+          <span
+            className="intro-text"
+            style={{ transform: `scale(${fitScale.x}, ${fitScale.y})` }}
+          >
+            裵一宇
+          </span>
+          <span className="intro-measure" ref={measureRef}>
+            裵一宇
+          </span>
         </div>
       </section>
 

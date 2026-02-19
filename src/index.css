@@ -44,21 +44,32 @@ button {
 }
 
 .intro-title {
+  position: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform-origin: center top;
-  transition: transform 0.1s linear;
+}
+
+.intro-text,
+.intro-measure {
+  font-size: 100px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: #111111;
 }
 
 .intro-text {
   display: block;
-  font-weight: 600;
-  font-size: 100px;
-  line-height: 1;
-  white-space: nowrap;
+  transform-origin: center top;
+}
+
+.intro-measure {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .content-section {
