@@ -14,7 +14,6 @@ html,
 body {
   margin: 0;
   background: #ffffff;
-  overflow: hidden;
 }
 
 a {
@@ -28,6 +27,8 @@ a {
 
 .home-page {
   background: #ffffff;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .intro-section {
@@ -38,7 +39,7 @@ a {
 }
 
 .type-buttons {
-  width: 60vw;
+  width: 35vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -57,4 +58,15 @@ a {
   height: 33vh;
   object-fit: fill;
   display: block;
+}
+
+@media (max-width: 768px) {
+  .type-buttons {
+    width: 100vh;
+  }
+
+  .type-button,
+  .type-button img {
+    height: 33vh;
+  }
 }
