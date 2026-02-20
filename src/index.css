@@ -55,6 +55,17 @@ a {
 .type-button img {
   width: 100%;
   height: 33vh;
-  object-fit: contain;
+  object-fit: fill;
   display: block;
+}
+
+@media (max-width: 768px) {
+  .type-buttons {
+    width: 100vh;
+  }
+
+  .type-button,
+  .type-button img {
+    height: 33vh;
+  }
 }
