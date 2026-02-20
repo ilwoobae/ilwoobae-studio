@@ -69,7 +69,7 @@ a {
 
 .type-page > .type-head,
 .type-page > .type-content {
-  width: min(900px, 100%);
+  width: min(800px, 100%);
 }
 
 .type-head {
