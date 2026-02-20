@@ -91,16 +91,14 @@ a {
 }
 
 .type-media {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  display: grid;
+  gap: 16px;
 }
 
 .type-media img,
 .type-media video {
-  width: auto;
-  height: 28vh;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -108,7 +106,8 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 28vh;
+  width: 100%;
+  min-height: 120px;
   padding: 0 24px;
   border: 1px solid #111111;
 }

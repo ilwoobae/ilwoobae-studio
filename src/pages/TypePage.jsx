@@ -64,7 +64,6 @@ export default function TypePage() {
     <div className="page type-page">
       <div className="type-head">
         <Link to="/">Back</Link>
-        <h1>{label}</h1>
       </div>
       {error ? <p className="error">{error}</p> : null}
 
@@ -73,18 +72,16 @@ export default function TypePage() {
           const categoryPosts = postsByCategory.get(category.id) || [];
 
           if (!isText) {
+            const mediaPosts = categoryPosts.filter((post) => post.attachment_url);
             return (
               <section key={category.id} className="type-category">
-                <h2>{category.title}</h2>
                 {category.description ? <p>{category.description}</p> : null}
                 <div className="type-media">
-                  {categoryPosts
-                    .filter((post) => post.attachment_url)
-                    .map((post) => (
-                      <div key={post.id} className="media-tile">
-                        {renderMedia(post)}
-                      </div>
-                    ))}
+                  {mediaPosts.map((post) => (
+                    <div key={post.id} className="media-tile">
+                      {renderMedia(post)}
+                    </div>
+                  ))}
                 </div>
               </section>
             );
