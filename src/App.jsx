@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminGroupForm from "./pages/AdminGroupForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
 import AdminPostForm from "./pages/AdminPostForm";
+import TypePage from "./pages/TypePage";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="blog/group/:groupId" element={<BlogGroup />} />
           <Route path="blog/category/:categoryId" element={<BlogCategory />} />
           <Route path="blog/post/:postId" element={<BlogPost />} />
+          <Route path="type/:typeId" element={<TypePage />} />
         </Route>
 
         <Route path="admin/login" element={<AdminLogin />} />
