@@ -39,7 +39,7 @@ a {
 }
 
 .type-buttons {
-  width: min(1000px, 100vw);
+  width: min(900px, 100vw);
   height: 100vh;
   display: flex;
   flex-direction: column;
