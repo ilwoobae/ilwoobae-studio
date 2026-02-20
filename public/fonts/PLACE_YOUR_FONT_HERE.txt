@@ -1,0 +1,4 @@
+Drop your font files here, e.g.
+- CustomFont.woff2
+- CustomFont.woff
+- CustomFont.ttf
