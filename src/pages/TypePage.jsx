@@ -26,6 +26,17 @@ const renderMedia = (post) => {
   );
 };
 
+const renderParagraphs = (text) => {
+  if (!text) return null;
+  return text
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block, idx) => (
+      <p key={idx}>{block}</p>
+    ));
+};
+
 export default function TypePage() {
   const { typeId } = useParams();
   const [categories, setCategories] = useState([]);
@@ -103,7 +114,7 @@ export default function TypePage() {
                         {post.title}
                       </button>
                       {isOpen ? (
-                        <div className="type-post-body">{post.description || ""}</div>
+                        <div className="type-post-body">{renderParagraphs(post.description || "")}</div>
                       ) : null}
                     </div>
                   );

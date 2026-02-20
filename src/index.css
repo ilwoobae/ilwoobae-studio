@@ -92,7 +92,7 @@ a {
 
 .type-media {
   display: grid;
-  gap: 16px;
+  gap: 0;
 }
 
 .type-media img,
@@ -132,4 +132,12 @@ a {
   border-top: none;
   padding: 12px;
   line-height: 1.6;
+}
+
+.type-post-body p {
+  margin: 0 0 12px;
+}
+
+.type-post-body p:last-child {
+  margin-bottom: 0;
 }
