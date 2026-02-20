@@ -38,7 +38,7 @@ a {
 }
 
 .type-buttons {
-  width: 50vw;
+  width: 60vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -57,15 +57,4 @@ a {
   height: 33vh;
   object-fit: fill;
   display: block;
-}
-
-@media (max-width: 768px) {
-  .type-buttons {
-    width: 100vh;
-  }
-
-  .type-button,
-  .type-button img {
-    height: 33vh;
-  }
 }
