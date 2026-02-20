@@ -1,0 +1,4 @@
+Drop button images here, e.g.
+- type-sculpture.png
+- type-non-sculpture.png
+- type-text.png
