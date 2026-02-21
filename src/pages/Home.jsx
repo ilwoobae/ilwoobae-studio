@@ -34,7 +34,9 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
-  const [activeType, setActiveType] = useState(TYPE_BUTTONS[0].id);
+  const [activeType, setActiveType] = useState(null);
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const [mediaIndex, setMediaIndex] = useState(0);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -63,73 +65,58 @@ export default function Home() {
     return map;
   }, [posts]);
 
-  const activeIndex = TYPE_BUTTONS.findIndex((type) => type.id === activeType);
-  const activeCategories = categoriesByType.get(activeType) || [];
-  const mediaPosts = activeCategories.flatMap((category) =>
-    (postsByCategory.get(category.id) || []).filter((post) => post.attachment_url)
-  );
+  const activeCategories = activeType ? categoriesByType.get(activeType) || [] : [];
+  const activeCategory =
+    activeCategories.find((category) => category.id === activeCategoryId) ||
+    activeCategories[0] ||
+    null;
+  const activePosts = activeCategory ? postsByCategory.get(activeCategory.id) || [] : [];
+  const mediaPosts = activePosts.filter((post) => post.attachment_url);
+  const activeMedia = mediaPosts.length ? mediaPosts[mediaIndex % mediaPosts.length] : null;
 
-  const titleItems = activeCategories.map((category) => category.title).filter(Boolean);
-  const descItems = activeCategories.map((category) => category.description || "").filter(Boolean);
-
-  const rows = ["title", "media", "desc"];
-  if (activeIndex === 0) {
-    rows[0] = "media";
-    rows[1] = "title";
-    rows[2] = "desc";
-  } else if (activeIndex === 1) {
-    rows[0] = "title";
-    rows[1] = "media";
-    rows[2] = "desc";
-  } else if (activeIndex === 2) {
-    rows[0] = "title";
-    rows[1] = "desc";
-    rows[2] = "media";
-  }
-
-  const renderRow = (rowType) => {
-    if (rowType === "media") {
-      return (
-        <div className="row-media">
-          {mediaPosts.length ? (
-            mediaPosts.map((post) => (
-              <div key={post.id} className="media-item">
-                {renderMedia(post)}
-              </div>
-            ))
-          ) : (
-            <div className="placeholder">No media.</div>
-          )}
-        </div>
-      );
+  useEffect(() => {
+    if (!activeType) return;
+    if (!activeCategoryId && activeCategories[0]) {
+      setActiveCategoryId(activeCategories[0].id);
+      setMediaIndex(0);
     }
+  }, [activeType, activeCategories, activeCategoryId]);
 
-    if (rowType === "title") {
-      return (
-        <div className="row-text">
-          {titleItems.length ? titleItems.map((item, idx) => <p key={idx}>{item}</p>) : null}
-        </div>
-      );
-    }
-
-    return (
-      <div className="row-text">
-        {descItems.length ? descItems.map((item, idx) => <p key={idx}>{item}</p>) : null}
-      </div>
-    );
+  const handleTypeClick = (typeId) => {
+    setActiveType(typeId);
+    setActiveCategoryId(null);
+    setMediaIndex(0);
   };
+
+  const handleCategoryClick = (categoryId) => {
+    setActiveCategoryId(categoryId);
+    setMediaIndex(0);
+  };
+
+  const handleNextMedia = () => {
+    if (!mediaPosts.length) return;
+    setMediaIndex((prev) => (prev + 1) % mediaPosts.length);
+  };
+
+  const handleMediaWheel = (event) => {
+    if (Math.abs(event.deltaY) < 4) return;
+    handleNextMedia();
+  };
+
+  const showButtonsOnly = activeType === null;
+  const activeButton = TYPE_BUTTONS.find((type) => type.id === activeType) || null;
 
   return (
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
       <section className="front-shell">
         <div className="button-column">
-          {TYPE_BUTTONS.map((type) => (
+          {(showButtonsOnly ? TYPE_BUTTONS : [activeButton]).filter(Boolean).map((type) => (
             <button
               key={type.id}
               type="button"
-              className={`type-button${activeType === type.id ? " is-active" : ""}`}
-              onClick={() => setActiveType(type.id)}
+              className="type-button"
+              onClick={() => handleTypeClick(type.id)}
               aria-label={type.label}
             >
               <img src={type.image} alt={type.label} />
@@ -137,13 +124,40 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="content-column">
-          {rows.map((row, idx) => (
-            <div key={`${row}-${idx}`} className="content-row">
-              {renderRow(row)}
+        {!showButtonsOnly ? (
+          <div className="slot-column">
+            <div className="slot-cell slot-title">
+              <div className="slot-text">
+                {activeCategories.map((category) => (
+                  <button
+                    key={category.id}
+                    type="button"
+                    className={`category-title${category.id === activeCategory?.id ? " is-active" : ""}`}
+                    onClick={() => handleCategoryClick(category.id)}
+                  >
+                    {category.title}
+                  </button>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
+            <div className="slot-cell slot-media">
+              <div
+                className="media-viewer"
+                onClick={handleNextMedia}
+                onWheel={handleMediaWheel}
+                role="button"
+                tabIndex={0}
+              >
+                {activeMedia ? renderMedia(activeMedia) : <div className="placeholder">No media.</div>}
+              </div>
+            </div>
+            <div className="slot-cell slot-desc">
+              <div className="slot-text">
+                {activeCategory?.description ? <p>{activeCategory.description}</p> : null}
+              </div>
+            </div>
+          </div>
+        ) : null}
       </section>
     </div>
   );
