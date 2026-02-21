@@ -90,6 +90,9 @@ a {
   display: grid;
   gap: 8px;
   align-content: start;
+  position: sticky;
+  top: 24px;
+  height: fit-content;
 }
 
 .type-list-item {
