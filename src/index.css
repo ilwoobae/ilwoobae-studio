@@ -14,6 +14,7 @@ html,
 body {
   margin: 0;
   background: #ffffff;
+  overflow: hidden;
 }
 
 a {
@@ -59,4 +60,65 @@ a {
   height: 100%;
   object-fit: fill;
   display: block;
+}
+
+.slot {
+  width: 100%;
+  height: 33.3333vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slot-text {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.category-title {
+  text-align: left;
+  border: 1px solid #111111;
+  background: transparent;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.category-title.is-active {
+  background: #111111;
+  color: #ffffff;
+}
+
+.media-viewer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-viewer img,
+.media-viewer video {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+
+.media-viewer a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 24px;
+  border: 1px solid #111111;
+}
+
+.placeholder {
+  color: #7a7f86;
+}
+
+.error {
+  color: #c0392b;
+  font-weight: 600;
 }
