@@ -37,6 +37,8 @@ export default function Home() {
   const [activeType, setActiveType] = useState(null);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [mediaIndex, setMediaIndex] = useState(0);
+  const [textPage, setTextPage] = useState(0);
+  const [activePost, setActivePost] = useState(null);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -73,6 +75,13 @@ export default function Home() {
   const activePosts = activeCategory ? postsByCategory.get(activeCategory.id) || [] : [];
   const mediaPosts = activePosts.filter((post) => post.attachment_url);
   const activeMedia = mediaPosts.length ? mediaPosts[mediaIndex % mediaPosts.length] : null;
+  const isTextType = activeType === "text";
+  const postsPerPage = 6;
+  const totalTextPages = Math.max(1, Math.ceil(activePosts.length / postsPerPage));
+  const textPagePosts = activePosts.slice(
+    textPage * postsPerPage,
+    textPage * postsPerPage + postsPerPage
+  );
 
   useEffect(() => {
     if (!activeType) return;
@@ -86,11 +95,15 @@ export default function Home() {
     setActiveType((prev) => (prev === typeId ? null : typeId));
     setActiveCategoryId(null);
     setMediaIndex(0);
+    setTextPage(0);
+    setActivePost(null);
   };
 
   const handleCategoryClick = (categoryId) => {
     setActiveCategoryId(categoryId);
     setMediaIndex(0);
+    setTextPage(0);
+    setActivePost(null);
   };
 
   const handleNextMedia = () => {
@@ -101,6 +114,19 @@ export default function Home() {
   const handleMediaWheel = (event) => {
     if (Math.abs(event.deltaY) < 4) return;
     handleNextMedia();
+  };
+
+  const handleNextTextPage = () => {
+    if (!activePosts.length) return;
+    setTextPage((prev) => (prev + 1) % totalTextPages);
+  };
+
+  const handleHomeClick = () => {
+    setActiveType(null);
+    setActiveCategoryId(null);
+    setMediaIndex(0);
+    setTextPage(0);
+    setActivePost(null);
   };
 
   const showButtonsOnly = activeType === null;
@@ -158,6 +184,37 @@ export default function Home() {
       );
     }
 
+    if (isTextType) {
+      return (
+        <div className="slot-panel slot-panel-text">
+          <div
+            className="text-viewer"
+            onClick={handleNextTextPage}
+            role="button"
+            tabIndex={0}
+          >
+            {textPagePosts.length ? (
+              textPagePosts.map((post) => (
+                <button
+                  key={post.id}
+                  type="button"
+                  className="text-title"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setActivePost(post);
+                  }}
+                >
+                  {post.title}
+                </button>
+              ))
+            ) : (
+              <div className="placeholder">No posts.</div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="slot-panel slot-panel-media">
         <div
@@ -176,6 +233,9 @@ export default function Home() {
   return (
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
+      <button type="button" className="home-button" onClick={handleHomeClick}>
+        Home
+      </button>
       <section className="front-shell">
         <div className="button-stack">
           {[0, 1, 2].map((idx) => (
@@ -185,6 +245,22 @@ export default function Home() {
           ))}
         </div>
       </section>
+      {activePost ? (
+        <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
+          <div className="text-modal-content" role="dialog" aria-modal="true">
+            <button type="button" className="text-modal-close" onClick={() => setActivePost(null)}>
+              Close
+            </button>
+            <h2>{activePost.title}</h2>
+            <div className="text-modal-body">
+              {activePost.description ? <p>{activePost.description}</p> : null}
+              {activePost.info1 ? <p>{activePost.info1}</p> : null}
+              {activePost.info2 ? <p>{activePost.info2}</p> : null}
+              {activePost.info3 ? <p>{activePost.info3}</p> : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
