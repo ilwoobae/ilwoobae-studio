@@ -29,12 +29,14 @@ a {
 
 .home-page {
   height: 100vh;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .front-shell {
   height: 100vh;
   display: flex;
+  width: max-content;
   min-width: 100vw;
   overflow-x: visible;
 }
