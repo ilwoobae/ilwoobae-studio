@@ -121,7 +121,7 @@ export default function Home() {
     setTextPage((prev) => (prev + 1) % totalTextPages);
   };
 
-  const handleHomeClick = () => {
+  const resetToHome = () => {
     setActiveType(null);
     setActiveCategoryId(null);
     setMediaIndex(0);
@@ -129,8 +129,35 @@ export default function Home() {
     setActivePost(null);
   };
 
+  useEffect(() => {
+    const handlePopState = (event) => {
+      const state = event.state;
+      if (!state || !state.activeType) {
+        resetToHome();
+        return;
+      }
+      setActiveType(state.activeType);
+      setActiveCategoryId(state.activeCategoryId ?? null);
+      setMediaIndex(0);
+      setTextPage(0);
+      setActivePost(null);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const showButtonsOnly = activeType === null;
   const activeIndex = TYPE_BUTTONS.findIndex((type) => type.id === activeType);
+
+  useEffect(() => {
+    if (!activeType) return;
+    window.history.pushState(
+      { activeType, activeCategoryId: activeCategoryId ?? null },
+      "",
+      window.location.pathname
+    );
+  }, [activeType, activeCategoryId]);
 
   const renderSlot = (slotIndex) => {
     if (showButtonsOnly) {
@@ -233,9 +260,6 @@ export default function Home() {
   return (
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
-      <button type="button" className="home-button" onClick={handleHomeClick}>
-        ⌂
-      </button>
       <section className="front-shell">
         <div className="button-stack">
           {[0, 1, 2].map((idx) => (

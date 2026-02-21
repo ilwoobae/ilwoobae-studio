@@ -106,17 +106,6 @@ a {
   font-size: 14px;
 }
 
-.home-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 5;
-  border: 1px solid #111111;
-  background: #ffffff;
-  padding: 6px 10px;
-  cursor: pointer;
-}
-
 .text-modal {
   position: fixed;
   inset: 0;
