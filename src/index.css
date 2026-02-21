@@ -68,8 +68,8 @@ a {
 }
 
 .type-page > .type-head,
-.type-page > .type-content {
-  width: min(800px, 100%);
+.type-page > .type-shell {
+  width: min(900px, 100%);
 }
 
 .type-head {
@@ -80,14 +80,35 @@ a {
   margin-bottom: 24px;
 }
 
-.type-content {
+.type-shell {
   display: grid;
-  gap: 32px;
+  grid-template-columns: 20% 80%;
+  gap: 24px;
 }
 
-.type-category {
+.type-list {
   display: grid;
-  gap: 12px;
+  gap: 8px;
+  align-content: start;
+}
+
+.type-list-item {
+  text-align: left;
+  border: 1px solid #111111;
+  background: transparent;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.type-list-item.is-active {
+  background: #111111;
+  color: #ffffff;
+}
+
+.type-detail {
+  display: grid;
+  gap: 16px;
 }
 
 .type-media {

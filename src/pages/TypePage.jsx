@@ -43,6 +43,7 @@ export default function TypePage() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [openPostId, setOpenPostId] = useState(null);
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -71,6 +72,19 @@ export default function TypePage() {
 
   const isText = typeId === "text";
 
+  useEffect(() => {
+    if (!list.length) {
+      setActiveCategoryId(null);
+      return;
+    }
+    if (!activeCategoryId || !list.some((c) => c.id === activeCategoryId)) {
+      setActiveCategoryId(list[0].id);
+    }
+  }, [list, activeCategoryId]);
+
+  const activeCategory = list.find((category) => category.id === activeCategoryId) || null;
+  const activePosts = activeCategory ? postsByCategory.get(activeCategory.id) || [] : [];
+
   return (
     <div className="page type-page">
       <div className="type-head">
@@ -78,51 +92,61 @@ export default function TypePage() {
       </div>
       {error ? <p className="error">{error}</p> : null}
 
-      <div className="type-content">
-        {list.map((category) => {
-          const categoryPosts = postsByCategory.get(category.id) || [];
+      <div className="type-shell">
+        <aside className="type-list">
+          {list.map((category) => (
+            <button
+              key={category.id}
+              type="button"
+              className={`type-list-item${category.id === activeCategoryId ? " is-active" : ""}`}
+              onClick={() => setActiveCategoryId(category.id)}
+            >
+              {category.title}
+            </button>
+          ))}
+        </aside>
 
-          if (!isText) {
-            const mediaPosts = categoryPosts.filter((post) => post.attachment_url);
-            return (
-              <section key={category.id} className="type-category">
-                {category.description ? <p>{category.description}</p> : null}
-                <div className="type-media">
-                  {mediaPosts.map((post) => (
-                    <div key={post.id} className="media-tile">
-                      {renderMedia(post)}
-                    </div>
-                  ))}
+        <section className="type-detail">
+          {activeCategory ? (
+            <>
+              {activeCategory.description ? <p>{activeCategory.description}</p> : null}
+
+              {isText ? (
+                <div className="type-posts">
+                  {activePosts.map((post) => {
+                    const isOpen = openPostId === post.id;
+                    return (
+                      <div key={post.id} className="type-post">
+                        <button
+                          type="button"
+                          className="type-post-title"
+                          onClick={() => setOpenPostId(isOpen ? null : post.id)}
+                        >
+                          {post.title}
+                        </button>
+                        {isOpen ? (
+                          <div className="type-post-body">
+                            {renderParagraphs(post.description || "")}
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
                 </div>
-              </section>
-            );
-          }
-
-          return (
-            <section key={category.id} className="type-category">
-              <h2>{category.title}</h2>
-              <div className="type-posts">
-                {categoryPosts.map((post) => {
-                  const isOpen = openPostId === post.id;
-                  return (
-                    <div key={post.id} className="type-post">
-                      <button
-                        type="button"
-                        className="type-post-title"
-                        onClick={() => setOpenPostId(isOpen ? null : post.id)}
-                      >
-                        {post.title}
-                      </button>
-                      {isOpen ? (
-                        <div className="type-post-body">{renderParagraphs(post.description || "")}</div>
-                      ) : null}
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          );
-        })}
+              ) : (
+                <div className="type-media">
+                  {activePosts
+                    .filter((post) => post.attachment_url)
+                    .map((post) => (
+                      <div key={post.id} className="media-tile">
+                        {renderMedia(post)}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </>
+          ) : null}
+        </section>
       </div>
     </div>
   );
