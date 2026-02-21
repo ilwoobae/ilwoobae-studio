@@ -104,61 +104,85 @@ export default function Home() {
   };
 
   const showButtonsOnly = activeType === null;
-  const activeButton = TYPE_BUTTONS.find((type) => type.id === activeType) || null;
+  const activeIndex = TYPE_BUTTONS.findIndex((type) => type.id === activeType);
+
+  const renderSlot = (slotIndex) => {
+    if (showButtonsOnly) {
+      const type = TYPE_BUTTONS[slotIndex];
+      return (
+        <button
+          type="button"
+          className="type-button"
+          onClick={() => handleTypeClick(type.id)}
+          aria-label={type.label}
+        >
+          <img src={type.image} alt={type.label} />
+        </button>
+      );
+    }
+
+    const activeButton = TYPE_BUTTONS[activeIndex];
+    if (slotIndex === activeIndex) {
+      return (
+        <button
+          type="button"
+          className="type-button"
+          onClick={() => handleTypeClick(activeButton.id)}
+          aria-label={activeButton.label}
+        >
+          <img src={activeButton.image} alt={activeButton.label} />
+        </button>
+      );
+    }
+
+    const otherSlots = [0, 1, 2].filter((idx) => idx !== activeIndex);
+    const contentType = slotIndex === otherSlots[0] ? "categories" : "media";
+
+    if (contentType === "categories") {
+      return (
+        <div className="slot-panel slot-panel-categories">
+          <div className="slot-text">
+            {activeCategories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                className={`category-title${category.id === activeCategory?.id ? " is-active" : ""}`
+                }
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                {category.title}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="slot-panel slot-panel-media">
+        <div
+          className="media-viewer"
+          onClick={handleNextMedia}
+          onWheel={handleMediaWheel}
+          role="button"
+          tabIndex={0}
+        >
+          {activeMedia ? renderMedia(activeMedia) : <div className="placeholder">No media.</div>}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
       <section className="front-shell">
         <div className="button-stack">
-          {showButtonsOnly ? (
-            TYPE_BUTTONS.map((type) => (
-              <button
-                key={type.id}
-                type="button"
-                className="type-button"
-                onClick={() => handleTypeClick(type.id)}
-                aria-label={type.label}
-              >
-                <img src={type.image} alt={type.label} />
-              </button>
-            ))
-          ) : (
-            <>
-              <div className="slot slot-top">
-                <div className="slot-text">
-                  {activeCategories.map((category) => (
-                    <button
-                      key={category.id}
-                      type="button"
-                      className={`category-title${category.id === activeCategory?.id ? " is-active" : ""}`}
-                      onClick={() => handleCategoryClick(category.id)}
-                    >
-                      {category.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <button
-                type="button"
-                className="type-button slot slot-middle"
-                onClick={() => handleTypeClick(activeButton?.id)}
-              >
-                {activeButton ? <img src={activeButton.image} alt={activeButton.label} /> : null}
-              </button>
-              <div className="slot slot-bottom">
-                <div
-                  className="media-viewer"
-                  onClick={handleNextMedia}
-                  onWheel={handleMediaWheel}
-                  role="button"
-                  tabIndex={0}
-                >
-                  {activeMedia ? renderMedia(activeMedia) : <div className="placeholder">No media.</div>}
-                </div>
-              </div>
-            </>
-          )}
+          {[0, 1, 2].map((idx) => (
+            <div key={idx} className="slot">
+              {renderSlot(idx)}
+            </div>
+          ))}
         </div>
       </section>
     </div>
