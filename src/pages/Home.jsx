@@ -234,7 +234,7 @@ export default function Home() {
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
       <button type="button" className="home-button" onClick={handleHomeClick}>
-        Home
+        ⌂
       </button>
       <section className="front-shell">
         <div className="button-stack">
