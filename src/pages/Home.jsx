@@ -30,21 +30,11 @@ const renderMedia = (post) => {
   );
 };
 
-const renderParagraphs = (text) => {
-  if (!text) return null;
-  return text
-    .split(/\n{2,}/)
-    .map((block) => block.trim())
-    .filter(Boolean)
-    .map((block, idx) => <p key={idx}>{block}</p>);
-};
-
 export default function Home() {
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
-  const [activeType, setActiveType] = useState("sculpture");
-  const [openPostId, setOpenPostId] = useState(null);
+  const [activeType, setActiveType] = useState(TYPE_BUTTONS[0].id);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -73,14 +63,67 @@ export default function Home() {
     return map;
   }, [posts]);
 
-  const isText = activeType === "text";
+  const activeIndex = TYPE_BUTTONS.findIndex((type) => type.id === activeType);
   const activeCategories = categoriesByType.get(activeType) || [];
+  const mediaPosts = activeCategories.flatMap((category) =>
+    (postsByCategory.get(category.id) || []).filter((post) => post.attachment_url)
+  );
+
+  const titleItems = activeCategories.map((category) => category.title).filter(Boolean);
+  const descItems = activeCategories.map((category) => category.description || "").filter(Boolean);
+
+  const rows = ["title", "media", "desc"];
+  if (activeIndex === 0) {
+    rows[0] = "media";
+    rows[1] = "title";
+    rows[2] = "desc";
+  } else if (activeIndex === 1) {
+    rows[0] = "title";
+    rows[1] = "media";
+    rows[2] = "desc";
+  } else if (activeIndex === 2) {
+    rows[0] = "title";
+    rows[1] = "desc";
+    rows[2] = "media";
+  }
+
+  const renderRow = (rowType) => {
+    if (rowType === "media") {
+      return (
+        <div className="row-media">
+          {mediaPosts.length ? (
+            mediaPosts.map((post) => (
+              <div key={post.id} className="media-item">
+                {renderMedia(post)}
+              </div>
+            ))
+          ) : (
+            <div className="placeholder">No media.</div>
+          )}
+        </div>
+      );
+    }
+
+    if (rowType === "title") {
+      return (
+        <div className="row-text">
+          {titleItems.length ? titleItems.map((item, idx) => <p key={idx}>{item}</p>) : null}
+        </div>
+      );
+    }
+
+    return (
+      <div className="row-text">
+        {descItems.length ? descItems.map((item, idx) => <p key={idx}>{item}</p>) : null}
+      </div>
+    );
+  };
 
   return (
     <div className="page home-page">
       {error ? <p className="error">{error}</p> : null}
       <section className="front-shell">
-        <div className="type-buttons">
+        <div className="button-column">
           {TYPE_BUTTONS.map((type) => (
             <button
               key={type.id}
@@ -94,54 +137,12 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="type-panel">
-          <div className="type-panel-inner">
-            {activeCategories.map((category) => {
-              const categoryPosts = postsByCategory.get(category.id) || [];
-              if (!isText) {
-                return (
-                  <div key={category.id} className="type-section">
-                    {category.description ? <p>{category.description}</p> : null}
-                    <div className="type-media">
-                      {categoryPosts
-                        .filter((post) => post.attachment_url)
-                        .map((post) => (
-                          <div key={post.id} className="media-tile">
-                            {renderMedia(post)}
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <div key={category.id} className="type-section">
-                  <div className="type-posts">
-                    {categoryPosts.map((post) => {
-                      const isOpen = openPostId === post.id;
-                      return (
-                        <div key={post.id} className="type-post">
-                          <button
-                            type="button"
-                            className="type-post-title"
-                            onClick={() => setOpenPostId(isOpen ? null : post.id)}
-                          >
-                            {post.title}
-                          </button>
-                          {isOpen ? (
-                            <div className="type-post-body">
-                              {renderParagraphs(post.description || "")}
-                            </div>
-                          ) : null}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        <div className="content-column">
+          {rows.map((row, idx) => (
+            <div key={`${row}-${idx}`} className="content-row">
+              {renderRow(row)}
+            </div>
+          ))}
         </div>
       </section>
     </div>

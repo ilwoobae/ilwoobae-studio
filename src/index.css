@@ -14,6 +14,8 @@ html,
 body {
   margin: 0;
   background: #ffffff;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 a {
@@ -26,23 +28,22 @@ a {
 }
 
 .home-page {
-  background: #ffffff;
   height: 100vh;
   overflow: hidden;
 }
 
 .front-shell {
-  display: grid;
-  grid-template-columns: 60vw 40vw;
   height: 100vh;
+  display: flex;
+  min-width: 100vw;
 }
 
-.type-buttons {
+.button-column {
+  width: min(600px, 70vw);
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0;
   border-right: 1px solid #111111;
 }
 
@@ -68,71 +69,61 @@ a {
   display: block;
 }
 
-.type-panel {
+.content-column {
+  width: 30vw;
+  min-width: 30vw;
   height: 100vh;
-  overflow: hidden;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #111111;
 }
 
-.type-panel-inner {
+.content-row {
   height: 33.3333vh;
-  padding: 16px;
-  overflow: auto;
+  border-bottom: 1px solid #111111;
+  padding: 12px;
+  overflow: hidden;
 }
 
-.type-section {
-  display: grid;
-  gap: 12px;
+.content-row:last-child {
+  border-bottom: 0;
 }
 
-.type-media {
-  display: grid;
+.row-media {
+  display: flex;
   gap: 0;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.type-media img,
-.type-media video {
-  width: 100%;
-  height: auto;
+.row-text {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.media-item img,
+.media-item video {
+  height: 100%;
+  width: auto;
   display: block;
 }
 
-.type-media a {
+.media-item a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  min-height: 120px;
+  height: 100%;
   padding: 0 24px;
   border: 1px solid #111111;
 }
 
-.type-posts {
-  display: grid;
-  gap: 12px;
+.placeholder {
+  color: #7a7f86;
 }
 
-.type-post-title {
-  width: 100%;
-  text-align: left;
-  border: 1px solid #111111;
-  background: transparent;
-  padding: 10px 12px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.type-post-body {
-  border: 1px solid #111111;
-  border-top: none;
-  padding: 12px;
-  line-height: 1.6;
-}
-
-.type-post-body p {
-  margin: 0 0 12px;
-}
-
-.type-post-body p:last-child {
-  margin-bottom: 0;
+.error {
+  color: #c0392b;
+  font-weight: 600;
 }
