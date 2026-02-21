@@ -36,6 +36,13 @@ a {
   height: 100vh;
   display: flex;
   min-width: 100vw;
+  overflow-x: visible;
+}
+
+.front-shell {
+  height: 100vh;
+  display: flex;
+  min-width: 100vw;
 }
 
 .button-column {
@@ -44,7 +51,8 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-right: 1px solid #111111;
+  border-right: none;
+  flex: 0 0 auto;
 }
 
 .type-button {
@@ -70,12 +78,11 @@ a {
 }
 
 .content-column {
-  width: 30vw;
-  min-width: 30vw;
+  width: max-content;
+  min-width: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #111111;
 }
 
 .content-row {
@@ -83,6 +90,7 @@ a {
   border-bottom: 1px solid #111111;
   padding: 12px;
   overflow: hidden;
+  min-width: max-content;
 }
 
 .content-row:last-child {
@@ -93,8 +101,7 @@ a {
   display: flex;
   gap: 0;
   height: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: visible;
 }
 
 .row-text {
