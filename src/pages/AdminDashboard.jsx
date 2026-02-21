@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TYPES, typeLabelById } from "../data/types";
+import "../admin.css";
 
 async function fetchJson(url, options = {}) {
   const response = await fetch(url, {

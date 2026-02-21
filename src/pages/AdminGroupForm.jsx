@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import "../admin.css";
 
 async function fetchJson(url, options = {}) {
   const response = await fetch(url, {
