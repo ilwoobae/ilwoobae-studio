@@ -361,6 +361,10 @@ a {
   clip-path: circle(150% at var(--x) var(--y));
 }
 
+.home-page.is-overlay {
+  color: #ffffff;
+}
+
 .home-page.is-overlay .type-button,
 .home-page.is-overlay .type-sublabel,
 .home-page.is-overlay .text-title,
