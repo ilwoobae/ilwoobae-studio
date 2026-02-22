@@ -7,25 +7,9 @@
 }
 
 @font-face {
-  font-family: "Pretendard Medium";
-  src: url("/fonts/Pretendard-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "ChosunSm";
-  src: url("/fonts/ChosunSm.TTF") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "ChosunKm";
-  src: url("/fonts/ChosunKm.TTF") format("truetype");
-  font-weight: 400;
+  font-family: "KoPub Batang Pro Light";
+  src: url("/fonts/KoPub Batang_Pro Light.otf") format("opentype");
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
@@ -84,7 +68,7 @@ a {
   background: transparent;
   cursor: pointer;
   color: #111111;
-  font-family: "ChosunKm", sans-serif;
+  font-family: "KoPub Batang Pro Light", serif;
   font-size: 20px;
 }
 
@@ -200,7 +184,7 @@ a {
   padding: 6px 8px;
   cursor: pointer;
   font-size: 14px;
-  font-family: "ChosunKm", sans-serif;
+  font-family: "KoPub Batang Pro Light", serif;
   font-weight: 400;
   color: #8b8b8b;
   border: 0;
