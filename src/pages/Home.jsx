@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
 const TYPE_BUTTONS = [
-  { id: "sculpture", label: "조각", image: "/images/buttons/1.png" },
-  { id: "non-sculpture", label: "非조각", image: "/images/buttons/2.png" },
-  { id: "text", label: "글", image: "/images/buttons/3.png" },
+  { id: "sculpture", label: "조각" },
+  { id: "non-sculpture", label: "비조각" },
+  { id: "text", label: "글" },
 ];
 
 async function fetchJson(url) {
@@ -167,9 +167,8 @@ export default function Home() {
           type="button"
           className="type-button"
           onClick={() => handleTypeClick(type.id)}
-          aria-label={type.label}
         >
-          <img src={type.image} alt={type.label} />
+          {type.label}
         </button>
       );
     }
@@ -181,9 +180,8 @@ export default function Home() {
           type="button"
           className="type-button"
           onClick={() => handleTypeClick(activeButton.id)}
-          aria-label={activeButton.label}
         >
-          <img src={activeButton.image} alt={activeButton.label} />
+          {activeButton.label}
         </button>
       );
     }
