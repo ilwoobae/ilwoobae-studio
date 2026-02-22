@@ -81,24 +81,6 @@ a {
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
   transform-origin: center;
-  animation: intro-blink 4.8s ease-in-out 1;
-}
-
-.slot:nth-child(1) .type-button {
-  animation-delay: 0s;
-}
-
-.slot:nth-child(2) .type-button {
-  animation-delay: 1.2s;
-}
-
-.slot:nth-child(3) .type-button {
-  animation-delay: 2.4s;
-}
-
-.button-stack {
-  animation: intro-blink-all 1.2s ease-in-out 1;
-  animation-delay: 3.6s;
 }
 
 .slot {
@@ -313,26 +295,5 @@ a {
     top: auto;
     bottom: -12px;
     transform: translateX(50%);
-  }
-}
-
-@keyframes intro-blink {
-  0%,
-  70%,
-  100% {
-    opacity: 1;
-  }
-  35% {
-    opacity: 0.15;
-  }
-}
-
-@keyframes intro-blink-all {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.15;
   }
 }
