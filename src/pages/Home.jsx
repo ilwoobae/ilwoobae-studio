@@ -251,21 +251,7 @@ export default function Home() {
           role="button"
           tabIndex={0}
         >
-          {activeMedia ? (
-            <>
-              <div className="media-frame">{renderMedia(activeMedia)}</div>
-              <div className="media-meta">
-                <div className="media-meta-title">{activeMedia.title}</div>
-                <div className="media-meta-info">
-                  {activeMedia.info1 ? <span>{activeMedia.info1}</span> : null}
-                  {activeMedia.info2 ? <span>{activeMedia.info2}</span> : null}
-                  {activeMedia.info3 ? <span>{activeMedia.info3}</span> : null}
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="placeholder">No media.</div>
-          )}
+          {activeMedia ? renderMedia(activeMedia) : <div className="placeholder">No media.</div>}
         </div>
       </div>
     );

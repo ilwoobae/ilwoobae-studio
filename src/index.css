@@ -222,7 +222,7 @@ a {
 .category-title {
   text-align: center;
   background: transparent;
-  padding: 2px 8px;
+  padding: 6px 8px;
   cursor: pointer;
   font-size: 17px;
   font-family: "Pretendard Light", sans-serif;
@@ -240,20 +240,10 @@ a {
 .media-viewer {
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  align-items: center;
-  justify-items: center;
-  padding: 0 20px;
-  position: relative;
-}
-
-.media-frame {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 20px;
 }
 
 .media-viewer img,
@@ -262,26 +252,6 @@ a {
   width: 100%;
   object-fit: contain;
   display: block;
-}
-
-.media-meta {
-  width: 100%;
-  display: grid;
-  gap: 4px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.media-meta-title {
-  color: #111111;
-}
-
-.media-meta-info {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  color: #6a6a6a;
-  font-size: 13px;
 }
 
 .media-viewer a {
@@ -347,13 +317,5 @@ a {
 
   .media-viewer {
     padding: 15px 20px;
-  }
-
-  .media-meta {
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    gap: 2px;
   }
 }
