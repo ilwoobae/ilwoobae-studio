@@ -102,7 +102,7 @@ export default function Home() {
     }
     setOverlay((prev) => ({ x, y, on: false, key: prev.key + 1 }));
     requestAnimationFrame(() => {
-      setOverlay((prev) => ({ ...prev, on: true }));
+      setOverlay((prev) => ({ x, y, on: true, key: prev.key + 1 }));
     });
   };
 
