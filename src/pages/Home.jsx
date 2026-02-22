@@ -112,22 +112,7 @@ export default function Home() {
     });
   };
 
-  const closeOverlay = () => {
-    if (transitionRef.current) {
-      clearTimeout(transitionRef.current);
-    }
-    setOverlay((prev) => ({ ...prev, on: false, key: prev.key + 1 }));
-    transitionRef.current = setTimeout(() => {
-      setActiveType(null);
-      setActiveCategoryId(null);
-      setMediaIndex(0);
-      setTextPage(0);
-      setActivePost(null);
-    }, 350);
-  };
-
   const handleTypeClick = (typeId, event) => {
-    if (overlay.on) return;
     triggerOverlay(event);
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
@@ -344,15 +329,6 @@ export default function Home() {
         className={`radial-overlay${overlay.on ? " is-on" : ""}`}
         aria-hidden="true"
       />
-      {overlay.on ? (
-        <button
-          type="button"
-          className="radial-exit"
-          style={{ "--x": `${overlay.x}px`, "--y": `${overlay.y}px` }}
-          onClick={closeOverlay}
-          aria-label="Close detail"
-        />
-      ) : null}
       {activePost ? (
         <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
           <div className="text-modal-content" role="dialog" aria-modal="true">

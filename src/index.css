@@ -313,7 +313,7 @@ a {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: #e0e0e0;
+  background: #030303;
   clip-path: circle(0 at var(--x) var(--y));
   transition: clip-path 0.7s ease;
 }
@@ -371,7 +371,7 @@ a {
 .home-page.is-overlay .media-meta-title,
 .home-page.is-overlay .media-meta-info,
 .home-page.is-overlay .media-viewer a {
-  color: #e0e0e0;
+  color: #030303;
 }
 
 .home-page.is-overlay .text-title {
@@ -385,31 +385,6 @@ a {
 .home-page.is-overlay .category-title.is-active {
   color: #dedede;
   background: transparent;
-}
-
-.radial-exit {
-  position: fixed;
-  width: 22px;
-  height: 22px;
-  left: var(--x);
-  top: var(--y);
-  transform: translate(-50%, -50%);
-  border: 0;
-  border-radius: 50%;
-  background: #ffffff;
-  z-index: 4;
-  cursor: pointer;
-}
-
-.radial-exit::before {
-  content: "↩";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: #030303;
-  font-size: 14px;
-  line-height: 1;
 }
 
 @media (max-width: 768px) {
