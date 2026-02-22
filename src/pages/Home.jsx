@@ -37,7 +37,7 @@ export default function Home() {
   const [activeType, setActiveType] = useState(null);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [mediaIndex, setMediaIndex] = useState(0);
-  const [overlay, setOverlay] = useState({ x: 0, y: 0, color: "black", active: false });
+  const [overlay, setOverlay] = useState({ x: 0, y: 0, on: false });
   const [textPage, setTextPage] = useState(0);
   const [activePost, setActivePost] = useState(null);
 
@@ -93,16 +93,11 @@ export default function Home() {
   }, [activeType, activeCategories, activeCategoryId]);
 
   const triggerOverlay = (event) => {
-    const nextColor = overlay.color === "black" ? "white" : "black";
-    setOverlay({
+    setOverlay((prev) => ({
       x: event.clientX,
       y: event.clientY,
-      color: nextColor,
-      active: false,
-    });
-    requestAnimationFrame(() => {
-      setOverlay((prev) => ({ ...prev, active: true }));
-    });
+      on: !prev.on,
+    }));
   };
 
   const handleTypeClick = (typeId, event) => {
@@ -273,7 +268,7 @@ export default function Home() {
   };
 
   return (
-    <div className="page home-page">
+    <div className={`page home-page${overlay.on ? " is-overlay" : ""}`}>
       {error ? <p className="error">{error}</p> : null}
       <section className="front-shell">
         <div className="button-stack">
@@ -285,9 +280,7 @@ export default function Home() {
         </div>
       </section>
       <div
-        className={`radial-overlay ${overlay.active ? "is-active" : ""} ${
-          overlay.color === "black" ? "is-black" : "is-white"
-        }`}
+        className={`radial-overlay${overlay.on ? " is-on" : ""}`}
         style={{ "--x": `${overlay.x}px`, "--y": `${overlay.y}px` }}
         aria-hidden="true"
       />

@@ -284,32 +284,36 @@ a {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  opacity: 0;
-}
-
-.radial-overlay::before {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  left: var(--x);
-  top: var(--y);
-  transform: translate(-50%, -50%) scale(0);
-  border-radius: 50%;
   background: #111111;
-  transition: transform 0.8s ease;
+  clip-path: circle(0 at var(--x) var(--y));
+  transition: clip-path 0.7s ease;
 }
 
-.radial-overlay.is-active {
-  opacity: 1;
+.radial-overlay.is-on {
+  clip-path: circle(150% at var(--x) var(--y));
 }
 
-.radial-overlay.is-active::before {
-  transform: translate(-50%, -50%) scale(200);
+.home-page.is-overlay {
+  color: #ffffff;
 }
 
-.radial-overlay.is-white::before {
-  background: #ffffff;
+.home-page.is-overlay .type-button,
+.home-page.is-overlay .type-sublabel,
+.home-page.is-overlay .category-title,
+.home-page.is-overlay .category-title.is-active,
+.home-page.is-overlay .text-title,
+.home-page.is-overlay .media-meta-title,
+.home-page.is-overlay .media-meta-info,
+.home-page.is-overlay .media-viewer a {
+  color: #ffffff;
+}
+
+.home-page.is-overlay .text-title {
+  border-bottom-color: #ffffff;
+}
+
+.home-page.is-overlay .category-title.is-active {
+  background: transparent;
 }
 
 @media (max-width: 768px) {
