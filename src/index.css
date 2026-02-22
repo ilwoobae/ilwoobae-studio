@@ -353,10 +353,6 @@ a {
   opacity: 1;
 }
 
-.home-page:not(.is-overlay) .radial-overlay {
-  background: #ffffff;
-}
-
 .radial-overlay.is-on {
   clip-path: circle(150% at var(--x) var(--y));
 }
