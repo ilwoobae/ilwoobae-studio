@@ -37,7 +37,7 @@ export default function Home() {
   const [activeType, setActiveType] = useState(null);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [mediaIndex, setMediaIndex] = useState(0);
-  const [overlay, setOverlay] = useState({ x: 0, y: 0, on: false });
+  const [overlay, setOverlay] = useState({ x: 0, y: 0, on: false, key: 0 });
   const [textPage, setTextPage] = useState(0);
   const [activePost, setActivePost] = useState(null);
 
@@ -97,12 +97,12 @@ export default function Home() {
     const y = event.clientY;
     const isOn = overlay.on;
     if (isOn) {
-      setOverlay({ x, y, on: false });
+      setOverlay((prev) => ({ x, y, on: false, key: prev.key + 1 }));
       return;
     }
-    setOverlay({ x, y, on: false });
+    setOverlay((prev) => ({ x, y, on: false, key: prev.key + 1 }));
     requestAnimationFrame(() => {
-      setOverlay({ x, y, on: true });
+      setOverlay((prev) => ({ x, y, on: true, key: prev.key + 1 }));
     });
   };
 
@@ -286,6 +286,7 @@ export default function Home() {
         </div>
       </section>
       <div
+        key={overlay.key}
         className={`radial-overlay${overlay.on ? " is-on" : ""}`}
         style={{ "--x": `${overlay.x}px`, "--y": `${overlay.y}px` }}
         aria-hidden="true"
