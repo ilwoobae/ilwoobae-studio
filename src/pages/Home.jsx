@@ -37,7 +37,6 @@ export default function Home() {
   const [activeType, setActiveType] = useState(null);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [mediaIndex, setMediaIndex] = useState(0);
-  const [overlay, setOverlay] = useState({ x: 0, y: 0, color: "black", active: false });
   const [textPage, setTextPage] = useState(0);
   const [activePost, setActivePost] = useState(null);
 
@@ -92,22 +91,7 @@ export default function Home() {
     }
   }, [activeType, activeCategories, activeCategoryId]);
 
-  const triggerOverlay = (event) => {
-    const isBlack = overlay.color !== "black";
-    const nextColor = isBlack ? "black" : "white";
-    setOverlay({
-      x: event.clientX,
-      y: event.clientY,
-      color: nextColor,
-      active: false,
-    });
-    requestAnimationFrame(() => {
-      setOverlay((prev) => ({ ...prev, active: true }));
-    });
-  };
-
   const handleTypeClick = (typeId, event) => {
-    triggerOverlay(event);
     setActiveType((prev) => (prev === typeId ? null : typeId));
     setActiveCategoryId(null);
     setMediaIndex(0);
@@ -285,13 +269,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <div
-        className={`radial-overlay ${overlay.active ? "is-active" : ""} ${
-          overlay.color === "black" ? "is-black" : "is-white"
-        }`}
-        style={{ "--x": `${overlay.x}px`, "--y": `${overlay.y}px` }}
-        aria-hidden="true"
-      />
       {activePost ? (
         <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
           <div className="text-modal-content" role="dialog" aria-modal="true">
