@@ -157,6 +157,8 @@ a {
   max-height: 80vh;
   overflow: auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .text-modal-content h2 {
