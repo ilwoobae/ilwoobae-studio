@@ -215,7 +215,7 @@ a {
 
 .slot-text {
   display: grid;
-  gap: 6px;
+  gap: 5px;
   align-content: start;
 }
 
@@ -230,8 +230,6 @@ a {
   color: #8b8b8b;
   border: 0;
   letter-spacing: -0.04em;
-  transform: scaleY(1.05);
-  transform-origin: center;
 }
 
 .category-title.is-active {
@@ -315,5 +313,9 @@ a {
     top: auto;
     bottom: -12px;
     transform: translateX(50%);
+  }
+
+  .media-viewer {
+    padding: 15px 20px;
   }
 }
