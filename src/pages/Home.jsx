@@ -273,7 +273,7 @@ export default function Home() {
         <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
           <div className="text-modal-content" role="dialog" aria-modal="true">
             <button type="button" className="text-modal-close" onClick={() => setActivePost(null)}>
-              Close
+              x
             </button>
             <h2>{activePost.title}</h2>
             <div className="text-modal-body">
