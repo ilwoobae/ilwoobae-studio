@@ -81,6 +81,22 @@ a {
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
   transform-origin: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.type-label {
+  line-height: 1;
+}
+
+.type-sublabel {
+  font-family: "Pretendard Light", sans-serif;
+  font-size: 34px;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .slot {
@@ -279,6 +295,10 @@ a {
   .type-button {
     height: 32svh;
     height: 32dvh;
+    font-size: 17px;
+  }
+
+  .type-sublabel {
     font-size: 17px;
   }
 
