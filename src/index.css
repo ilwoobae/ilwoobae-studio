@@ -273,6 +273,39 @@ a {
   font-weight: 600;
 }
 
+.radial-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0;
+}
+
+.radial-overlay::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  background: #111111;
+  transition: transform 0.6s ease;
+}
+
+.radial-overlay.is-active {
+  opacity: 1;
+}
+
+.radial-overlay.is-active::before {
+  transform: translate(-50%, -50%) scale(300);
+}
+
+.radial-overlay.is-white::before {
+  background: #ffffff;
+}
+
 @media (max-width: 768px) {
   .home-page {
     height: 96svh;
