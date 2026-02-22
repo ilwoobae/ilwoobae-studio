@@ -1,6 +1,6 @@
 export const TYPES = [
   { id: "sculpture", label: "조각" },
-  { id: "non-sculpture", label: "非조각" },
+  { id: "non-sculpture", label: "조각이 아닌" },
   { id: "text", label: "글" },
 ];
 
