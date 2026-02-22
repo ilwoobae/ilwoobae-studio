@@ -318,6 +318,10 @@ a {
   transition: clip-path 0.7s ease;
 }
 
+.home-page:not(.is-overlay) .radial-overlay {
+  background: #ffffff;
+}
+
 .radial-overlay.is-on {
   clip-path: circle(150% at var(--x) var(--y));
 }
