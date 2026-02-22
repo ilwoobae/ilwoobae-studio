@@ -284,6 +284,7 @@ a {
   }
 
   .slot:not(:last-child)::after {
+    content: "ㅣ";
     right: 50%;
     top: auto;
     bottom: -12px;
