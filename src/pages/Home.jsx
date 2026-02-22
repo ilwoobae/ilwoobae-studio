@@ -93,17 +93,11 @@ export default function Home() {
   }, [activeType, activeCategories, activeCategoryId]);
 
   const triggerOverlay = (event) => {
-    const x = event.clientX;
-    const y = event.clientY;
-    const isOn = overlay.on;
-    if (isOn) {
-      setOverlay({ x, y, on: false });
-      return;
-    }
-    setOverlay({ x, y, on: false });
-    requestAnimationFrame(() => {
-      setOverlay({ x, y, on: true });
-    });
+    setOverlay((prev) => ({
+      x: event.clientX,
+      y: event.clientY,
+      on: !prev.on,
+    }));
   };
 
   const handleTypeClick = (typeId, event) => {
