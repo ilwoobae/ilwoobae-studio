@@ -77,7 +77,7 @@ a {
   cursor: pointer;
   color: #111111;
   font-family: "KoPub Batang Medium", serif;
-  font-size: clamp(56px, 9.5vw, 143px);
+  font-size: clamp(64px, 11.5vw, 172px);
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
   transform-origin: center;
@@ -94,7 +94,7 @@ a {
 
 .type-sublabel {
   font-family: "Pretendard Light", sans-serif;
-  font-size: clamp(16px, 2.8vw, 34px);
+  font-size: clamp(20px, 3.2vw, 43px);
   letter-spacing: -0.04em;
   line-height: 1;
 }
