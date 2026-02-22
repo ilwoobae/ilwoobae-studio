@@ -278,6 +278,8 @@ export default function Home() {
             <h2>
               {activePost.title}
               {activePost.info1 ? <span className="text-modal-info">{activePost.info1}</span> : null}
+              {activePost.info2 ? <span className="text-modal-info">{activePost.info2}</span> : null}
+              {activePost.info3 ? <span className="text-modal-info">{activePost.info3}</span> : null}
             </h2>
             <div className="text-modal-body">
               {activePost.description ? <p>{activePost.description}</p> : null}
