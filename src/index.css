@@ -84,6 +84,7 @@ a {
   border: 0;
   background: transparent;
   cursor: pointer;
+  color: #111111;
 }
 
 .type-button img {
@@ -136,6 +137,7 @@ a {
   padding: 8px 10px;
   cursor: pointer;
   font-size: 14px;
+  color: #111111;
 }
 
 .text-modal {
@@ -189,6 +191,7 @@ a {
   margin-bottom: 12px;
   margin-left: auto;
   align-self: flex-end;
+  color: #111111;
 }
 
 .slot-text {
@@ -236,6 +239,7 @@ a {
   height: 100%;
   padding: 0 24px;
   border: 1px solid #111111;
+  color: #111111;
 }
 
 .placeholder {
@@ -245,4 +249,18 @@ a {
 .error {
   color: #c0392b;
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    height: 95vh;
+  }
+
+  .front-shell {
+    height: 95vh;
+  }
+
+  .button-stack {
+    height: 95vh;
+  }
 }
