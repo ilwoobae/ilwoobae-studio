@@ -86,6 +86,7 @@ a {
 
 .detail-layer {
   z-index: 3;
+  background: #e0e0e0;
   clip-path: circle(0 at var(--x) var(--y));
   transition: clip-path 0.7s ease;
 }
