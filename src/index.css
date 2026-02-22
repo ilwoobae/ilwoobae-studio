@@ -129,11 +129,11 @@ a {
   display: grid;
   grid-auto-rows: min-content;
   gap: 8px;
-  align-content: start;
+  align-content: center;
 }
 
 .text-title {
-  text-align: left;
+  text-align: center;
   border: 0;
   border-bottom: 1px solid #111111;
   background: transparent;
