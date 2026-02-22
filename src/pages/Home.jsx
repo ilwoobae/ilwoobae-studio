@@ -34,6 +34,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const [activeType, setActiveType] = useState(null);
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [mediaIndex, setMediaIndex] = useState(0);
@@ -41,12 +42,14 @@ export default function Home() {
   const [activePost, setActivePost] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
       .then(([categoryData, postData]) => {
         setCategories(categoryData || []);
         setPosts(postData || []);
       })
-      .catch(() => setError("콘텐츠를 불러오지 못했습니다."));
+      .catch(() => setError("콘텐츠를 불러오지 못했습니다."))
+      .finally(() => setLoading(false));
   }, []);
 
   const categoriesByType = useMemo(() => {
@@ -195,17 +198,25 @@ export default function Home() {
       return (
         <div className="slot-panel slot-panel-categories">
           <div className="slot-text">
-            {activeCategories.map((category) => (
-              <button
-                key={category.id}
-                type="button"
-                className={`category-title${category.id === activeCategory?.id ? " is-active" : ""}`
-                }
-                onClick={() => handleCategoryClick(category.id)}
-              >
-                {category.title}
-              </button>
-            ))}
+            {loading ? (
+              <>
+                <div className="skeleton skeleton-line" aria-hidden="true" />
+                <div className="skeleton skeleton-line" aria-hidden="true" />
+                <div className="skeleton skeleton-line" aria-hidden="true" />
+              </>
+            ) : (
+              activeCategories.map((category) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  className={`category-title${category.id === activeCategory?.id ? " is-active" : ""}`
+                  }
+                  onClick={() => handleCategoryClick(category.id)}
+                >
+                  {category.title}
+                </button>
+              ))
+            )}
           </div>
         </div>
       );
@@ -220,7 +231,13 @@ export default function Home() {
             role="button"
             tabIndex={0}
           >
-            {textPagePosts.length ? (
+            {loading ? (
+              <>
+                <div className="skeleton skeleton-line" aria-hidden="true" />
+                <div className="skeleton skeleton-line" aria-hidden="true" />
+                <div className="skeleton skeleton-line" aria-hidden="true" />
+              </>
+            ) : textPagePosts.length ? (
               textPagePosts.map((post) => (
                 <button
                   key={post.id}
@@ -251,7 +268,13 @@ export default function Home() {
           role="button"
           tabIndex={0}
         >
-          {activeMedia ? renderMedia(activeMedia) : <div className="placeholder">No media.</div>}
+          {activeMedia ? (
+            renderMedia(activeMedia)
+          ) : loading ? (
+            <div className="skeleton" aria-hidden="true" />
+          ) : (
+            <div className="placeholder">No media.</div>
+          )}
         </div>
       </div>
     );
