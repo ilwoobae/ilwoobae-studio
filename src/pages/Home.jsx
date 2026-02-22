@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 const TYPE_BUTTONS = [
   { id: "sculpture", label: "조각" },
   { id: "non-sculpture", label: "조각이 아닌" },
-  { id: "text", label: "글" },
+  { id: "text", label: "말과 글" },
 ];
 
 async function fetchJson(url) {
