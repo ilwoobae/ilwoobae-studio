@@ -275,12 +275,12 @@ export default function Home() {
             <button type="button" className="text-modal-close" onClick={() => setActivePost(null)}>
               x
             </button>
-            <h2>{activePost.title}</h2>
+            <h2>
+              {activePost.title}
+              {activePost.info1 ? <span className="text-modal-info">{activePost.info1}</span> : null}
+            </h2>
             <div className="text-modal-body">
               {activePost.description ? <p>{activePost.description}</p> : null}
-              {activePost.info1 ? <p>{activePost.info1}</p> : null}
-              {activePost.info2 ? <p>{activePost.info2}</p> : null}
-              {activePost.info3 ? <p>{activePost.info3}</p> : null}
             </div>
           </div>
         </div>

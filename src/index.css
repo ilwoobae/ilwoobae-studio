@@ -161,6 +161,15 @@ a {
 
 .text-modal-content h2 {
   margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.text-modal-info {
+  margin-left: 10px;
+  color: #6a6a6a;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .text-modal-body p {
@@ -175,6 +184,8 @@ a {
   padding: 4px 8px;
   cursor: pointer;
   margin-bottom: 12px;
+  margin-left: auto;
+  align-self: flex-end;
 }
 
 .slot-text {
