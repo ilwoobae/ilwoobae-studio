@@ -101,9 +101,8 @@ export default function Home() {
   const triggerOverlay = (event) => {
     const x = event.clientX;
     const y = event.clientY;
-    const isOn = overlay.on;
-    if (isOn) {
-      setOverlay((prev) => ({ x, y, on: false, key: prev.key + 1 }));
+    if (overlay.on) {
+      setOverlay((prev) => ({ ...prev, on: false }));
       return;
     }
     setOverlay((prev) => ({ x, y, on: false, key: prev.key + 1 }));
@@ -116,7 +115,7 @@ export default function Home() {
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
     }
-    setOverlay((prev) => ({ ...prev, on: false, key: prev.key + 1 }));
+    setOverlay((prev) => ({ ...prev, on: false }));
     transitionRef.current = setTimeout(() => {
       setActiveType(null);
       setActiveCategoryId(null);
