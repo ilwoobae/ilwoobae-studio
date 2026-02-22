@@ -93,8 +93,7 @@ export default function Home() {
   }, [activeType, activeCategories, activeCategoryId]);
 
   const triggerOverlay = (event) => {
-    const isBlack = overlay.color !== "black";
-    const nextColor = isBlack ? "black" : "white";
+    const nextColor = overlay.color === "black" ? "white" : "black";
     setOverlay({
       x: event.clientX,
       y: event.clientY,
