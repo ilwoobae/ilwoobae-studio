@@ -82,12 +82,18 @@ a {
 
 .base-layer {
   z-index: 2;
+  clip-path: circle(150% at var(--x) var(--y));
+  transition: clip-path 0.7s ease;
 }
 
 .detail-layer {
   z-index: 3;
   clip-path: circle(0 at var(--x) var(--y));
   transition: clip-path 0.7s ease;
+}
+
+.home-page.is-overlay .base-layer {
+  clip-path: circle(0 at var(--x) var(--y));
 }
 
 .home-page.is-overlay .detail-layer.is-active {
