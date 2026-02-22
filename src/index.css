@@ -261,25 +261,25 @@ a {
 
 @media (max-width: 768px) {
   .home-page {
-    height: 90vh;
+    height: 96vh;
   }
 
   .front-shell {
-    height: 90vh;
+    height: 96vh;
   }
 
   .button-stack {
-    height: 90vh;
+    height: 96vh;
     flex-direction: column;
   }
 
   .type-button {
-    height: 30vh;
+    height: 32vh;
   }
 
   .slot {
     width: 100%;
-    height: 30vh;
+    height: 32vh;
     border-right: 0;
   }
 
