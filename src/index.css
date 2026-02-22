@@ -318,6 +318,24 @@ a {
   transition: clip-path 0.7s ease;
 }
 
+.radial-overlay::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #ffffff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.radial-overlay.is-on::after {
+  opacity: 1;
+}
+
 .home-page:not(.is-overlay) .radial-overlay {
   background: #ffffff;
 }
@@ -336,7 +354,7 @@ a {
 .home-page.is-overlay .media-meta-title,
 .home-page.is-overlay .media-meta-info,
 .home-page.is-overlay .media-viewer a {
-  color: #333333;
+  color: #030303;
 }
 
 .home-page.is-overlay .text-title {
