@@ -52,7 +52,6 @@ a {
 .home-page {
   height: 100vh;
   overflow: hidden;
-  position: relative;
 }
 
 .front-shell {
@@ -60,8 +59,6 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 2;
 }
 
 .button-stack {
@@ -69,8 +66,6 @@ a {
   height: 100vh;
   display: flex;
   flex-direction: row;
-  position: relative;
-  z-index: 2;
 }
 
 .type-button {
@@ -282,7 +277,7 @@ a {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 20;
   opacity: 0;
 }
 
