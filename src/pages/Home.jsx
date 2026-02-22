@@ -117,21 +117,14 @@ export default function Home() {
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
     }
-    if (activeType) {
-      transitionRef.current = setTimeout(() => {
-        setActiveType(null);
-        setActiveCategoryId(null);
-        setMediaIndex(0);
-        setTextPage(0);
-        setActivePost(null);
-      }, 350);
-      return;
-    }
-    setActiveType(typeId);
-    setActiveCategoryId(null);
-    setMediaIndex(0);
-    setTextPage(0);
-    setActivePost(null);
+    const nextType = activeType ? null : typeId;
+    transitionRef.current = setTimeout(() => {
+      setActiveType(nextType);
+      setActiveCategoryId(null);
+      setMediaIndex(0);
+      setTextPage(0);
+      setActivePost(null);
+    }, 350);
   };
 
   const handleCategoryClick = (categoryId) => {
@@ -194,23 +187,19 @@ export default function Home() {
     );
   }, [activeType, activeCategoryId]);
 
-  const renderButtonSlot = (slotIndex) => {
-    const type = TYPE_BUTTONS[slotIndex];
-    return (
-      <button
-        type="button"
-        className="type-button"
-        onClick={(event) => handleTypeClick(type.id, event)}
-      >
-        <span className="type-label">{type.label}</span>
-        <span className="type-sublabel">{type.subLabel}</span>
-      </button>
-    );
-  };
-
   const renderSlot = (slotIndex) => {
     if (showButtonsOnly) {
-      return renderButtonSlot(slotIndex);
+      const type = TYPE_BUTTONS[slotIndex];
+      return (
+        <button
+          type="button"
+          className="type-button"
+          onClick={(event) => handleTypeClick(type.id, event)}
+        >
+          <span className="type-label">{type.label}</span>
+          <span className="type-sublabel">{type.subLabel}</span>
+        </button>
+      );
     }
 
     const activeButton = TYPE_BUTTONS[activeIndex];
@@ -297,36 +286,21 @@ export default function Home() {
   };
 
   return (
-    <div
-      className={`page home-page${overlay.on ? " is-overlay" : ""}`}
-      style={{ "--x": `${overlay.x}px`, "--y": `${overlay.y}px` }}
-    >
+    <div className={`page home-page${overlay.on ? " is-overlay" : ""}`}>
       {error ? <p className="error">{error}</p> : null}
       <section className="front-shell">
-        <div className="layers">
-          <div className="base-layer">
-            <div className="button-stack">
-              {[0, 1, 2].map((idx) => (
-                <div key={idx} className="slot">
-                  {renderButtonSlot(idx)}
-                </div>
-              ))}
+        <div className="button-stack">
+          {[0, 1, 2].map((idx) => (
+            <div key={idx} className="slot">
+              {renderSlot(idx)}
             </div>
-          </div>
-          <div className={`detail-layer${activeType ? " is-active" : ""}`}>
-            <div className="button-stack">
-              {[0, 1, 2].map((idx) => (
-                <div key={idx} className="slot">
-                  {renderSlot(idx)}
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </section>
       <div
         key={overlay.key}
         className={`radial-overlay${overlay.on ? " is-on" : ""}`}
+        style={{ "--x": `${overlay.x}px`, "--y": `${overlay.y}px` }}
         aria-hidden="true"
       />
       {activePost ? (
