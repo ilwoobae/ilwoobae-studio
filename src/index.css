@@ -284,7 +284,7 @@ a {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: #111111;
+  background: #030303;
   clip-path: circle(0 at var(--x) var(--y));
   transition: clip-path 0.7s ease;
 }
@@ -299,20 +299,23 @@ a {
 
 .home-page.is-overlay .type-button,
 .home-page.is-overlay .type-sublabel,
-.home-page.is-overlay .category-title,
-.home-page.is-overlay .category-title.is-active,
 .home-page.is-overlay .text-title,
 .home-page.is-overlay .media-meta-title,
 .home-page.is-overlay .media-meta-info,
 .home-page.is-overlay .media-viewer a {
-  color: #ffffff;
+  color: #333333;
 }
 
 .home-page.is-overlay .text-title {
   border-bottom-color: #ffffff;
 }
 
+.home-page.is-overlay .category-title {
+  color: #999999;
+}
+
 .home-page.is-overlay .category-title.is-active {
+  color: #dedede;
   background: transparent;
 }
 
