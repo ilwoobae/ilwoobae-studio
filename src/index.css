@@ -383,7 +383,7 @@ a {
 }
 
 .home-page.is-overlay .category-title.is-active {
-  color: #ffffff;
+  color: #dedede;
   background: transparent;
 }
 
@@ -401,6 +401,16 @@ a {
   cursor: pointer;
 }
 
+.radial-exit::before {
+  content: "↩";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #030303;
+  font-size: 14px;
+  line-height: 1;
+}
 
 @media (max-width: 768px) {
   .home-page {
