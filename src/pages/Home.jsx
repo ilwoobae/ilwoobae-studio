@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const TYPE_BUTTONS = [
   { id: "sculpture", label: "조각", subLabel: "sculpture" },
@@ -40,7 +40,6 @@ export default function Home() {
   const [overlay, setOverlay] = useState({ x: 0, y: 0, on: false, key: 0 });
   const [textPage, setTextPage] = useState(0);
   const [activePost, setActivePost] = useState(null);
-  const transitionRef = useRef(null);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -49,11 +48,6 @@ export default function Home() {
         setPosts(postData || []);
       })
       .catch(() => setError("콘텐츠를 불러오지 못했습니다."));
-    return () => {
-      if (transitionRef.current) {
-        clearTimeout(transitionRef.current);
-      }
-    };
   }, []);
 
   const categoriesByType = useMemo(() => {
@@ -114,17 +108,11 @@ export default function Home() {
 
   const handleTypeClick = (typeId, event) => {
     triggerOverlay(event);
-    if (transitionRef.current) {
-      clearTimeout(transitionRef.current);
-    }
-    const nextType = activeType ? null : typeId;
-    transitionRef.current = setTimeout(() => {
-      setActiveType(nextType);
-      setActiveCategoryId(null);
-      setMediaIndex(0);
-      setTextPage(0);
-      setActivePost(null);
-    }, 350);
+    setActiveType((prev) => (prev === typeId ? null : typeId));
+    setActiveCategoryId(null);
+    setMediaIndex(0);
+    setTextPage(0);
+    setActivePost(null);
   };
 
   const handleCategoryClick = (categoryId) => {
