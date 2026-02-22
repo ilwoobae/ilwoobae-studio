@@ -168,7 +168,7 @@ export default function Home() {
           className="type-button"
           onClick={() => handleTypeClick(type.id)}
         >
-          {type.label}
+          <span className="type-label">{type.label}</span>
         </button>
       );
     }
@@ -181,7 +181,7 @@ export default function Home() {
           className="type-button"
           onClick={() => handleTypeClick(activeButton.id)}
         >
-          {activeButton.label}
+          <span className="type-label">{activeButton.label}</span>
         </button>
       );
     }
