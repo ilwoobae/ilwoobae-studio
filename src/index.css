@@ -79,7 +79,7 @@ a {
   font-family: "KoPub Batang Medium", serif;
   font-size: 23px;
   letter-spacing: -0.04em;
-  transform: scaleX(1.1);
+  transform: scaleY(1.1);
   transform-origin: center;
 }
 
@@ -200,7 +200,7 @@ a {
   color: #8b8b8b;
   border: 0;
   letter-spacing: -0.04em;
-  transform: scaleX(1.1);
+  transform: scaleY(1.1);
   transform-origin: center;
 }
 
