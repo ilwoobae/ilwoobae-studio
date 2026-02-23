@@ -160,7 +160,7 @@ a {
   cursor: pointer;
   color: #2f2f2f;
   font-family: "KoPub Batang Pro Light", serif;
-  font-size: 143px;
+  font-size: 174px;
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
   transform-origin: center;
@@ -173,6 +173,9 @@ a {
 
 .type-label {
   line-height: 1;
+  display: block;
+  text-align: center;
+  word-break: break-all;
 }
 
 .type-sublabel {
@@ -423,11 +426,11 @@ a {
   .type-button {
     height: 32svh;
     height: 32dvh;
-    font-size: clamp(17px, 6.2vw, 24px);
+    font-size: 43px;
   }
 
   .type-sublabel {
-    font-size: clamp(12px, 4.2vw, 17px);
+    font-size: 33px;
   }
 
   .slot {
