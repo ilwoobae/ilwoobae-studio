@@ -232,18 +232,18 @@ a {
 }
 
 .text-title-lines {
-  display: block;
+  display: inline;
 }
 
 .text-title-meta {
-  display: block;
+  display: inline;
   font-size: 14px;
   color: #6a6a6a;
   font-weight: 400;
 }
 
 .text-title {
-  text-align: center;
+  text-align: left;
   border: 0;
   border-bottom: 1px solid #2f2f2f;
   background: transparent;
@@ -466,5 +466,7 @@ a {
   .media-indicator-item {
     font-size: 11px;
     padding-right: 0;
+    width: 28px;
+    height: 28px;
   }
 }
