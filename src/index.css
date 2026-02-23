@@ -107,17 +107,6 @@ a {
   justify-content: center;
 }
 
-.slot:not(:last-child)::after {
-  content: "-";
-  position: absolute;
-  right: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #111111;
-  font-size: 16px;
-  line-height: 1;
-}
-
 .slot {
   position: relative;
 }
@@ -308,11 +297,7 @@ a {
   }
 
   .slot:not(:last-child)::after {
-    content: "ㅣ";
-    right: 50%;
-    top: auto;
-    bottom: -12px;
-    transform: translateX(50%);
+    content: "";
   }
 
   .media-viewer {
