@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 
 const TYPE_BUTTONS = [
   { id: "sculpture", label: "조각", subLabel: "sculpture" },
-  { id: "non-sculpture", label: "조각이 아닌", subLabel: "non" },
   { id: "text", label: "말과 글", subLabel: "text" },
+  { id: "non-sculpture", label: "조각이 아닌", subLabel: "non" },
 ];
 
 async function fetchJson(url) {
