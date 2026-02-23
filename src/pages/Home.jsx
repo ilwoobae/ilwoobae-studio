@@ -296,6 +296,20 @@ export default function Home() {
       {detailVisible && activeMedia ? (
         <div className="media-title">{activeMedia.title}</div>
       ) : null}
+      {detailVisible && mediaPosts.length ? (
+        <div className="media-indicator" aria-hidden="true">
+          {mediaPosts.map((_, index) => (
+            <div
+              key={`media-indicator-${index}`}
+              className={`media-indicator-item${
+                index === (mediaIndex % mediaPosts.length) ? " is-active" : ""
+              }`}
+            >
+              {index + 1}
+            </div>
+          ))}
+        </div>
+      ) : null}
       {activePost ? (
         <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
           <div className="text-modal-content" role="dialog" aria-modal="true">

@@ -22,6 +22,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "DinaChaumont Display Bold";
+  src: url("/fonts/DinaChaumont-DisplayBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   font-family: "Pretendard Light", sans-serif;
   color: #111111;
@@ -104,6 +112,33 @@ a {
   white-space: nowrap;
   width: 100%;
   z-index: 7;
+}
+
+.media-indicator {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  gap: 10px;
+  z-index: 8;
+}
+
+.media-indicator-item {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #111111;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-family: "DinaChaumont Display Bold", serif;
+  font-size: 34px;
+  font-style: italic;
+  line-height: 1;
+}
+
+.media-indicator-item.is-active {
+  background: #111111;
+  color: #ffffff;
 }
 
 .button-stack {
