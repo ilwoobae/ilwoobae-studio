@@ -384,5 +384,7 @@ a {
     height: min(500px, 70vh);
     padding: 0;
     z-index: 6;
+    align-items: center;
+    justify-content: center;
   }
 }
