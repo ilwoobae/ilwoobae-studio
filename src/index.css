@@ -281,6 +281,8 @@ a {
   max-width: 500px;
   max-height: 500px;
   object-fit: contain;
+  object-position: top center;
+  align-self: flex-start;
   display: block;
 }
 
