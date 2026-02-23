@@ -160,6 +160,7 @@ a {
   cursor: pointer;
   color: #111111;
   font-family: "Noto Serif KR", serif;
+  font-weight: 800;
   font-size: clamp(64px, 11.5vw, 172px);
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
