@@ -217,9 +217,16 @@ export default function TypePage() {
     );
   };
 
+  const typeClass =
+    activeType === "sculpture"
+      ? "type-sculpture"
+      : activeType === "non-sculpture"
+      ? "type-non-sculpture"
+      : "type-text";
+
   return (
     <div
-      className={`page home-page type-page${reveal.open ? " is-open" : ""}`}
+      className={`page home-page type-page ${typeClass}${reveal.open ? " is-open" : ""}`}
       style={{ "--x": `${reveal.x}px`, "--y": `${reveal.y}px` }}
     >
       {error ? <p className="error">{error}</p> : null}
