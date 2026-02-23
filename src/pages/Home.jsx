@@ -231,7 +231,13 @@ export default function Home() {
       className="type-button"
       onClick={(event) => handleTypeClick(type.id, event)}
     >
-      <span className="type-label">{type.label}</span>
+      <span className="type-label">
+        {type.label.split("").map((char, index) => (
+          <span key={`${type.id}-${index}`} className="type-char">
+            {char === " " ? "\u00A0" : char}
+          </span>
+        ))}
+      </span>
       <span className="type-sublabel">{type.subLabel}</span>
     </button>
   );
