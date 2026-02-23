@@ -101,6 +101,8 @@ a {
   letter-spacing: -0.04em;
   line-height: 1;
   text-align: center;
+  white-space: nowrap;
+  width: 100vw;
   z-index: 7;
 }
 
