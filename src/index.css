@@ -269,7 +269,7 @@ a {
   transform: translateX(-50%);
   width: min(500px, 90vw);
   height: min(500px, 70vh);
-  align-items: center;
+  align-items: flex-start;
   padding: 0;
   z-index: 6;
 }
