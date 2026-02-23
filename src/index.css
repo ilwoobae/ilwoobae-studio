@@ -33,7 +33,7 @@
 :root {
   font-family: "Pretendard Light", sans-serif;
   color: #2f2f2f;
-  background: #ffffff;
+  background: #e1e1e1;
   letter-spacing: -0.02em;
   line-height: 1.8;
 }
@@ -45,7 +45,7 @@
 html,
 body {
   margin: 0;
-  background: #ffffff;
+  background: #e1e1e1;
 }
 
 a {
@@ -71,7 +71,7 @@ a {
 }
 
 .type-page {
-  background: #ffffff;
+  background: #e1e1e1;
 }
 
 .type-page .type-reveal {
@@ -248,6 +248,7 @@ a {
 
 .text-title-line-meta {
   display: inline;
+  margin-left: 5px;
 }
 
 .text-title {
@@ -479,6 +480,8 @@ a {
   .text-title-line-meta {
     display: block;
     font-size: 14px;
+    margin-top: 5px;
+    margin-left: 0;
   }
 
   .category-title {
