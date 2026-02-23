@@ -15,9 +15,9 @@
 }
 
 @font-face {
-  font-family: "Noto Serif KR";
-  src: url("/fonts/NotoSerifKR-VariableFont_wght.ttf") format("truetype");
-  font-weight: 100 900;
+  font-family: "KoPub Batang Pro Bold";
+  src: url("/fonts/KoPub Batang_Pro Bold.otf") format("opentype");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -159,7 +159,7 @@ a {
   background: transparent;
   cursor: pointer;
   color: #111111;
-  font-family: "Noto Serif KR", serif;
+  font-family: "KoPub Batang Pro Bold", serif;
   font-weight: 800;
   font-size: clamp(64px, 11.5vw, 172px);
   letter-spacing: -0.04em;
