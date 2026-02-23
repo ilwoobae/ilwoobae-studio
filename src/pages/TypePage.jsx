@@ -248,6 +248,9 @@ export default function TypePage() {
         onClick={handleClose}
         aria-label="Back to home"
       />
+      {activeMedia ? (
+        <div className="media-title">{activeMedia.title}</div>
+      ) : null}
       {activePost ? (
         <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
           <div className="text-modal-content" role="dialog" aria-modal="true">
