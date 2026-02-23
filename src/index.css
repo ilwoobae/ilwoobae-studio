@@ -102,7 +102,7 @@ a {
   line-height: 1;
   text-align: center;
   white-space: nowrap;
-  width: 100vw;
+  width: 100%;
   z-index: 7;
 }
 
