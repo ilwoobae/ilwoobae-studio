@@ -33,7 +33,7 @@
 :root {
   font-family: "Pretendard Light", sans-serif;
   color: #2f2f2f;
-  background: #ffffff;
+  background: #e1e1e1;
   letter-spacing: -0.02em;
   line-height: 1.8;
 }
@@ -45,7 +45,7 @@
 html,
 body {
   margin: 0;
-  background: #ffffff;
+  background: #e1e1e1;
 }
 
 a {
@@ -71,7 +71,7 @@ a {
 }
 
 .type-page {
-  background: #c3c3c3;
+  background: #e1e1e1;
 }
 
 .type-page .type-reveal {
