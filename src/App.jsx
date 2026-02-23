@@ -7,7 +7,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminGroupForm from "./pages/AdminGroupForm";
 import AdminCategoryForm from "./pages/AdminCategoryForm";
 import AdminPostForm from "./pages/AdminPostForm";
-import TypePage from "./pages/TypePage";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -16,7 +15,6 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="type/:typeId" element={<TypePage />} />
         </Route>
 
         <Route path="admin/login" element={<AdminLogin />} />
