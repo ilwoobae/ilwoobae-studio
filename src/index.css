@@ -373,4 +373,16 @@ a {
   .media-viewer {
     padding: 0;
   }
+
+  .type-sculpture .media-viewer,
+  .type-non-sculpture .media-viewer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(500px, 90vw);
+    height: min(500px, 70vh);
+    padding: 0;
+    z-index: 6;
+  }
 }
