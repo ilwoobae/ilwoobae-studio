@@ -44,6 +44,23 @@ export default function Home() {
   const transitionRef = useRef(null);
 
   useEffect(() => {
+    const pathMatch = window.location.pathname.match(/^\\/type\\/([^/]+)$/);
+    if (!pathMatch) return;
+    const initialType = pathMatch[1];
+    setDetailVisible(true);
+    setActiveType(initialType);
+    setActiveCategoryId(null);
+    setMediaIndex(0);
+    setTextPage(0);
+    setActivePost(null);
+    setReveal({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      open: true,
+    });
+  }, []);
+
+  useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
       .then(([categoryData, postData]) => {
         setCategories(categoryData || []);
@@ -113,6 +130,11 @@ export default function Home() {
     setActivePost(null);
     setDetailVisible(true);
     setReveal({ x: event.clientX, y: event.clientY, open: false });
+    window.history.pushState(
+      { activeType: typeId, x: event.clientX, y: event.clientY },
+      "",
+      `/type/${typeId}`
+    );
     requestAnimationFrame(() => {
       setReveal((prev) => ({ ...prev, open: true }));
     });
@@ -130,6 +152,7 @@ export default function Home() {
       setMediaIndex(0);
       setTextPage(0);
       setActivePost(null);
+      window.history.pushState({}, "", "/");
     }, 650);
   };
 
@@ -140,6 +163,38 @@ export default function Home() {
     }
     openDetail(typeId, event);
   };
+
+  useEffect(() => {
+    const handlePopState = (event) => {
+      const state = event.state || {};
+      if (state.activeType) {
+        setDetailVisible(true);
+        setActiveType(state.activeType);
+        setActiveCategoryId(null);
+        setMediaIndex(0);
+        setTextPage(0);
+        setActivePost(null);
+        const fallbackX = window.innerWidth / 2;
+        const fallbackY = window.innerHeight / 2;
+        setReveal({
+          x: state.x ?? fallbackX,
+          y: state.y ?? fallbackY,
+          open: true,
+        });
+      } else {
+        setDetailVisible(false);
+        setActiveType(null);
+        setActiveCategoryId(null);
+        setMediaIndex(0);
+        setTextPage(0);
+        setActivePost(null);
+        setReveal((prev) => ({ ...prev, open: false }));
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setActiveCategoryId(categoryId);
