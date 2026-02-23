@@ -44,7 +44,7 @@ export default function Home() {
   const transitionRef = useRef(null);
 
   useEffect(() => {
-    const pathMatch = window.location.pathname.match(/^\\/type\\/([^/]+)$/);
+    const pathMatch = window.location.pathname.match(/^\/type\/([^/]+)$/);
     if (!pathMatch) return;
     const initialType = pathMatch[1];
     setDetailVisible(true);
