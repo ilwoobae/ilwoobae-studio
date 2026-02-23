@@ -160,7 +160,7 @@ a {
   cursor: pointer;
   color: #2f2f2f;
   font-family: "KoPub Batang Pro Light", serif;
-  font-size: clamp(90px, 10vw, 174px);
+  font-size: clamp(90px, 10vw, 213px);
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
   transform-origin: center;
@@ -204,7 +204,7 @@ a {
   line-height: 1;
   transform: scaleY(1.4);
   transform-origin: center;
-  margin-top: -50px;
+  margin-top: -30px;
 }
 
 .slot {
