@@ -204,7 +204,7 @@ a {
   line-height: 1;
   transform: scaleY(1.4);
   transform-origin: center;
-  margin-top: -100px;
+  margin-top: -50px;
 }
 
 .slot {
@@ -453,6 +453,7 @@ a {
 
   .type-sublabel {
     font-size: 33px;
+    margin-top: -10px;
   }
 
   .slot {
