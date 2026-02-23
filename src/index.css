@@ -231,6 +231,17 @@ a {
   justify-items: start;
 }
 
+.text-title-lines {
+  display: block;
+}
+
+.text-title-meta {
+  display: block;
+  font-size: 14px;
+  color: #6a6a6a;
+  font-weight: 400;
+}
+
 .text-title {
   text-align: center;
   border: 0;
@@ -238,8 +249,10 @@ a {
   background: transparent;
   padding: 0;
   cursor: pointer;
-  font-size: 14px;
-  color: #2f2f2f;
+  font-size: 17px;
+  color: #6a6a6a;
+  letter-spacing: -0.04em;
+  font-family: "Pretendard Light", sans-serif;
 }
 
 .text-modal {
@@ -435,5 +448,23 @@ a {
     z-index: 6;
     align-items: center;
     justify-content: center;
+  }
+
+  .text-title {
+    font-size: 17px;
+  }
+
+  .text-title-lines {
+    display: block;
+  }
+
+  .text-title-meta {
+    display: block;
+    font-size: 14px;
+  }
+
+  .media-indicator-item {
+    font-size: 11px;
+    padding-right: 0;
   }
 }
