@@ -160,7 +160,7 @@ a {
   cursor: pointer;
   color: #2f2f2f;
   font-family: "KoPub Batang Pro Light", serif;
-  font-size: clamp(64px, 11.5vw, 172px);
+  font-size: 143px;
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
   transform-origin: center;
@@ -182,7 +182,7 @@ a {
 .type-sublabel {
   display: inline-block;
   font-family: "Pretendard Light", sans-serif;
-  font-size: clamp(20px, 3.2vw, 43px);
+  font-size: 67px;
   letter-spacing: -0.04em;
   line-height: 1;
   transform: scaleX(var(--type-scale));
