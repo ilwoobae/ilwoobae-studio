@@ -292,11 +292,11 @@ export default function Home() {
                     setActivePost(post);
                   }}
                 >
-                  <span className="text-title-lines">
-                    {post.__categoryTitle ? `(${post.__categoryTitle})` : ""}
+                  <span className="text-title-lines text-title-line-main">
+                    {post.__categoryTitle ? `${post.__categoryTitle}: ` : ""}
+                    {post.title}
                   </span>
-                  <span className="text-title-lines">{post.title}</span>
-                  <span className="text-title-meta">
+                  <span className="text-title-meta text-title-line-meta">
                     {post.info1 ? `${post.info1}` : ""}
                     {post.info2 ? ` ${post.info2}` : ""}
                     {post.info3 ? ` ${post.info3}` : ""}

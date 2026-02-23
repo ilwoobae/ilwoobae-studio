@@ -237,9 +237,17 @@ a {
 
 .text-title-meta {
   display: inline;
-  font-size: 14px;
+  font-size: 17px;
   color: #6a6a6a;
   font-weight: 400;
+}
+
+.text-title-line-main {
+  display: inline;
+}
+
+.text-title-line-meta {
+  display: inline;
 }
 
 .text-title {
@@ -252,7 +260,7 @@ a {
   font-size: 17px;
   color: #6a6a6a;
   letter-spacing: -0.04em;
-  font-family: "Pretendard Light", sans-serif;
+  font-family: "Pretendard Medium", sans-serif;
 }
 
 .text-modal {
@@ -326,7 +334,7 @@ a {
   padding: 2px 5px;
   cursor: pointer;
   font-size: 17px;
-  font-family: "Pretendard Light", sans-serif;
+  font-family: "Pretendard Medium", sans-serif;
   font-weight: 400;
   color: #6a6a6a;
   border: 0;
@@ -451,7 +459,7 @@ a {
   }
 
   .text-title {
-    font-size: 17px;
+    font-size: 14px;
   }
 
   .text-title-lines {
@@ -460,6 +468,20 @@ a {
 
   .text-title-meta {
     display: block;
+    font-size: 14px;
+  }
+
+  .text-title-line-main {
+    display: block;
+    font-size: 14px;
+  }
+
+  .text-title-line-meta {
+    display: block;
+    font-size: 14px;
+  }
+
+  .category-title {
     font-size: 14px;
   }
 
