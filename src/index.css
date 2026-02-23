@@ -149,7 +149,8 @@ a {
 }
 
 .slot-panel-categories {
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 0;
 }
 
@@ -164,11 +165,12 @@ a {
   display: grid;
   grid-auto-rows: min-content;
   gap: 8px;
-  align-content: center;
+  align-content: start;
+  justify-items: start;
 }
 
 .text-title {
-  text-align: center;
+  text-align: left;
   border: 0;
   border-bottom: 1px solid #111111;
   background: transparent;
@@ -239,7 +241,7 @@ a {
 }
 
 .category-title {
-  text-align: center;
+  text-align: left;
   background: transparent;
   padding: 2px 5px;
   cursor: pointer;
