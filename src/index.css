@@ -87,8 +87,8 @@ a {
 
 .radial-marker {
   position: fixed;
-  width: 22px;
-  height: 22px;
+  width: 44px;
+  height: 44px;
   left: var(--x);
   top: var(--y);
   transform: translate(-50%, -50%);
@@ -282,11 +282,11 @@ a {
   border: 0;
   border-bottom: 1px solid #2f2f2f;
   background: transparent;
-  padding: 0;
+  padding: 2px 0;
   cursor: pointer;
   font-size: 17px;
   color: #6a6a6a;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   font-family: "Pretendard Medium", sans-serif;
 }
 
@@ -371,7 +371,6 @@ a {
 .category-title.is-active {
   color: #2f2f2f;
   background: transparent;
-  font-weight: 600;
 }
 
 .media-viewer {
