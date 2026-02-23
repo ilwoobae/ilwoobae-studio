@@ -221,6 +221,16 @@ a {
   align-content: center;
 }
 
+.text-viewer-fixed {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: auto;
+  height: auto;
+  align-content: start;
+  justify-items: start;
+}
+
 .text-title {
   text-align: center;
   border: 0;

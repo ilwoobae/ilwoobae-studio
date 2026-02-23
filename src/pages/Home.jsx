@@ -93,12 +93,16 @@ export default function Home() {
     activeCategories[0] ||
     null;
   const activePosts = activeCategory ? postsByCategory.get(activeCategory.id) || [] : [];
+  const textPostsAll = activeCategories.flatMap(
+    (category) => postsByCategory.get(category.id) || []
+  );
   const mediaPosts = activePosts.filter((post) => post.attachment_url);
   const activeMedia = mediaPosts.length ? mediaPosts[mediaIndex % mediaPosts.length] : null;
   const isTextType = activeType === "text";
   const postsPerPage = 6;
-  const totalTextPages = Math.max(1, Math.ceil(activePosts.length / postsPerPage));
-  const textPagePosts = activePosts.slice(
+  const textSource = isTextType ? textPostsAll : activePosts;
+  const totalTextPages = Math.max(1, Math.ceil(textSource.length / postsPerPage));
+  const textPagePosts = textSource.slice(
     textPage * postsPerPage,
     textPage * postsPerPage + postsPerPage
   );
@@ -244,6 +248,9 @@ export default function Home() {
     const contentType = slotIndex === otherSlots[0] ? "categories" : "media";
 
     if (contentType === "categories") {
+      if (isTextType) {
+        return <div className="slot-panel slot-panel-categories" />;
+      }
       return (
         <div className="slot-panel slot-panel-categories">
           <div className="slot-text">
@@ -265,7 +272,12 @@ export default function Home() {
     if (isTextType) {
       return (
         <div className="slot-panel slot-panel-text">
-          <div className="text-viewer" onClick={handleNextTextPage} role="button" tabIndex={0}>
+          <div
+            className="text-viewer text-viewer-fixed"
+            onClick={handleNextTextPage}
+            role="button"
+            tabIndex={0}
+          >
             {textPagePosts.length ? (
               textPagePosts.map((post) => (
                 <button
