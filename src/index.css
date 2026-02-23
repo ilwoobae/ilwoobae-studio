@@ -32,7 +32,7 @@
 
 :root {
   font-family: "Pretendard Light", sans-serif;
-  color: #111111;
+  color: #2f2f2f;
   background: #ffffff;
   letter-spacing: -0.02em;
   line-height: 1.8;
@@ -71,7 +71,7 @@ a {
 }
 
 .type-page {
-  background: #f2f2f2;
+  background: #c3c3c3;
 }
 
 .type-page .type-reveal {
@@ -94,7 +94,7 @@ a {
   transform: translate(-50%, -50%);
   border: 0;
   border-radius: 50%;
-  background: #111111;
+  background: #2f2f2f;
   z-index: 5;
   cursor: pointer;
 }
@@ -128,7 +128,7 @@ a {
 .media-indicator-item {
   width: 44px;
   height: 44px;
-  border: 1px solid #111111;
+  border: 1px solid #2f2f2f;
   border-radius: 999px;
   display: grid;
   place-items: center;
@@ -140,7 +140,7 @@ a {
 }
 
 .media-indicator-item.is-active {
-  background: #111111;
+  background: #2f2f2f;
   color: #ffffff;
 }
 
@@ -158,7 +158,7 @@ a {
   border: 0;
   background: transparent;
   cursor: pointer;
-  color: #111111;
+  color: #2f2f2f;
   font-family: "KoPub Batang Pro Medium", serif;
   font-size: clamp(64px, 11.5vw, 172px);
   letter-spacing: -0.04em;
@@ -224,12 +224,12 @@ a {
 .text-title {
   text-align: center;
   border: 0;
-  border-bottom: 1px solid #111111;
+  border-bottom: 1px solid #2f2f2f;
   background: transparent;
   padding: 0;
   cursor: pointer;
   font-size: 14px;
-  color: #111111;
+  color: #2f2f2f;
 }
 
 .text-modal {
@@ -245,7 +245,7 @@ a {
 
 .text-modal-content {
   background: #ffffff;
-  border: 1px solid #111111;
+  border: 1px solid #2f2f2f;
   max-width: 640px;
   width: 100%;
   max-height: 80vh;
@@ -283,7 +283,7 @@ a {
   margin-bottom: 12px;
   margin-left: auto;
   align-self: flex-end;
-  color: #111111;
+  color: #2f2f2f;
 }
 
 .slot-text {
@@ -305,13 +305,13 @@ a {
   font-size: 17px;
   font-family: "Pretendard Light", sans-serif;
   font-weight: 400;
-  color: #8b8b8b;
+  color: #6a6a6a;
   border: 0;
   letter-spacing: -0.04em;
 }
 
 .category-title.is-active {
-  color: #111111;
+  color: #2f2f2f;
   background: transparent;
 }
 
@@ -355,8 +355,8 @@ a {
   justify-content: center;
   height: 100%;
   padding: 0 24px;
-  border: 1px solid #111111;
-  color: #111111;
+  border: 1px solid #2f2f2f;
+  color: #2f2f2f;
 }
 
 .placeholder {
