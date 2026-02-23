@@ -97,7 +97,8 @@ a {
   bottom: 20px;
   transform: translateX(-50%);
   font-family: "KoPub Batang Medium", serif;
-  font-size: clamp(48px, 10vw, 143px);
+  font-size: clamp(18px, 4vw, 43px);
+  letter-spacing: -0.04em;
   line-height: 1;
   text-align: center;
   z-index: 7;
