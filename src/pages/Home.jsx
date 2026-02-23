@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const TYPE_BUTTONS = [
   { id: "sculpture", label: "조각", subLabel: "sculpture" },
@@ -42,6 +42,7 @@ export default function Home() {
   const [reveal, setReveal] = useState({ x: 0, y: 0, open: false });
   const [detailVisible, setDetailVisible] = useState(false);
   const transitionRef = useRef(null);
+  const typeButtonRefs = useRef([]);
 
   useEffect(() => {
     const pathMatch = window.location.pathname.match(/^\/type\/([^/]+)$/);
@@ -59,6 +60,28 @@ export default function Home() {
       open: true,
     });
   }, []);
+
+  useLayoutEffect(() => {
+    const updateScales = () => {
+      typeButtonRefs.current.forEach((button) => {
+        if (!button) return;
+        const label = button.querySelector(".type-label");
+        const subLabel = button.querySelector(".type-sublabel");
+        const target = label || subLabel;
+        if (!target) return;
+        const buttonWidth = button.clientWidth;
+        const targetWidth = target.scrollWidth || target.clientWidth;
+        if (!buttonWidth || !targetWidth) return;
+        const scale = Math.max(0.6, Math.min(1.4, buttonWidth / targetWidth));
+        button.style.setProperty("--type-scale", scale.toFixed(3));
+      });
+    };
+
+    updateScales();
+    const handleResize = () => updateScales();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [detailVisible, activeType]);
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -225,11 +248,14 @@ export default function Home() {
     setTextPage((prev) => (prev + 1) % totalTextPages);
   };
 
-  const renderButton = (type) => (
+  const renderButton = (type, index) => (
     <button
       type="button"
       className="type-button"
       onClick={(event) => handleTypeClick(type.id, event)}
+      ref={(el) => {
+        typeButtonRefs.current[index] = el;
+      }}
     >
       <span className="type-label">{type.label}</span>
       <span className="type-sublabel">{type.subLabel}</span>
@@ -238,13 +264,13 @@ export default function Home() {
 
   const renderSlot = (slotIndex) => {
     if (!activeType) {
-      return renderButton(TYPE_BUTTONS[slotIndex]);
+      return renderButton(TYPE_BUTTONS[slotIndex], slotIndex);
     }
 
     const activeIndex = TYPE_BUTTONS.findIndex((type) => type.id === activeType);
     const activeButton = TYPE_BUTTONS[activeIndex];
     if (slotIndex === activeIndex) {
-      return renderButton(activeButton);
+      return renderButton(activeButton, activeIndex);
     }
 
     const otherSlots = [0, 1, 2].filter((idx) => idx !== activeIndex);
@@ -354,9 +380,9 @@ export default function Home() {
           </div>
         ) : (
           <div className="button-stack">
-            {TYPE_BUTTONS.map((type) => (
+            {TYPE_BUTTONS.map((type, index) => (
               <div key={type.id} className="slot">
-                {renderButton(type)}
+                {renderButton(type, index)}
               </div>
             ))}
           </div>

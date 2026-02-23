@@ -169,10 +169,13 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0;
+  --type-scale: 1;
 }
 
 .type-label {
   line-height: 1;
+  transform: scaleX(var(--type-scale));
+  transform-origin: center;
 }
 
 .type-sublabel {
@@ -180,6 +183,8 @@ a {
   font-size: clamp(20px, 3.2vw, 43px);
   letter-spacing: -0.04em;
   line-height: 1;
+  transform: scaleX(var(--type-scale));
+  transform-origin: center;
 }
 
 .slot {
