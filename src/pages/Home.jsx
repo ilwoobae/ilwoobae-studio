@@ -67,10 +67,11 @@ export default function Home() {
         if (!button) return;
         const label = button.querySelector(".type-label");
         const subLabel = button.querySelector(".type-sublabel");
-        const target = label || subLabel;
-        if (!target) return;
+        if (!label || !subLabel) return;
         const buttonWidth = button.clientWidth;
-        const targetWidth = target.scrollWidth || target.clientWidth;
+        const labelWidth = label.scrollWidth || label.clientWidth;
+        const subLabelWidth = subLabel.scrollWidth || subLabel.clientWidth;
+        const targetWidth = Math.max(labelWidth, subLabelWidth);
         if (!buttonWidth || !targetWidth) return;
         const scale = Math.max(0.6, Math.min(1.4, buttonWidth / targetWidth));
         button.style.setProperty("--type-scale", scale.toFixed(3));
