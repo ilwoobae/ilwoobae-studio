@@ -238,7 +238,10 @@ a {
   gap: 0;
   align-content: start;
   justify-items: start;
-  width: 100%;
+  width: auto;
+  position: fixed;
+  top: 10px;
+  left: 10px;
 }
 
 .category-title {
