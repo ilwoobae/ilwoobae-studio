@@ -134,6 +134,7 @@ a {
   font-size: 34px;
   font-style: italic;
   line-height: 1;
+  padding-right: 2px;
 }
 
 .media-indicator-item.is-active {
