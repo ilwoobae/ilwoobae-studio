@@ -173,14 +173,12 @@ a {
 }
 
 .type-label {
-  display: inline-block;
   line-height: 1;
   transform: scaleX(var(--type-scale));
   transform-origin: center;
 }
 
 .type-sublabel {
-  display: inline-block;
   font-family: "Pretendard Light", sans-serif;
   font-size: 67px;
   letter-spacing: -0.04em;
