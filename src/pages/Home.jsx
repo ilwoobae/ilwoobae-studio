@@ -9,8 +9,10 @@ const TYPE_BUTTONS = [
 export default function Home() {
   const navigate = useNavigate();
 
-  const handleTypeClick = (typeId) => {
-    navigate(`/type/${typeId}`);
+  const handleTypeClick = (typeId, event) => {
+    navigate(`/type/${typeId}`, {
+      state: { x: event.clientX, y: event.clientY },
+    });
   };
 
   return (
@@ -22,7 +24,7 @@ export default function Home() {
               <button
                 type="button"
                 className="type-button"
-                onClick={() => handleTypeClick(type.id)}
+                onClick={(event) => handleTypeClick(type.id, event)}
               >
                 <span className="type-label">{type.label}</span>
                 <span className="type-sublabel">{type.subLabel}</span>

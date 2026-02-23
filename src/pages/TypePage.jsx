@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const TYPE_BUTTONS = [
   { id: "sculpture", label: "조각", subLabel: "sculpture" },
@@ -33,6 +33,8 @@ const renderMedia = (post) => {
 
 export default function TypePage() {
   const { typeId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const typeIndex = TYPE_BUTTONS.findIndex((type) => type.id === typeId);
   const activeType = typeIndex >= 0 ? TYPE_BUTTONS[typeIndex].id : null;
 
@@ -43,6 +45,7 @@ export default function TypePage() {
   const [mediaIndex, setMediaIndex] = useState(0);
   const [textPage, setTextPage] = useState(0);
   const [activePost, setActivePost] = useState(null);
+  const [reveal, setReveal] = useState({ x: 0, y: 0, open: false });
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -52,6 +55,16 @@ export default function TypePage() {
       })
       .catch(() => setError("콘텐츠를 불러오지 못했습니다."));
   }, []);
+
+  useEffect(() => {
+    const { x, y } = location.state || {};
+    const fallbackX = window.innerWidth / 2;
+    const fallbackY = window.innerHeight / 2;
+    setReveal({ x: x ?? fallbackX, y: y ?? fallbackY, open: false });
+    requestAnimationFrame(() => {
+      setReveal((prev) => ({ ...prev, open: true }));
+    });
+  }, [location.state]);
 
   const categoriesByType = useMemo(() => {
     const map = new Map();
@@ -115,6 +128,13 @@ export default function TypePage() {
   const handleNextTextPage = () => {
     if (!activePosts.length) return;
     setTextPage((prev) => (prev + 1) % totalTextPages);
+  };
+
+  const handleClose = () => {
+    setReveal((prev) => ({ ...prev, open: false }));
+    setTimeout(() => {
+      navigate("/", { replace: false });
+    }, 650);
   };
 
   const renderSlot = (slotIndex) => {
@@ -193,17 +213,29 @@ export default function TypePage() {
   };
 
   return (
-    <div className="page home-page">
+    <div
+      className={`page home-page type-page${reveal.open ? " is-open" : ""}`}
+      style={{ "--x": `${reveal.x}px`, "--y": `${reveal.y}px` }}
+    >
       {error ? <p className="error">{error}</p> : null}
       <section className="front-shell">
-        <div className="button-stack">
-          {[0, 1, 2].map((idx) => (
-            <div key={idx} className="slot">
-              {renderSlot(idx)}
-            </div>
-          ))}
+        <div className="type-reveal">
+          <div className="button-stack">
+            {[0, 1, 2].map((idx) => (
+              <div key={idx} className="slot">
+                {renderSlot(idx)}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+      <button
+        type="button"
+        className="radial-marker"
+        style={{ "--x": `${reveal.x}px`, "--y": `${reveal.y}px` }}
+        onClick={handleClose}
+        aria-label="Back to home"
+      />
       {activePost ? (
         <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
           <div className="text-modal-content" role="dialog" aria-modal="true">
