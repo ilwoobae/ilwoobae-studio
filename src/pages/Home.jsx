@@ -93,8 +93,11 @@ export default function Home() {
     activeCategories[0] ||
     null;
   const activePosts = activeCategory ? postsByCategory.get(activeCategory.id) || [] : [];
-  const textPostsAll = activeCategories.flatMap(
-    (category) => postsByCategory.get(category.id) || []
+  const textPostsAll = activeCategories.flatMap((category) =>
+    (postsByCategory.get(category.id) || []).map((post) => ({
+      ...post,
+      __categoryTitle: category.title,
+    }))
   );
   const mediaPosts = activePosts.filter((post) => post.attachment_url);
   const activeMedia = mediaPosts.length ? mediaPosts[mediaIndex % mediaPosts.length] : null;
@@ -289,7 +292,11 @@ export default function Home() {
                     setActivePost(post);
                   }}
                 >
+                  {post.__categoryTitle ? `(${post.__categoryTitle}) ` : ""}
                   {post.title}
+                  {post.info1 ? ` ${post.info1}` : ""}
+                  {post.info2 ? ` ${post.info2}` : ""}
+                  {post.info3 ? ` ${post.info3}` : ""}
                 </button>
               ))
             ) : (
