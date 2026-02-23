@@ -45,7 +45,7 @@ export default function TypePage() {
   const [mediaIndex, setMediaIndex] = useState(0);
   const [textPage, setTextPage] = useState(0);
   const [activePost, setActivePost] = useState(null);
-  const [reveal, setReveal] = useState({ x: 0, y: 0, open: false });
+  const [reveal, setReveal] = useState({ x: 0, y: 0, open: false, key: 0 });
 
   useEffect(() => {
     Promise.all([fetchJson("/api/public/categories"), fetchJson("/api/public/posts")])
@@ -60,11 +60,16 @@ export default function TypePage() {
     const { x, y } = location.state || {};
     const fallbackX = window.innerWidth / 2;
     const fallbackY = window.innerHeight / 2;
-    setReveal({ x: x ?? fallbackX, y: y ?? fallbackY, open: false });
+    setReveal((prev) => ({
+      x: x ?? fallbackX,
+      y: y ?? fallbackY,
+      open: false,
+      key: prev.key + 1,
+    }));
     requestAnimationFrame(() => {
       setReveal((prev) => ({ ...prev, open: true }));
     });
-  }, [location.state]);
+  }, [location.key]);
 
   const categoriesByType = useMemo(() => {
     const map = new Map();
@@ -219,7 +224,7 @@ export default function TypePage() {
     >
       {error ? <p className="error">{error}</p> : null}
       <section className="front-shell">
-        <div className="type-reveal">
+        <div key={reveal.key} className="type-reveal">
           <div className="button-stack">
             {[0, 1, 2].map((idx) => (
               <div key={idx} className="slot">
