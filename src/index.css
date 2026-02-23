@@ -15,9 +15,9 @@
 }
 
 @font-face {
-  font-family: "KoPub Batang Pro Medium";
-  src: url("/fonts/KoPub Batang_Pro Medium.otf") format("opentype");
-  font-weight: 500;
+  font-family: "KoPub Batang Pro Light";
+  src: url("/fonts/KoPub Batang_Pro Light.otf") format("opentype");
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
@@ -132,7 +132,7 @@ a {
   border-radius: 999px;
   display: grid;
   place-items: center;
-  font-family: "KoPub Batang Pro Bold", serif;
+  font-family: "KoPub Batang Pro Light", serif;
   font-size: 34px;
   font-style: italic;
   line-height: 1;
@@ -159,7 +159,7 @@ a {
   background: transparent;
   cursor: pointer;
   color: #2f2f2f;
-  font-family: "KoPub Batang Pro Medium", serif;
+  font-family: "KoPub Batang Pro Light", serif;
   font-size: clamp(64px, 11.5vw, 172px);
   letter-spacing: -0.04em;
   transform: scaleY(1.05);
