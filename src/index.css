@@ -149,7 +149,8 @@ a {
 }
 
 .slot-panel-categories {
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 0;
 }
 
@@ -236,6 +237,8 @@ a {
   display: grid;
   gap: 0;
   align-content: start;
+  justify-items: start;
+  width: 100%;
 }
 
 .category-title {
