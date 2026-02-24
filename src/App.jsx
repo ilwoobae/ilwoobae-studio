@@ -15,6 +15,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="type/:typeId" element={<Home />} />
         </Route>
 
         <Route path="admin/login" element={<AdminLogin />} />
