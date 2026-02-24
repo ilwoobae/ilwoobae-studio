@@ -99,7 +99,17 @@ export default function Home() {
       __categoryTitle: category.title,
     }))
   );
-  const mediaPosts = activePosts.filter((post) => post.attachment_url);
+  const allSculpturePosts = useMemo(() => {
+    if (!categories.length || !posts.length) return [];
+    const categoryMap = new Map(categories.map((category) => [category.id, category]));
+    return posts.filter((post) => {
+      const category = categoryMap.get(post.category_id);
+      return category?.group_id === "sculpture";
+    });
+  }, [categories, posts]);
+  const isSculptureType = activeType === "sculpture";
+  const mediaSourcePosts = isSculptureType ? allSculpturePosts : activePosts;
+  const mediaPosts = mediaSourcePosts.filter((post) => post.attachment_url);
   const activeMedia = mediaPosts.length ? mediaPosts[mediaIndex % mediaPosts.length] : null;
   const isTextType = activeType === "text";
   const postsPerPage = 6;
@@ -164,10 +174,7 @@ export default function Home() {
   };
 
   const handleTypeClick = (typeId, event) => {
-    if (detailVisible) {
-      closeDetail();
-      return;
-    }
+    if (detailVisible) return;
     openDetail(typeId, event);
   };
 
@@ -257,7 +264,7 @@ export default function Home() {
     const contentType = slotIndex === otherSlots[0] ? "categories" : "media";
 
     if (contentType === "categories") {
-      if (isTextType) {
+      if (isTextType || isSculptureType) {
         return <div className="slot-panel slot-panel-categories" />;
       }
       return (
