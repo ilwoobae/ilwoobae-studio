@@ -63,6 +63,10 @@ export default function AdminPostForm() {
     const q = r2Query.toLowerCase();
     return r2Items.filter((item) => item.key.toLowerCase().includes(q));
   }, [r2Items, r2Query]);
+  const selectedCategory = useMemo(
+    () => categories.find((category) => category.id === categoryId) || null,
+    [categories, categoryId]
+  );
 
   useEffect(() => {
     fetchJson("/api/categories")
@@ -208,6 +212,14 @@ export default function AdminPostForm() {
               ))}
             </select>
           </label>
+          {selectedCategory ? (
+            <div className="category-info">
+              <div className="category-info-title">{selectedCategory.title}</div>
+              {selectedCategory.description ? (
+                <div className="category-info-desc">{selectedCategory.description}</div>
+              ) : null}
+            </div>
+          ) : null}
           <label>
             Title
             <input
@@ -254,6 +266,40 @@ export default function AdminPostForm() {
             <input type="file" onChange={handleFile} />
           </label>
           {uploading ? <p className="meta">Uploading file...</p> : null}
+          <section className="r2-panel inline">
+            <div className="panel-head">
+              <h2>R2 Files</h2>
+              <button className="btn ghost" type="button" onClick={loadR2} disabled={r2Loading}>
+                {r2Loading ? "Loading..." : "Refresh"}
+              </button>
+            </div>
+            <label>
+              Search
+              <input
+                type="text"
+                value={r2Query}
+                onChange={(event) => setR2Query(event.target.value)}
+                placeholder="Search key"
+              />
+            </label>
+            <div className="r2-list">
+              {filteredItems.map((item) => (
+                <button
+                  key={item.key}
+                  className="r2-thumb"
+                  type="button"
+                  onClick={() => handlePick(item)}
+                  title={item.key}
+                >
+                  {item.url && item.key.match(/\.(png|jpg|jpeg|gif|webp)$/i) ? (
+                    <img src={item.url} alt={item.key} />
+                  ) : (
+                    <span>{item.key.split("/").pop()}</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </section>
           <label>
             Info 1
             <input type="text" value={info1} onChange={(event) => setInfo1(event.target.value)} />
@@ -271,47 +317,7 @@ export default function AdminPostForm() {
           </button>
         </form>
 
-        <aside className="panel r2-panel">
-          <div className="panel-head">
-            <h2>R2 Files</h2>
-            <button className="btn ghost" type="button" onClick={loadR2} disabled={r2Loading}>
-              {r2Loading ? "Loading..." : "Refresh"}
-            </button>
-          </div>
-          <label>
-            Search
-            <input
-              type="text"
-              value={r2Query}
-              onChange={(event) => setR2Query(event.target.value)}
-              placeholder="Search key"
-            />
-          </label>
-          <div className="r2-list">
-            {filteredItems.map((item) => (
-              <div key={item.key} className="r2-item">
-                <button className="r2-thumb" type="button" onClick={() => handlePick(item)}>
-                  {item.url && item.key.match(/\.(png|jpg|jpeg|gif|webp)$/i) ? (
-                    <img src={item.url} alt={item.key} />
-                  ) : (
-                    <span>{item.key.split("/").pop()}</span>
-                  )}
-                </button>
-                <div className="r2-meta">
-                  <div className="truncate">{item.key}</div>
-                  <div className="r2-actions">
-                    <button className="btn ghost" type="button" onClick={() => handlePick(item)}>
-                      Use
-                    </button>
-                    <button className="btn danger" type="button" onClick={() => handleDeleteR2(item)}>
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </aside>
+        <aside className="panel r2-panel" hidden />
       </div>
     </div>
   );
