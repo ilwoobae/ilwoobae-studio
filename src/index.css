@@ -364,6 +364,8 @@ a {
 .type-non-sculpture .media-title {
   padding: 2px 5px;
   background: #ffffff;
+  width: fit-content;
+  max-width: calc(100% - 20px);
 }
 
 .text-modal-close {
@@ -516,6 +518,10 @@ a {
     z-index: 6;
     align-items: center;
     justify-content: center;
+  }
+
+  .text-modal-content {
+    width: min(94vw, 720px);
   }
 
   .text-title {
