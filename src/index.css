@@ -287,7 +287,11 @@ a {
   font-size: 17px;
   color: #6a6a6a;
   letter-spacing: -0.02em;
-  font-family: "Pretendard Medium", sans-serif;
+  font-family: "Pretendard Light", sans-serif;
+}
+
+.text-title-main {
+  font-style: italic;
 }
 
 .text-modal {
@@ -333,6 +337,23 @@ a {
   font-size: 16px;
   letter-spacing: -0.02em;
   font-family: "KoPub Batang Pro Light", serif;
+}
+
+.text-modal-next {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  align-self: flex-start;
+  font-family: "KoPub Batang Pro Light", serif;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.8;
+  padding: 0;
+}
+
+.type-non-sculpture .category-title {
+  font-size: 27px;
+  font-family: "Pretendard Light", sans-serif;
 }
 
 .text-modal-close {

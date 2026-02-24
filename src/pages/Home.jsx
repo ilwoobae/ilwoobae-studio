@@ -39,6 +39,7 @@ export default function Home() {
   const [mediaIndex, setMediaIndex] = useState(0);
   const [textPage, setTextPage] = useState(0);
   const [activePost, setActivePost] = useState(null);
+  const [textParagraphIndex, setTextParagraphIndex] = useState(0);
   const [reveal, setReveal] = useState({ x: 0, y: 0, open: false });
   const [detailVisible, setDetailVisible] = useState(false);
   const transitionRef = useRef(null);
@@ -119,6 +120,15 @@ export default function Home() {
     textPage * postsPerPage,
     textPage * postsPerPage + postsPerPage
   );
+  const activePostParagraphs = useMemo(() => {
+    if (!activePost?.description) return [];
+    return activePost.description
+      .split(/\n\s*\n/)
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }, [activePost]);
+  const currentParagraph = activePostParagraphs[textParagraphIndex] || "";
+  const hasNextParagraph = textParagraphIndex < activePostParagraphs.length - 1;
 
   useEffect(() => {
     if (!activeType) return;
@@ -215,6 +225,7 @@ export default function Home() {
     setMediaIndex(0);
     setTextPage(0);
     setActivePost(null);
+    setTextParagraphIndex(0);
   };
 
   const handleNextMedia = () => {
@@ -303,11 +314,14 @@ export default function Home() {
                   onClick={(event) => {
                     event.stopPropagation();
                     setActivePost(post);
+                    setTextParagraphIndex(0);
                   }}
                 >
                   <span className="text-title-lines text-title-line-main">
-                    {post.__categoryTitle ? `${post.__categoryTitle}: ` : ""}
-                    {post.title}
+                    {post.__categoryTitle ? (
+                      <span className="text-title-category">{post.__categoryTitle}: </span>
+                    ) : null}
+                    <span className="text-title-main">{post.title}</span>
                   </span>
                   <span className="text-title-meta text-title-line-meta">
                     {post.info1 ? `${post.info1}` : ""}
@@ -407,15 +421,24 @@ export default function Home() {
             <button type="button" className="text-modal-close" onClick={() => setActivePost(null)}>
               x
             </button>
-            <h2>
-              {activePost.title}
-              {activePost.info1 ? <span className="text-modal-info">{activePost.info1}</span> : null}
-              {activePost.info2 ? <span className="text-modal-info">{activePost.info2}</span> : null}
-              {activePost.info3 ? <span className="text-modal-info">{activePost.info3}</span> : null}
-            </h2>
             <div className="text-modal-body">
-              {activePost.description ? <p>{activePost.description}</p> : null}
+              {currentParagraph ? <p>{currentParagraph}</p> : null}
             </div>
+            {activePostParagraphs.length ? (
+              <button
+                type="button"
+                className="text-modal-next"
+                onClick={() => {
+                  if (hasNextParagraph) {
+                    setTextParagraphIndex((prev) => prev + 1);
+                  } else {
+                    setActivePost(null);
+                  }
+                }}
+              >
+                {hasNextParagraph ? "다음" : "닫기"}
+              </button>
+            ) : null}
           </div>
         </div>
       ) : null}
