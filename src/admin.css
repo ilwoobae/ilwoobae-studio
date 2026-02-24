@@ -58,11 +58,11 @@ a {
 }
 
 .col-30 {
-  flex: 0 0 30vw;
+  flex: 0 0 40vw;
 }
 
 .col-50 {
-  flex: 1 1 50vw;
+  flex: 1 1 60vw;
 }
 
 .panel {
