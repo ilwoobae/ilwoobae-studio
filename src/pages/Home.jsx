@@ -42,8 +42,36 @@ export default function Home() {
   const [reveal, setReveal] = useState({ x: 0, y: 0, open: false });
   const [detailVisible, setDetailVisible] = useState(false);
   const transitionRef = useRef(null);
+  const stateRef = useRef(null);
 
   useEffect(() => {
+    const saved = sessionStorage.getItem("uiState");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed?.activeType) {
+          setDetailVisible(true);
+          setActiveType(parsed.activeType);
+          setActiveCategoryId(parsed.activeCategoryId ?? null);
+          setMediaIndex(parsed.mediaIndex ?? 0);
+          setTextPage(parsed.textPage ?? 0);
+          setActivePost(parsed.activePostId ?? null);
+          setReveal({
+            x: parsed.revealX ?? window.innerWidth / 2,
+            y: parsed.revealY ?? window.innerHeight / 2,
+            open: true,
+          });
+          window.history.replaceState(
+            { activeType: parsed.activeType, x: parsed.revealX, y: parsed.revealY },
+            "",
+            `/type/${parsed.activeType}`
+          );
+          return;
+        }
+      } catch {
+        // ignore corrupted state
+      }
+    }
     const pathMatch = window.location.pathname.match(/^\/type\/([^/]+)$/);
     if (!pathMatch) return;
     const initialType = pathMatch[1];
@@ -136,6 +164,30 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const nextState = {
+      detailVisible,
+      activeType,
+      activeCategoryId,
+      mediaIndex,
+      textPage,
+      activePostId: activePost?.id ?? null,
+      revealX: reveal.x,
+      revealY: reveal.y,
+    };
+    stateRef.current = nextState;
+    sessionStorage.setItem("uiState", JSON.stringify(nextState));
+  }, [
+    detailVisible,
+    activeType,
+    activeCategoryId,
+    mediaIndex,
+    textPage,
+    activePost,
+    reveal.x,
+    reveal.y,
+  ]);
+
   const openDetail = (typeId, event) => {
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
@@ -179,31 +231,28 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const handlePopState = (event) => {
-      const state = event.state || {};
-      if (state.activeType) {
+    const handlePopState = () => {
+      const snapshot = stateRef.current;
+      if (snapshot?.activeType) {
         setDetailVisible(true);
-        setActiveType(state.activeType);
-        setActiveCategoryId(null);
-        setMediaIndex(0);
-        setTextPage(0);
+        setActiveType(snapshot.activeType);
+        setActiveCategoryId(snapshot.activeCategoryId ?? null);
+        setMediaIndex(snapshot.mediaIndex ?? 0);
+        setTextPage(snapshot.textPage ?? 0);
         setActivePost(null);
-        const fallbackX = window.innerWidth / 2;
-        const fallbackY = window.innerHeight / 2;
         setReveal({
-          x: state.x ?? fallbackX,
-          y: state.y ?? fallbackY,
+          x: snapshot.revealX ?? window.innerWidth / 2,
+          y: snapshot.revealY ?? window.innerHeight / 2,
           open: true,
         });
-      } else {
-        setDetailVisible(false);
-        setActiveType(null);
-        setActiveCategoryId(null);
-        setMediaIndex(0);
-        setTextPage(0);
-        setActivePost(null);
-        setReveal((prev) => ({ ...prev, open: false }));
+        window.history.pushState(
+          { activeType: snapshot.activeType, x: snapshot.revealX, y: snapshot.revealY },
+          "",
+          `/type/${snapshot.activeType}`
+        );
+        return;
       }
+      window.history.pushState({}, "", "/");
     };
 
     window.addEventListener("popstate", handlePopState);
