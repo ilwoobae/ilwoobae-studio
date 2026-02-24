@@ -42,41 +42,13 @@ export default function Home() {
   const [reveal, setReveal] = useState({ x: 0, y: 0, open: false });
   const [detailVisible, setDetailVisible] = useState(false);
   const transitionRef = useRef(null);
-  const stateRef = useRef(null);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem("uiState");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed?.activeType) {
-          setDetailVisible(true);
-          setActiveType(parsed.activeType);
-          setActiveCategoryId(parsed.activeCategoryId ?? null);
-          setMediaIndex(parsed.mediaIndex ?? 0);
-          setTextPage(parsed.textPage ?? 0);
-          setActivePost(parsed.activePostId ?? null);
-          setReveal({
-            x: parsed.revealX ?? window.innerWidth / 2,
-            y: parsed.revealY ?? window.innerHeight / 2,
-            open: true,
-          });
-          window.history.replaceState(
-            { activeType: parsed.activeType, x: parsed.revealX, y: parsed.revealY },
-            "",
-            `/type/${parsed.activeType}`
-          );
-          return;
-        }
-      } catch {
-        // ignore corrupted state
-      }
-    }
     const pathMatch = window.location.pathname.match(/^\/type\/([^/]+)$/);
     if (!pathMatch) return;
-    const initialType = pathMatch[1];
-    setDetailVisible(true);
-    setActiveType(initialType);
+    window.history.replaceState({}, "", "/");
+    setDetailVisible(false);
+    setActiveType(null);
     setActiveCategoryId(null);
     setMediaIndex(0);
     setTextPage(0);
@@ -84,7 +56,7 @@ export default function Home() {
     setReveal({
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
-      open: true,
+      open: false,
     });
   }, []);
 
@@ -164,30 +136,6 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    const nextState = {
-      detailVisible,
-      activeType,
-      activeCategoryId,
-      mediaIndex,
-      textPage,
-      activePostId: activePost?.id ?? null,
-      revealX: reveal.x,
-      revealY: reveal.y,
-    };
-    stateRef.current = nextState;
-    sessionStorage.setItem("uiState", JSON.stringify(nextState));
-  }, [
-    detailVisible,
-    activeType,
-    activeCategoryId,
-    mediaIndex,
-    textPage,
-    activePost,
-    reveal.x,
-    reveal.y,
-  ]);
-
   const openDetail = (typeId, event) => {
     if (transitionRef.current) {
       clearTimeout(transitionRef.current);
@@ -231,28 +179,31 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const handlePopState = () => {
-      const snapshot = stateRef.current;
-      if (snapshot?.activeType) {
+    const handlePopState = (event) => {
+      const state = event.state || {};
+      if (state.activeType) {
         setDetailVisible(true);
-        setActiveType(snapshot.activeType);
-        setActiveCategoryId(snapshot.activeCategoryId ?? null);
-        setMediaIndex(snapshot.mediaIndex ?? 0);
-        setTextPage(snapshot.textPage ?? 0);
+        setActiveType(state.activeType);
+        setActiveCategoryId(null);
+        setMediaIndex(0);
+        setTextPage(0);
         setActivePost(null);
+        const fallbackX = window.innerWidth / 2;
+        const fallbackY = window.innerHeight / 2;
         setReveal({
-          x: snapshot.revealX ?? window.innerWidth / 2,
-          y: snapshot.revealY ?? window.innerHeight / 2,
+          x: state.x ?? fallbackX,
+          y: state.y ?? fallbackY,
           open: true,
         });
-        window.history.pushState(
-          { activeType: snapshot.activeType, x: snapshot.revealX, y: snapshot.revealY },
-          "",
-          `/type/${snapshot.activeType}`
-        );
-        return;
+      } else {
+        setDetailVisible(false);
+        setActiveType(null);
+        setActiveCategoryId(null);
+        setMediaIndex(0);
+        setTextPage(0);
+        setActivePost(null);
+        setReveal((prev) => ({ ...prev, open: false }));
       }
-      window.history.pushState({}, "", "/");
     };
 
     window.addEventListener("popstate", handlePopState);
