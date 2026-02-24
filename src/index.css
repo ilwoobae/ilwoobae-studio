@@ -303,8 +303,8 @@ a {
   justify-content: center;
   z-index: 10;
   padding: 24px;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .text-modal-content {
@@ -465,6 +465,10 @@ a {
   .home-page {
     height: 96svh;
     height: 96dvh;
+  }
+
+  body {
+    overflow: hidden;
   }
 
   .front-shell {
