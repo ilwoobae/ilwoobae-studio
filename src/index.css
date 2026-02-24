@@ -303,8 +303,6 @@ a {
   justify-content: center;
   z-index: 10;
   padding: 24px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .text-modal-content {
@@ -558,8 +556,8 @@ a {
   }
 
   .media-indicator-item {
-    font-size: 14px;
-    padding-right: 0;
+    font-size: 17px;
+    padding-right: 2px;
     width: 28px;
     height: 28px;
   }
