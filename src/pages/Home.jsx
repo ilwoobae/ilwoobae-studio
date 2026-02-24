@@ -417,8 +417,17 @@ export default function Home() {
       ) : null}
       {activePost ? (
         <div className="text-modal" role="presentation" onClick={() => setActivePost(null)}>
-          <div className="text-modal-content" role="dialog" aria-modal="true">
-            <button type="button" className="text-modal-close" onClick={() => setActivePost(null)}>
+          <div
+            className="text-modal-content"
+            role="dialog"
+            aria-modal="true"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="text-modal-close"
+              onClick={() => setActivePost(null)}
+            >
               x
             </button>
             <div className="text-modal-body">
@@ -428,7 +437,8 @@ export default function Home() {
               <button
                 type="button"
                 className="text-modal-next"
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   if (hasNextParagraph) {
                     setTextParagraphIndex((prev) => prev + 1);
                   } else {
