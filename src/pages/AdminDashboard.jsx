@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { TYPES, typeLabelById } from "../data/types";
+import { typeLabelById } from "../data/types";
 import "../admin.css";
 
 async function fetchJson(url, options = {}) {
@@ -77,22 +77,6 @@ export default function AdminDashboard() {
       {error ? <p className="error">{error}</p> : null}
 
       <div className="admin-columns">
-        <section className="panel admin-col col-20">
-          <div className="panel-head">
-            <h2>Types</h2>
-          </div>
-          <div className="table">
-            <div className="row header">
-              <div>Fixed Types</div>
-            </div>
-            {TYPES.map((type) => (
-              <div className="row" key={type.id}>
-                <div>{type.label}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section className="panel admin-col col-30">
           <div className="panel-head">
             <h2>Categories</h2>
@@ -138,7 +122,6 @@ export default function AdminDashboard() {
             <div className="row header">
               <div>Category</div>
               <div>Title</div>
-              <div>Attachment</div>
               <div>Actions</div>
             </div>
             {posts.map((post) => (
@@ -147,9 +130,6 @@ export default function AdminDashboard() {
                   {categories.find((category) => category.id === post.category_id)?.title || "-"}
                 </div>
                 <div>{post.title}</div>
-                <div className="truncate">
-                  {post.attachment_url ? post.attachment_url : "-"}
-                </div>
                 <div className="row-actions">
                   <Link className="btn ghost" to={`/admin/posts/${post.id}`}>
                     Edit
