@@ -423,13 +423,6 @@ export default function Home() {
             aria-modal="true"
             onClick={(event) => event.stopPropagation()}
           >
-            <button
-              type="button"
-              className="text-modal-close"
-              onClick={() => setActivePost(null)}
-            >
-              x
-            </button>
             <div className="text-modal-body">
               {currentParagraph ? <p>{currentParagraph}</p> : null}
             </div>

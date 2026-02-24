@@ -344,11 +344,12 @@ a {
   background: transparent;
   cursor: pointer;
   align-self: flex-start;
-  font-family: "KoPub Batang Pro Light", serif;
+  font-family: "Pretendard Light", sans-serif;
   font-size: 16px;
   letter-spacing: -0.02em;
   line-height: 1.8;
   padding: 0;
+  font-style: italic;
 }
 
 .type-non-sculpture .category-title {
@@ -509,7 +510,7 @@ a {
   }
 
   .text-title {
-    font-size: 14px;
+    font-size: 17px;
   }
 
   .text-title-lines {
@@ -518,17 +519,17 @@ a {
 
   .text-title-meta {
     display: block;
-    font-size: 14px;
+    font-size: 17px;
   }
 
   .text-title-line-main {
     display: block;
-    font-size: 14px;
+    font-size: 17px;
   }
 
   .text-title-line-meta {
     display: block;
-    font-size: 14px;
+    font-size: 17px;
     margin-top: 5px;
     margin-left: 0;
   }
